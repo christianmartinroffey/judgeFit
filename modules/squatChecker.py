@@ -11,7 +11,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/luisprsquat.mp4')
+video = cv2.VideoCapture('../videos/airsquat.mp4')
 pTime = 0
 
 
