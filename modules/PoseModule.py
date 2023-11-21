@@ -51,21 +51,22 @@ class PoseDetector:
         return self.lmList
 
     def getAngle(self, img, p1, p2, p3, draw=True):
-        '''this is to get the angle between 3 points'''
-        # same but without slicing
-        _, x1, y1 = self.lmList[p1]
-
-        # get the points
+        # Get the points
         x1, y1 = self.lmList[p1][1:]
         x2, y2 = self.lmList[p2][1:]
         x3, y3 = self.lmList[p3][1:]
 
-        # calculate the angle
-        angle = math.degrees(math.atan2(y3-y2, x3-x2) - math.atan2(y1-y2, x1-x2))
+        # Calculate vectors
+        v1 = (x1 - x2, y1 - y2)
+        v2 = (x3 - x2, y3 - y2)
 
-        if angle < 0:
-            angle += 360
-            # print(angle)
+        # Calculate dot product and magnitude of vectors
+        dot = v1[0] * v2[0] + v1[1] * v2[1]
+        mag1 = math.sqrt(v1[0] ** 2 + v1[1] ** 2)
+        mag2 = math.sqrt(v2[0] ** 2 + v2[1] ** 2)
+
+        # Calculate the angle in radians and then convert to degrees
+        angle = math.degrees(math.acos(dot / (mag1 * mag2)))
 
         if draw:
             # draws white line from points for visibility
