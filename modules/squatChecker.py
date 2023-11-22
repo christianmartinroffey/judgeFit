@@ -11,7 +11,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/wallball.mp4')
+video = cv2.VideoCapture('../videos/luisprsquat.mp4')
 pTime = 0
 
 
@@ -34,9 +34,10 @@ while True:
     if len(lmList) != 0:
         # Calculate the angle for the squat analysis
         # Update these landmark indices based on the points you're using
-        hip_index = 24  # Example hip landmark index
-        knee_index = 26 # Example knee landmark index
-        ankle_index = 28 # Example ankle landmark index
+        # TODO figure out how to use either 24, 26 or 28 points
+        hip_index = 23  # Example hip landmark index
+        knee_index = 25  # Example knee landmark index
+        ankle_index = 27  # Example ankle landmark index
 
         angle = detector.getAngle(img, hip_index, knee_index, ankle_index)
 

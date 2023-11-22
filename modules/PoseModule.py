@@ -65,8 +65,14 @@ class PoseDetector:
         mag1 = math.sqrt(v1[0] ** 2 + v1[1] ** 2)
         mag2 = math.sqrt(v2[0] ** 2 + v2[1] ** 2)
 
+        if mag1 * mag2 == 0:
+            return 0
+
+            # Clamp value between -1 and 1
+        cosine_angle = max(min(dot / (mag1 * mag2), 1), -1)
+
         # Calculate the angle in radians and then convert to degrees
-        angle = math.degrees(math.acos(dot / (mag1 * mag2)))
+        angle = math.degrees(math.acos(cosine_angle))
 
         if draw:
             # draws white line from points for visibility
