@@ -11,7 +11,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/luisprsquat.mp4')
+video = cv2.VideoCapture('../videos/airsquat.mp4')
 pTime = 0
 
 
@@ -32,13 +32,22 @@ while True:
 
     lmList = detector.getPosition(img, draw=False)
     if len(lmList) != 0:
-        # Calculate the angle for the squat analysis
-        # Update these landmark indices based on the points you're using
-        # TODO figure out how to use either 24, 26 or 28 points
-        hip_index = 23  # Example hip landmark index
-        knee_index = 25  # Example knee landmark index
-        ankle_index = 27  # Example ankle landmark index
+        left_hip_visibility = lmList[23][3]  # Visibility of left hip (landmark 23)
+        right_hip_visibility = lmList[24][3]  # Visibility of right hip (landmark 24)
 
+        # Choose landmarks based on hip visibility
+        if left_hip_visibility > right_hip_visibility:
+            # Use left side landmarks (23, 25, 27)
+            hip_index = 23
+            knee_index = 25
+            ankle_index = 27
+        else:
+            # Use right side landmarks (24, 26, 28)
+            hip_index = 24
+            knee_index = 26
+            ankle_index = 28
+
+        # Calculate the angle for the squat analysis
         angle = detector.getAngle(img, hip_index, knee_index, ankle_index)
 
         # Update start and end points for the new angle range
@@ -65,12 +74,20 @@ while True:
                 direction = 0
                 full_depth = False
                 outcome = "good rep"
+                # TODO fix no lockout logic
+            elif angle <= start_point:
+                is_squat_started = False
+                direction = 0
+                full_depth = False
+                no_rep += 1
+                outcome = "not extended"
         elif not full_depth and is_squat_started:
             if angle >= start_point:
                 no_rep += 1
                 outcome = "not deep enough"
                 is_squat_started = False
                 direction = 0
+
 
         # Output for debugging or display
         print(
@@ -86,68 +103,7 @@ while True:
             is_squat_started = True
             full_depth = False
 
-        # sets direction and full_depth to True
-        # TODO FIX count for facing right
-        # TODO look at when is_squat_started begins to fix no rep
-        # if is_squat_started and direction == 0:
-        #     outcome = ""
-        #     if person_is_facing_left:
-        #         if angle <= end_point:
-        #             # Finish the squat when returning to the starting position
-        #             full_depth = True
-        #             direction = 1
-        #             no_rep_reason = ""
-        #     elif person_is_facing_right:
-        #         if angle >= end_point:
-        #             full_depth = True
-        #             direction = 1
-        #             no_rep_reason = ""
-        #         else:
-        #             full_depth = False
-        #
-        #     # only adds a rep if full_depth is true and angle goes back past or to the start_point (angle)
-        # if full_depth and direction == 1:
-        #     # angles for left and right are different so completed squat is >= for left and <= for right
-        #     if person_is_facing_left and angle >= start_point:
-        #         count += 1
-        #         is_squat_started = False
-        #         direction = 0
-        #         full_depth = False
-        #         outcome = "good rep"
-        #     # TODO fix counting for right facing
-        #     elif person_is_facing_right and angle <= start_point:
-        #         # count += 1
-        #         is_squat_started = False
-        #         direction = 0
-        #         full_depth = False
-        #         outcome = "good rep"
-        # elif not full_depth and is_squat_started:
-        #     # TODO FIX NO REP COUNTER
-        #     if person_is_facing_left and angle >= start_point:
-        #         no_rep += 1
-        #         outcome = "not deep enough"
-        #         is_squat_started = False
-        #         direction = 0
-        #     elif person_is_facing_left and angle <= start_point:
-        #         no_rep += 1
-        #         outcome = "not deep enough"
-        #         is_squat_started = False
-        #         direction = 0
 
-
-        # original method
-        # if percentage == 100:
-        #     angle = angle
-        #     print(angle)
-        #     # going up
-        #     if direction == 0:
-        #         count += 0.5
-        #         direction = 1
-        # if percentage == 0:
-        #     if direction == 1:
-        #         count += 0.5
-        #         direction = 0
-        # print(count)
         cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 7, (255,0,0), 8)
         cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
         cv2.putText(img, f'no reps: {int(no_rep)}', (50, 500), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
