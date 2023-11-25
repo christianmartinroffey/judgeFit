@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/luisprsquat.mp4')
+video = cv2.VideoCapture('../videos/wallball.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -25,8 +25,8 @@ is_squat_started = False
 full_depth = False
 full_extension = False
 outcome = ""
-descending_threshold = 120  # Threshold to indicate start of squat
-ascending_threshold = 120
+descending_threshold = 110  # Threshold to indicate start of squat
+ascending_threshold = 110
 
 
 while True:
@@ -55,7 +55,7 @@ while True:
 
         # Update start and end points for the new angle range
         start_point = 170  # extended value
-        end_point = 45  # full range when reached
+        end_point = 60  # full range when reached
         percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
         # Squat analysis logic
@@ -115,6 +115,7 @@ while True:
         print(
             int(angle),
             direction,
+            outcome,
             "extension", full_extension,
             "full depth", full_depth,
             "reps", count,
