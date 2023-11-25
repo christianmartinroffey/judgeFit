@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/airsquat.mp4')
+video = cv2.VideoCapture('../videos/airsquat3.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -21,7 +21,7 @@ no_rep = 0
 direction = None
 start_point = 0
 end_point = 0
-is_squat_started = False
+is_burpee_started = False
 full_depth = False
 full_extension = False
 outcome = ""
@@ -40,18 +40,18 @@ while True:
 
         # Choose landmarks based on hip visibility
         if left_hip_visibility > right_hip_visibility:
-            # Use left side landmarks (23, 25, 27)
+            # Use left side landmarks
+            shoulder_index = 11
             hip_index = 23
-            knee_index = 25
             ankle_index = 27
         else:
-            # Use right side landmarks (24, 26, 28)
+            # Use right side landmarks
+            shoulder_index = 12
             hip_index = 24
-            knee_index = 26
             ankle_index = 28
 
         # Calculate the angle for the squat analysis
-        angle = detector.getAngle(img, hip_index, knee_index, ankle_index)
+        angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
 
         # Update start and end points for the new angle range
         start_point = 170  # extended value
@@ -66,16 +66,15 @@ while True:
 
             # Squat analysis logic
         if direction == 0 and angle < descending_threshold:
-            if not is_squat_started:
+            if not is_burpee_started:
                 is_squat_started = True
                 full_depth = False
                 full_extension = False
-                outcome = ''
 
             if angle <= end_point:
                 full_depth = True
 
-        elif direction == 1 and is_squat_started:
+        elif direction == 1 and is_burpee_started:
             if angle >= start_point:
                 full_extension = True
 
