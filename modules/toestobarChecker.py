@@ -4,6 +4,8 @@ import time
 import math
 import mediapipe as mp
 import PoseModule as pm
+import asyncio
+
 
 # section to use a video
 mpPose = mp.solutions.pose
@@ -146,17 +148,22 @@ while True:
         # # change to int in case there are minor differences in float values
         previous_angle = int(angle)
 
+        cTime = time.time()
+        fps = 1 / (cTime - pTime)
+        pTime = cTime
+
+        print(fps)
         # Output for debugging
-        print(
-            int(angle),
-            is_movement_started,
-            direction,
-            outcome,
-            "extension", full_extension,
-            "full range", full_range,
-            "reps", count,
-            "no reps", no_rep
-        )
+        # print(
+        #     int(angle),
+        #     is_movement_started,
+        #     direction,
+        #     outcome,
+        #     "extension", full_extension,
+        #     "full range", full_range,
+        #     "reps", count,
+        #     "no reps", no_rep
+        # )
 
         cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
         # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
@@ -167,3 +174,5 @@ while True:
     cv2.waitKey(1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
     results = pose.process(imgRGB)
+
+

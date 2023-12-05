@@ -2,6 +2,8 @@ import cv2
 import mediapipe as mp
 import time
 import math
+import threading
+import queue
 
 
 class PoseDetector:
@@ -95,26 +97,83 @@ class PoseDetector:
         return angle
 
 
+def process_frame(detector, frame_queue, result_queue):
+    while True:
+        frame = frame_queue.get()
+        if frame is None:  # Signal to stop processing
+            break
+
+        # Pose detection and processing
+        processed_frame = detector.getPose(frame)
+        lmList = detector.getPosition(processed_frame, draw=False)
+        # ... (additional processing logic)
+
+        # Put the processed frame (and any other data) in the result queue
+        result_queue.put((processed_frame, lmList))
+
+
+def stop_threads(frame_queue, processing_thread):
+    frame_queue.put(None)
+    processing_thread.join()
+
+
 def main():
-    video = cv2.VideoCapture('../videos/airsquat.mp4')
+    video = cv2.VideoCapture('../videos/toestobar.MOV')
     pTime = 0
     detector = PoseDetector()
 
-    while True:
-        success, img = video.read()
-        img = detector.getPose(img)
-        lmList = detector.getPosition(img, draw=False)
-        if len(lmList) != 0:
-            print(lmList[24])
-            cv2.circle(img, (lmList[24][1], lmList[24][2]), 15, (0, 255, 0), cv2.FILLED)
-        # detector.checkSquat(img)
-        cTime = time.time()
-        fps = 1 / (cTime - pTime)
-        pTime = cTime
+    frame_queue = queue.Queue()
+    result_queue = queue.Queue()
+    processing_thread = threading.Thread(target=process_frame, args=(detector, frame_queue, result_queue))
+    processing_thread.start()
 
-        cv2.putText(img, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0,), 3)
-        cv2.imshow("recording", img)
-        cv2.waitKey(1)
+    try:
+        while True:
+            success, img = video.read()
+            if not success:
+                break
+
+            frame_queue.put(img)
+            processed_frame = img
+
+            if not result_queue.empty():
+                processed_frame, lmList = result_queue.get()
+                # Display the processed frame or use lmList for further logic
+                print(lmList[24])
+                cv2.circle(img, (lmList[24][1], lmList[24][2]), 15, (0, 255, 0), cv2.FILLED)
+
+            cTime = time.time()
+            fps = 1 / (cTime - pTime)
+            pTime = cTime
+            cv2.putText(processed_frame, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0,), 3)
+            cv2.imshow("recording", processed_frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+    finally:
+        stop_threads(frame_queue, processing_thread)
+        video.release()
+        cv2.destroyAllWindows()
+
+# def main():
+#     video = cv2.VideoCapture('../videos/toestobar.MOV')
+#     pTime = 0
+#     detector = PoseDetector()
+#
+#     while True:
+#         success, img = video.read()
+#         img = detector.getPose(img)
+#         lmList = detector.getPosition(img, draw=False)
+#         if len(lmList) != 0:
+#             print(lmList[24])
+#             cv2.circle(img, (lmList[24][1], lmList[24][2]), 15, (0, 255, 0), cv2.FILLED)
+#         # detector.checkSquat(img)
+#         cTime = time.time()
+#         fps = 1 / (cTime - pTime)
+#         pTime = cTime
+#
+#         cv2.putText(img, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0,), 3)
+#         cv2.imshow("recording", img)
+#         cv2.waitKey(1)
 
 
 if __name__ == '__main__':
