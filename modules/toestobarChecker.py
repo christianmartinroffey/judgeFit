@@ -174,5 +174,3 @@ while True:
     cv2.waitKey(1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
     results = pose.process(imgRGB)
-
-
