@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/airsquat.mp4')
+video = cv2.VideoCapture('../videos/airsquat2.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -52,19 +52,14 @@ while True:
 
         # Calculate the angle for the squat analysis
         angle = detector.getAngle(img, hip_index, knee_index, ankle_index)
+        direction = detector.checkDirection(angle, descending_threshold, ascending_threshold)
 
         # Update start and end points for the new angle range
         start_point = 170  # extended value
         end_point = 60  # full range when reached
         percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
-        # Squat analysis logic
-        if angle > descending_threshold:
-            direction = 1  # Up
-        elif angle < ascending_threshold:
-            direction = 0  # Down
 
-            # Squat analysis logic
         if direction == 0 and angle < descending_threshold:
             if not is_squat_started:
                 is_squat_started = True
