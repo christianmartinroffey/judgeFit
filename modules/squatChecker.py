@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/airsquat2.mp4')
+video = cv2.VideoCapture('../videos/airsquat.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -58,7 +58,6 @@ while True:
         start_point = 170  # extended value
         end_point = 60  # full range when reached
         percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
-
 
         if direction == 0 and angle < descending_threshold:
             if not is_squat_started:

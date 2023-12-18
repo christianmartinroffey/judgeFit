@@ -12,7 +12,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/toestobar.MOV')
+video = cv2.VideoCapture('../videos/ttb1.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -21,7 +21,7 @@ count = 0
 no_rep = 0
 # 1 = up, 0 = down
 direction = None
-start_point = 170
+start_point = 180
 end_point = 10
 is_movement_started = False
 full_range = False
@@ -29,7 +29,7 @@ full_extension = False
 outcome = ""
 descending_threshold = 30  # Threshold to indicate start of squat
 ascending_threshold = 150
-full_range_threshold = 250  # Adjust threshold based on your requirement
+full_range_threshold = 20  # Adjust threshold based on your requirement
 
 while True:
     success, img = video.read()
@@ -65,54 +65,47 @@ while True:
 
         percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
-        # imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        # results = pose.process(imgRGB)
-        # landmarks = results.pose_landmarks.landmark
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        results = pose.process(imgRGB)
+        landmarks = results.pose_landmarks.landmark
 
         # # Get coordinates for toes (Landmarks 31 and 32)
-        # left_toe = [landmarks[31].x, landmarks[31].y]
-        # right_toe = [landmarks[32].x, landmarks[32].y]
-        # right_hand = [landmarks[20].x, landmarks[20].y]
-        # left_hand = [landmarks[19].x, landmarks[19].y]
-        # # Convert coordinates to pixel values
-        # h, w, c = img.shape
-        # left_toe_pixel = np.multiply(left_toe, [w, h]).astype(int)
-        # right_toe_pixel = np.multiply(right_toe, [w, h]).astype(int)
-        # left_hand_pixel = np.multiply(left_hand, [w, h]).astype(int)
-        # right_hand_pixel = np.multiply(right_hand, [w, h]).astype(int)
-        # # Draw circles at the toe positions
-        # cv2.circle(img, tuple(left_toe_pixel), 15, (255, 0, 0), -1)  # Blue circle for left toe
-        # cv2.circle(img, tuple(right_toe_pixel), 15, (0, 255, 0), -1)  # Green circle
-        # cv2.circle(img, tuple(left_hand_pixel), 15, (255, 0, 0), -1)  # Blue circle for left hand
-        # cv2.circle(img, tuple(right_hand_pixel), 15, (0, 255, 0), -1)
+        left_toe = [landmarks[31].x, landmarks[31].y]
+        right_toe = [landmarks[32].x, landmarks[32].y]
+        right_hand = [landmarks[20].x, landmarks[20].y]
+        left_hand = [landmarks[19].x, landmarks[19].y]
+        # Convert coordinates to pixel values
+        h, w, c = img.shape
+        left_toe_pixel = np.multiply(left_toe, [w, h]).astype(int)
+        right_toe_pixel = np.multiply(right_toe, [w, h]).astype(int)
+        left_hand_pixel = np.multiply(left_hand, [w, h]).astype(int)
+        right_hand_pixel = np.multiply(right_hand, [w, h]).astype(int)
+        # Draw circles at the toe positions
+        cv2.circle(img, tuple(left_toe_pixel), 15, (255, 0, 0), -1)  # Blue circle for left toe
+        cv2.circle(img, tuple(right_toe_pixel), 15, (0, 255, 0), -1)  # Green circle
+        cv2.circle(img, tuple(left_hand_pixel), 15, (255, 0, 0), -1)  # Blue circle for left hand
+        cv2.circle(img, tuple(right_hand_pixel), 15, (0, 255, 0), -1)
 
-        # Movement analysis logic
-        if angle > ascending_threshold:
-            direction = 1  # Up
-        elif angle < descending_threshold:
-            direction = 0  # Down
+        direction = detector.checkDirection(angle, descending_threshold, ascending_threshold)
 
-        # Movement analysis logic
-        if direction == 1 and angle < ascending_threshold:
+        # Movement analysis logic section #
+        # start the movement check by checking that there's upward movement
+        if direction == 0 and angle < ascending_threshold:
             if not is_movement_started:
                 is_movement_started = True
                 full_range = False
                 full_extension = False
                 outcome = ''
 
-        if angle <= 10:
-            full_range = True
+            # METHOD TO USE Y COORDINATES FOR RANGE BASED ON THRESHOLD
+            left_hand_threshold_check = abs(left_hand_y - left_toe_y)
+            right_hand_threshold_check = abs(right_hand_y - right_toe_y)
+            if left_hand_threshold_check < full_range_threshold or right_hand_threshold_check < full_range_threshold:
+                full_range = True
 
-            # METHOD TO USE Y COORDINATES FOR RANGE
-            # if abs(left_hand_y - left_toe_y) < full_range_threshold or abs(
-            #         right_hand_y - right_toe_y) < full_range_threshold:
-            #     full_range = True
-
-            # print("left", left_hand_y, left_toe_y)
-            # print("right", right_hand_y, right_toe_y)
-
-        elif direction == 1 and is_movement_started:
-            if angle >= start_point:
+        # movement is going down and the angle has to be more than the value of start point for it to be full extension
+        if direction == 1 and is_movement_started:
+            if left_hand_threshold_check < full_range_threshold or right_hand_threshold_check < full_range_threshold:
                 full_extension = True
 
             # Check for no full extension
@@ -132,11 +125,6 @@ while True:
                     direction = 0
                     is_movement_started = False
 
-            # # Reset variables for next rep
-            is_movement_started = False
-            full_range = False
-            full_extension = False
-
         if full_range and full_extension:
             count += 1
             outcome = "good rep"
@@ -152,18 +140,17 @@ while True:
         fps = 1 / (cTime - pTime)
         pTime = cTime
 
-        print(fps)
         # Output for debugging
-        # print(
-        #     int(angle),
-        #     is_movement_started,
-        #     direction,
-        #     outcome,
-        #     "extension", full_extension,
-        #     "full range", full_range,
-        #     "reps", count,
-        #     "no reps", no_rep
-        # )
+        print(
+            int(angle),
+            is_movement_started,
+            direction,
+            outcome,
+            "extension", full_extension,
+            "full range", full_range,
+            "reps", count,
+            "no reps", no_rep
+        )
 
         cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
         # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
