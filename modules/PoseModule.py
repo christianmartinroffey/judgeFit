@@ -242,9 +242,8 @@ class PoseDetector:
         self.results = self.pose.process(imgRGB)
         # print(results.pose_landmarks)
 
-        if self.results.pose_landmarks:
-            if draw:
-                self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
+        if self.results.pose_landmarks and draw:
+            self.mpDraw.draw_landmarks(img, self.results.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
 
         return img
 
@@ -254,6 +253,7 @@ class PoseDetector:
             for id, lm in enumerate(self.results.pose_landmarks.landmark):
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
+                cz = lm.z  # Depth value
                 visibility = lm.visibility
                 self.lmList.append([id, cx, cy, visibility])
                 if draw:
@@ -298,10 +298,15 @@ class PoseDetector:
             cv2.putText(
                 img,
                 str(int(angle)),
-                (x2 + 100, y2),
+                (x2 + 50, y2),
                 cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 4
             )
         return angle
+
+    def getLandmarks(self):
+        if self.results.pose_landmarks:
+            return self.results.pose_landmarks.landmark
+        return None
 
     def checkDirection(self, angle, descending_threshold, ascending_threshold):
         """

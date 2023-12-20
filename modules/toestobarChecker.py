@@ -7,11 +7,6 @@ import PoseModule as pm
 import asyncio
 
 
-# section to use a video
-mpPose = mp.solutions.pose
-mpDraw = mp.solutions.drawing_utils
-pose = mpPose.Pose()
-
 video = cv2.VideoCapture('../videos/ttb1.mp4')
 pTime = 0
 
@@ -65,9 +60,7 @@ while True:
 
         percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
-        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        results = pose.process(imgRGB)
-        landmarks = results.pose_landmarks.landmark
+        landmarks = detector.getLandmarks()
 
         # # Get coordinates for toes (Landmarks 31 and 32)
         left_toe = [landmarks[31].x, landmarks[31].y]
@@ -112,7 +105,7 @@ while True:
             # if angle is going higher it means athlete is going up
             if full_range:
                 if not full_extension:
-                    if angle < previous_angle:
+                    if angle < previous_angle and direction == 1:
                         no_rep += 1
                         outcome = "no full extension"
                         direction = 1
@@ -152,12 +145,11 @@ while True:
             "no reps", no_rep
         )
 
-        cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
+        cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
         # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
-        cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
-        cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
+        cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
+        cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
 
     cv2.imshow("Image", img)
     cv2.waitKey(1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
-    results = pose.process(imgRGB)
