@@ -308,7 +308,7 @@ class PoseDetector:
             return self.results.pose_landmarks.landmark
         return None
 
-    def checkDirection(self, angle, descending_threshold, ascending_threshold):
+    def checkDirection(self, angle, descending_threshold, ascending_threshold, previous_angle):
         """
                 Determines the direction of movement based on the given angle and thresholds.
 
@@ -318,12 +318,12 @@ class PoseDetector:
                 ascending_threshold (float): The threshold angle for ascending movement.
 
                 Returns:
-                string: 'up' if ascending, 'down' if descending, or None if the direction is not determined.
+                string: '1' if ascending, '0' if descending, or None if the direction is not determined.
                 """
 
-        if angle > descending_threshold:
+        if angle < ascending_threshold:
             return 1
-        elif angle < ascending_threshold:
+        elif angle > descending_threshold:
             return 0
         else:
             return None
