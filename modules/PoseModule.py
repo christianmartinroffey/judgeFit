@@ -320,13 +320,21 @@ class PoseDetector:
                 Returns:
                 string: '1' if ascending, '0' if descending, or None if the direction is not determined.
                 """
+        buffer_zone = 5
 
-        if angle < ascending_threshold:
-            return 1
-        elif angle > descending_threshold:
-            return 0
+        if angle > ascending_threshold - buffer_zone:
+            return 1  # Ascending
+        elif angle < descending_threshold + buffer_zone:
+            return 0  # Descending
         else:
-            return None
+            # Check the trend when in the buffer zone
+            if previous_angle is not None:
+                if angle > previous_angle:
+                    return 1  # Ascending
+                elif angle < previous_angle:
+                    return 0  # Descending
+
+            return None  # Direction not determined
 
 # def process_frame(detector, frame_queue, result_queue):
 #     while True:

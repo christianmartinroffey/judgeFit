@@ -1,10 +1,7 @@
 import cv2
 import numpy as np
 import time
-import math
-import mediapipe as mp
 import PoseModule as pm
-import asyncio
 
 
 video = cv2.VideoCapture('../videos/toestobar.MOV')
@@ -102,6 +99,7 @@ while True:
             2. rep is completed when the athlete's toes touch the bar 
             '''
             # start the movement check by checking that there's upward movement
+            # TODO reorganise logic as direction is backwards
             if direction == 1:
                 if not is_movement_started:
                     is_movement_started = True
