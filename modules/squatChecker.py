@@ -57,9 +57,8 @@ while True:
             )
 
             # Update start and end points for the new angle range
-            start_point = 170  # extended value
+            start_point = 165  # extended value
             end_point = 60  # full range when reached
-            percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
             if direction == 0 and angle < descending_threshold:
                 if not is_squat_started:
@@ -92,11 +91,6 @@ while True:
                         direction = 1
                         is_squat_started = False
 
-                # # Reset variables for next rep
-                # is_squat_started = False
-                # full_depth = False
-                # full_extension = False
-
             if full_depth and full_extension:
                 count += 1
                 outcome = "good rep"
@@ -121,7 +115,6 @@ while True:
             )
 
             cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
-            # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
             cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
             cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
 

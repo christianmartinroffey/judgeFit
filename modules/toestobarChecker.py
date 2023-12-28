@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
-import time
 import PoseModule as pm
 
-video = cv2.VideoCapture('../videos/ttb1.mp4')
+video = cv2.VideoCapture('../videos/toestobar.MOV')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -58,11 +57,8 @@ while True:
                 ankle_index = 28
 
             # Calculate the angle
-            # Need to use the angle to check for start, end of rep and rep started
+            # Need to use the angle to check for direction of movement
             angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
-
-            percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
-
             landmarks = detector.getLandmarks()
 
             left_hip_y = landmarks[23].y
@@ -110,8 +106,7 @@ while True:
                 full_extension = False
                 outcome = ''
 
-            # movement is going down and the angle has to be more than the value of start point for it to be full extension
-
+            # movement is going down, started and the pixel value has to be > the value the hand to be full extension
             if direction == 0 and is_movement_started:
                 # check if feet are behind hands for full extension
                 if left_hand[1] < left_toe[1] or right_hand[1] < right_toe[1]:
@@ -152,27 +147,18 @@ while True:
             # # change to int in case there are minor differences in float values
             previous_angle = int(angle)
 
-            cTime = time.time()
-            fps = 1 / (cTime - pTime)
-            pTime = cTime
-
             # Output for debugging
             print(
                 int(angle),
-                # "left", left_hand_threshold_check,
-                # "right", right_hand_threshold_check,
-                # "fr threshold", full_range_threshold,
-                # is_movement_started,
                 direction,
-                # outcome,
+                outcome,
                 # "extension", full_extension,
                 # "full range", full_range,
-                # "reps", count,
-                # "no reps", no_rep
+                "reps", count,
+                "no reps", no_rep
             )
 
             cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
-            # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
             cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 3)
             cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
