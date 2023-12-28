@@ -3,8 +3,7 @@ import numpy as np
 import time
 import PoseModule as pm
 
-
-video = cv2.VideoCapture('../videos/toestobar.MOV')
+video = cv2.VideoCapture('../videos/ttb1.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -21,7 +20,7 @@ full_extension = False
 outcome = ""
 descending_threshold = 30  # Threshold to indicate start of movement
 ascending_threshold = 150
-full_range_threshold = 5  # Adjust threshold based on your requirement in pixels
+full_range_threshold = 10  # Adjust threshold based on your requirement in pixels
 left_hand_threshold_check = 0
 right_hand_threshold_check = 0
 paused = False
@@ -88,7 +87,13 @@ while True:
             # cv2.circle(img, tuple(left_hand_pixel), 15, (255, 0, 0), -1)  # Blue circle for left hand
             # cv2.circle(img, tuple(right_hand_pixel), 15, (0, 255, 0), -1)
 
-            direction = detector.checkDirection(angle, descending_threshold, ascending_threshold, previous_angle)
+            direction = detector.checkDirection(
+                angle,
+                descending_threshold,
+                ascending_threshold,
+                previous_angle,
+                downward_movement=False
+            )
 
             left_hand_threshold_check = abs(left_hand_y - left_toe_y)
             right_hand_threshold_check = abs(right_hand_y - right_toe_y)
@@ -99,18 +104,11 @@ while True:
             2. rep is completed when the athlete's toes touch the bar 
             '''
             # start the movement check by checking that there's upward movement
-            # TODO reorganise logic as direction is backwards
-            if direction == 1:
-                if not is_movement_started:
-                    is_movement_started = True
-                    full_range = False
-                    full_extension = False
-                    outcome = ''
-
-                # METHOD TO USE Y COORDINATES FOR RANGE BASED ON THRESHOLD
-                # if movement is going up check if hit full range
-                if left_hand_threshold_check < full_range_threshold or right_hand_threshold_check < full_range_threshold:
-                    full_range = True
+            if direction == 1 and not is_movement_started:
+                is_movement_started = True
+                full_range = False
+                full_extension = False
+                outcome = ''
 
             # movement is going down and the angle has to be more than the value of start point for it to be full extension
 
@@ -119,14 +117,21 @@ while True:
                 if left_hand[1] < left_toe[1] or right_hand[1] < right_toe[1]:
                     full_extension = True
 
+            elif direction == 1 and is_movement_started:
+                # METHOD TO USE Y COORDINATES FOR RANGE BASED ON THRESHOLD
+                # if movement is going up check if hit full range
+                if left_hand_threshold_check < full_range_threshold or right_hand_threshold_check < full_range_threshold:
+                    full_range = True
                 # Check for no full extension
                 # if angle is going higher it means athlete is going up
+
+            if direction == 0 and is_movement_started:
                 if full_range:
                     if not full_extension and angle < previous_angle and direction == 1:
-                            no_rep += 1
-                            outcome = "no full extension"
-                            direction = 1
-                            is_movement_started = False
+                        no_rep += 1
+                        outcome = "no full extension"
+                        direction = 1
+                        is_movement_started = False
                 elif not full_range:
                     # if didn't reach full range and they start going down
                     if angle > previous_angle and full_extension:
@@ -154,10 +159,6 @@ while True:
             # Output for debugging
             print(
                 int(angle),
-                left_hand[1],
-                left_toe[1],
-                right_hand[1],
-                right_toe[1],
                 # "left", left_hand_threshold_check,
                 # "right", right_hand_threshold_check,
                 # "fr threshold", full_range_threshold,

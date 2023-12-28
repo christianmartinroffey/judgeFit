@@ -48,7 +48,13 @@ while True:
 
             # Calculate the angle for the squat analysis
             angle = detector.getAngle(img, hip_index, knee_index, ankle_index)
-            direction = detector.checkDirection(angle, descending_threshold, ascending_threshold, previous_angle)
+            direction = detector.checkDirection(
+                angle,
+                descending_threshold,
+                ascending_threshold,
+                previous_angle,
+                downward_movement=True
+            )
 
             # Update start and end points for the new angle range
             start_point = 170  # extended value

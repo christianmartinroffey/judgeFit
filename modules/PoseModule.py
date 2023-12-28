@@ -308,7 +308,7 @@ class PoseDetector:
             return self.results.pose_landmarks.landmark
         return None
 
-    def checkDirection(self, angle, descending_threshold, ascending_threshold, previous_angle):
+    def checkDirection(self, angle, descending_threshold, ascending_threshold, previous_angle, downward_movement):
         """
                 Determines the direction of movement based on the given angle and thresholds.
 
@@ -321,20 +321,34 @@ class PoseDetector:
                 string: '1' if ascending, '0' if descending, or None if the direction is not determined.
                 """
         buffer_zone = 5
+        if downward_movement:
+            if angle > ascending_threshold - buffer_zone:
+                return 1  # Ascending
+            elif angle < descending_threshold + buffer_zone:
+                return 0  # Descending
+            else:
+                # Check the trend when in the buffer zone
+                if previous_angle is not None:
+                    if angle > previous_angle:
+                        return 1  # Ascending
+                    elif angle < previous_angle:
+                        return 0  # Descending
 
-        if angle > ascending_threshold - buffer_zone:
-            return 1  # Ascending
-        elif angle < descending_threshold + buffer_zone:
-            return 0  # Descending
+                return None  # Direction not determined
         else:
-            # Check the trend when in the buffer zone
-            if previous_angle is not None:
-                if angle > previous_angle:
-                    return 1  # Ascending
-                elif angle < previous_angle:
-                    return 0  # Descending
+            if angle < ascending_threshold - buffer_zone:
+                return 1  # Ascending
+            elif angle > descending_threshold + buffer_zone:
+                return 0  # Descending
+            else:
+                # Check the trend when in the buffer zone
+                if previous_angle is not None:
+                    if angle < previous_angle:
+                        return 1  # Ascending
+                    elif angle > previous_angle:
+                        return 0  # Descending
 
-            return None  # Direction not determined
+                return None  # Direction not determined
 
 # def process_frame(detector, frame_queue, result_queue):
 #     while True:
