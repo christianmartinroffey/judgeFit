@@ -350,7 +350,7 @@ class PoseDetector:
 
                 return None  # Direction not determined
 
-    def getLandmarkIndices(self, lmList, is_squat=False):
+    def getLandmarkIndices(self, lmList, is_squat=False, is_arm_extension=False):
         """
         Determines the correct landmarks based on athlete's visibility and orientation.
 
@@ -369,6 +369,12 @@ class PoseDetector:
                 return 23, 25, 27
             else:
                 return 24, 26, 28
+        elif is_arm_extension:
+            if left_hip_visibility > right_hip_visibility:
+                return 11, 13, 15  # shoulder, hip, ankle indices
+            else:
+                # Use right side landmarks
+                return 12, 14, 16  # shoulder, hip, ankle indices
         else:
             if left_hip_visibility > right_hip_visibility:
                 # Use left side landmarks
@@ -376,6 +382,13 @@ class PoseDetector:
             else:
                 # Use right side landmarks
                 return 12, 24, 28  # shoulder, hip, ankle indices
+
+    def checkPullUpFullRange(self, left_hand_threshold_check,  right_hand_threshold_check, full_range_threshold):
+
+        if left_hand_threshold_check < full_range_threshold or right_hand_threshold_check < full_range_threshold:
+            full_range = True
+            return full_range
+
 
 # def process_frame(detector, frame_queue, result_queue):
 #     while True:

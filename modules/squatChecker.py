@@ -31,9 +31,6 @@ while True:
 
         lmList = detector.getPosition(img, draw=False)
         if len(lmList) != 0:
-            left_hip_visibility = lmList[23][3]  # Visibility of left hip (landmark 23)
-            right_hip_visibility = lmList[24][3]  # Visibility of right hip (landmark 24)
-
             # Choose landmarks based on hip visibility
             # determine the best landmarks to use
             hip_index, knee_index, ankle_index = detector.getLandmarkIndices(lmList, is_squat=True)
