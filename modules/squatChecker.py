@@ -35,16 +35,8 @@ while True:
             right_hip_visibility = lmList[24][3]  # Visibility of right hip (landmark 24)
 
             # Choose landmarks based on hip visibility
-            if left_hip_visibility > right_hip_visibility:
-                # Use left side landmarks (23, 25, 27)
-                hip_index = 23
-                knee_index = 25
-                ankle_index = 27
-            else:
-                # Use right side landmarks (24, 26, 28)
-                hip_index = 24
-                knee_index = 26
-                ankle_index = 28
+            # determine the best landmarks to use
+            hip_index, knee_index, ankle_index = detector.getLandmarkIndices(lmList, is_squat=True)
 
             # Calculate the angle for the squat analysis
             angle = detector.getAngle(img, hip_index, knee_index, ankle_index)

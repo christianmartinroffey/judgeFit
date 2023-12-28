@@ -350,6 +350,33 @@ class PoseDetector:
 
                 return None  # Direction not determined
 
+    def getLandmarkIndices(self, lmList, is_squat=False):
+        """
+        Determines the correct landmarks based on athlete's visibility and orientation.
+
+        Parameters:
+        lmList (list): List containing landmarks with their visibility scores.
+
+        Returns:
+        tuple: Indices for shoulder, hip, and ankle landmarks.
+        """
+
+        left_hip_visibility = lmList[23][3]  # Visibility of left hip (landmark 23)
+        right_hip_visibility = lmList[24][3]  # Visibility of right hip (landmark 24)
+        if is_squat:
+            if left_hip_visibility > right_hip_visibility:
+                # Use left side landmarks (23, 25, 27)
+                return 23, 25, 27
+            else:
+                return 24, 26, 28
+        else:
+            if left_hip_visibility > right_hip_visibility:
+                # Use left side landmarks
+                return 11, 23, 27  # shoulder, hip, ankle indices
+            else:
+                # Use right side landmarks
+                return 12, 24, 28  # shoulder, hip, ankle indices
+
 # def process_frame(detector, frame_queue, result_queue):
 #     while True:
 #         frame = frame_queue.get()

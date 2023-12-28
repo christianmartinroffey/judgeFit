@@ -40,7 +40,6 @@ while True:
             left_toe_x = lmList[31][1]
             right_toe_x = lmList[32][1]
 
-            # get visibility depending on which way athlete is facing
             # determine the best landmarks to use
             shoulder_index, hip_index, ankle_index = detector.getLandmarkIndices(lmList)
 
