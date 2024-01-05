@@ -30,7 +30,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/overhead_squat_person.mp4')
+video = cv2.VideoCapture('../static/videos/overhead_squat_person.mp4')
 pTime = 0
 
 while True:

@@ -179,7 +179,7 @@ from PoseModule import PoseProcessor
 
 
 def main():
-    video = cv2.VideoCapture('../videos/toestobar.MOV')
+    video = cv2.VideoCapture('../static/videos/toestobar.MOV')
 
     if not video.isOpened():
         print("Error opening video file.")

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import PoseModule as pm
 
-video = cv2.VideoCapture('../videos/toestobar.MOV')
+video = cv2.VideoCapture('../static/videos/toestobar.MOV')
 pTime = 0
 
 detector = pm.PoseDetector()

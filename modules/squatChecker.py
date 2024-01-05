@@ -4,7 +4,7 @@ import mediapipe as mp
 import PoseModule as pm
 
 # video = cv2.VideoCapture(1)
-video = cv2.VideoCapture('../videos/airsquat.mp4')
+video = cv2.VideoCapture('../static/videos/airsquat.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()

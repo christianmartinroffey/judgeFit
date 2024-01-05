@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../videos/pushup2.mp4')
+video = cv2.VideoCapture('../static/videos/pushup2.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
