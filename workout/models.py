@@ -33,11 +33,11 @@ class Movement(models.Model):
     )
 
     name = models.CharField(max_length=50)
-    description = models.TextField()
-    modality = models.CharField(max_length=2, choices=MODALITY_CHOICES)
-    type = models.CharField(max_length=2, choices=TYPE_CHOICES)
-    body_part = models.CharField(max_length=50)
-    equipment = models.CharField(max_length=50)
+    description = models.TextField(max_length=300, blank=True, null=True)
+    modality = models.CharField(max_length=2, choices=MODALITY_CHOICES, blank=True, null=True)
+    type = models.CharField(max_length=2, choices=TYPE_CHOICES, blank=True, null=True)
+    body_part = models.CharField(max_length=50, blank=True, null=True)
+    equipment = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.name
