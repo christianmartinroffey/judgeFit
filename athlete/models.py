@@ -5,11 +5,11 @@ class Athlete(models.Model):
     MALE = 'M'
     FEMALE = 'F'
     OTHER = 'O'
-    GENDER_CHOICES = (
-        MALE, 'Male',
-        FEMALE, 'Female',
-        OTHER, 'Other'
-    )
+    GENDER_CHOICES = [
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (OTHER, 'Other')
+    ]
     name = models.CharField(max_length=40)
     surname = models.CharField(max_length=40)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
