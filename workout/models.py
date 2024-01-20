@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Movements(models.Model):
+class Movement(models.Model):
     GYMNASTICS = 'G'
     MONOSTRUCTURAL = 'M'
     WEIGHTLIFTING = 'W'
