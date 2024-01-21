@@ -21,6 +21,8 @@ class Command(BaseCommand):
                 body_part = row['body_part']
                 equipment = row['equipment']
 
+                print(f"Importing row: {row}")
+
                 # Create Movements object
                 movement = Movement(
                     name=row['name'],
@@ -31,5 +33,7 @@ class Command(BaseCommand):
                     equipment=equipment
                 )
                 movement.save()
+
+            print("Import completed.")
 
         self.stdout.write(self.style.SUCCESS('Successfully imported movements from CSV'))
