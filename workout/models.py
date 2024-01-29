@@ -32,8 +32,8 @@ class Movement(models.Model):
         (STRETCHING, 'Stretching'),
     )
 
-    name = models.CharField(max_length=50)
-    description = models.TextField(max_length=1000, blank=True, null=True)
+    name = models.CharField(max_length=75)
+    description = models.TextField(max_length=1500, blank=True, null=True)
     modality = models.CharField(max_length=2, choices=MODALITY_CHOICES, blank=True, null=True)
     type = models.CharField(max_length=2, choices=TYPE_CHOICES, blank=True, null=True)
     body_part = models.CharField(max_length=50, blank=True, null=True)
