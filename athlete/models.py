@@ -32,8 +32,16 @@ class Athlete(models.Model):
 
 class Affiliate(models.Model):
     name = models.CharField(max_length=40)
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=40)
+    postal_code = models.CharField(max_length=10)
+    website = models.URLField(max_length=100)
     country = models.ForeignKey("Country", on_delete=models.PROTECT)
     region = models.ForeignKey('Region', on_delete=models.PROTECT)
+    state = models.CharField(max_length=40)
+    photo = models.ImageField(upload_to='static/images/affiliate_images')
+    crossfit_affiliate = models.BooleanField(default=False)
+    crossfit_affiliate_since = models.DateField()
     created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
