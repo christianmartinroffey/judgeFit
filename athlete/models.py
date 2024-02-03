@@ -49,6 +49,7 @@ class Affiliate(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=24)
+    router_code = models.IntegerField(unique=True, blank=True, null=True, verbose_name=u'Router Code')
     code = models.CharField(
         max_length=4, blank=True, null=True, verbose_name=u'ISO Code', unique=True
     )
