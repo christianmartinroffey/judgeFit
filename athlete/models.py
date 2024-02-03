@@ -18,7 +18,6 @@ class Athlete(models.Model):
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     email = models.EmailField(max_length=100)
     country = models.ForeignKey("Country", on_delete=models.PROTECT)
-    region = models.ForeignKey('Region', on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now=True)
     affiliate = models.ForeignKey("Affiliate", on_delete=models.PROTECT)
     profile_photo = models.ImageField(upload_to='static/images/')
@@ -32,16 +31,16 @@ class Athlete(models.Model):
 
 class Affiliate(models.Model):
     name = models.CharField(max_length=40)
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=40)
-    postal_code = models.CharField(max_length=10)
-    website = models.URLField(max_length=100)
+    address = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=40, blank=True, null=True)
+    postal_code = models.CharField(max_length=10, blank=True, null=True)
+    website = models.URLField(max_length=100, blank=True, null=True)
     country = models.ForeignKey("Country", on_delete=models.PROTECT)
-    state = models.CharField(max_length=40)
+    state = models.CharField(max_length=40, blank=True, null=True)
     crossfit_affiliate = models.BooleanField(default=False)
-    crossfit_affiliate_since = models.DateField()
+    crossfit_affiliate_since = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
-    photo = models.ImageField(upload_to='static/images/affiliate_images')
+    photo = models.ImageField(upload_to='static/images/affiliate_images', blank=True, null=True)
 
     class Meta:
         verbose_name = "Affiliate"
