@@ -2,7 +2,7 @@ import datetime
 
 from django.core.management.base import BaseCommand, CommandError
 
-from athlete.models import Affiliate
+from athlete.models import Affiliate, Country
 import csv
 
 
@@ -24,11 +24,21 @@ class Command(BaseCommand):
                 city = row['city']
                 postal_code = row['postal_code']
                 website = row['website']
-                country = row['country']
                 state = row['state']
-                crossfit_affiliate = row['crossfit_affiliate']
                 crossfit_affiliate_since = row['crossfit_affiliate_since']
+                if crossfit_affiliate_since:
+                    crossfit_affiliate_since = datetime.datetime.fromisoformat(crossfit_affiliate_since.rstrip("Z")).date()
+
                 photo = row['photo']
+
+                country_code = row['country']
+                try:
+                    country = Country.objects.get(
+                        code=country_code)  # Assuming 'code' is the field in Country model storing the country codes
+                except Country.DoesNotExist:
+                    self.stdout.write(
+                        self.style.ERROR(f'Country with code {country_code} does not exist. Skipping row.'))
+                    continue
 
                 print(f"Importing row: {row}")
 
@@ -41,7 +51,7 @@ class Command(BaseCommand):
                     website=website,
                     country=country,
                     state=state,
-                    crossfit_affiliate=crossfit_affiliate,
+                    crossfit_affiliate=True,
                     crossfit_affiliate_since=crossfit_affiliate_since,
                     photo=photo
                 )

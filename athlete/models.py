@@ -31,9 +31,9 @@ class Athlete(models.Model):
 
 class Affiliate(models.Model):
     name = models.CharField(max_length=40)
-    address = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=200, blank=True, null=True)
     city = models.CharField(max_length=40, blank=True, null=True)
-    postal_code = models.CharField(max_length=10, blank=True, null=True)
+    postal_code = models.CharField(max_length=20, blank=True, null=True)
     website = models.URLField(max_length=100, blank=True, null=True)
     country = models.ForeignKey("Country", on_delete=models.PROTECT)
     state = models.CharField(max_length=40, blank=True, null=True)
