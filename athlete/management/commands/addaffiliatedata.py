@@ -1,5 +1,8 @@
+import datetime
+
 from django.core.management.base import BaseCommand, CommandError
-from workout.models import Movement
+
+from athlete.models import Affiliate
 import csv
 
 
@@ -16,24 +19,34 @@ class Command(BaseCommand):
             reader = csv.DictReader(file)
             for row in reader:
                 # Convert CSV data to match the Movements model fields
-                modality = row['modality']
-                type = row['type']
-                body_part = row['body_part']
-                equipment = row['equipment']
+                name = row['name']
+                address = row['address']
+                city = row['city']
+                postal_code = row['postal_code']
+                website = row['website']
+                country = row['country']
+                state = row['state']
+                crossfit_affiliate = row['crossfit_affiliate']
+                crossfit_affiliate_since = row['crossfit_affiliate_since']
+                photo = row['photo']
 
                 print(f"Importing row: {row}")
 
                 # Create Movements object
-                movement = Movement(
-                    name=row['name'],
-                    description=row['description'],
-                    modality=modality,
-                    type=type,
-                    body_part=body_part,
-                    equipment=equipment
+                affiliate = Affiliate(
+                    name=name,
+                    address=address,
+                    city=city,
+                    postal_code=postal_code,
+                    website=website,
+                    country=country,
+                    state=state,
+                    crossfit_affiliate=crossfit_affiliate,
+                    crossfit_affiliate_since=crossfit_affiliate_since,
+                    photo=photo
                 )
-                movement.save()
+                affiliate.save()
 
             print("Import completed.")
 
-        self.stdout.write(self.style.SUCCESS('Successfully imported movements from CSV'))
+        self.stdout.write(self.style.SUCCESS('Successfully imported affiliates from CSV'))
