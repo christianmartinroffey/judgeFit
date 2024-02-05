@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'athlete',
     'poses',
     'workout',
+    'rest_framework',
+    'drf_yasg',
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
