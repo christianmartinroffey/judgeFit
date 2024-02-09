@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -56,7 +57,6 @@ class Workout(models.Model):
     name = models.CharField(max_length=75)
     description = models.TextField(max_length=1500, blank=True, null=True)
     type = models.CharField(max_length=5, choices=WORKOUT_TYPE_CHOICES)
-    movements = models.ManyToManyField(Movement, through='WorkoutMovement')
     total_reps = models.IntegerField(blank=True, null=True)
     time_cap = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
@@ -70,7 +70,7 @@ class WorkoutComponent(models.Model):
     workout = models.ForeignKey(Workout, related_name='components', on_delete=models.CASCADE)
     movement = models.ForeignKey(Movement, on_delete=models.CASCADE)
     sequence = models.IntegerField(default=0)
-    reps = models.TextField(blank=True, null=True)  # Can store complex rep schemes like "21-15-9" or JSON data
+    reps = models.CharField(blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)  # in lbs
     height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)  # in inches
     # TODO when ML has been developed to register numbers set the variations field
@@ -78,6 +78,11 @@ class WorkoutComponent(models.Model):
 
     class Meta:
         ordering = ['sequence']
+
+    def save(self, *args, **kwargs):
+        if WorkoutComponent.objects.filter(workout=self.workout, sequence=self.sequence).exclude(pk=self.pk).exists():
+            raise ValidationError('A component with this sequence already exists for the workout.')
+        super(WorkoutComponent, self).save(*args, **kwargs)
 
     @staticmethod
     def get_workout_details_for_athlete(workout_id, athlete_gender):
