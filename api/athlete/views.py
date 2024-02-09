@@ -3,8 +3,8 @@ from rest_framework.response import Response
 
 from api.athlete.serializers import AthleteSerializer
 from athlete.models import Athlete
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+# from drf_yasg import openapi
+# from drf_yasg.utils import swagger_auto_schema
 
 class AthleteViewSet(viewsets.ModelViewSet):
     queryset = Athlete.objects.all()
@@ -56,4 +56,4 @@ class AthleteViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
