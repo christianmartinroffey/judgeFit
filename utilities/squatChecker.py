@@ -2,6 +2,13 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import PoseModule as pm
+from utilities.utils import load_movement_criteria
+
+
+criteria = load_movement_criteria()  # Load criteria from JSON file
+
+squat_criteria = criteria.get('squat', {})
+descending_threshold = squat_criteria.get('descending_threshold', 110)  # Default if not found
 
 # video = cv2.VideoCapture(1)
 video = cv2.VideoCapture('../static/videos/airsquat.mp4')

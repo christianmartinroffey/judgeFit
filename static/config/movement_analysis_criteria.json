@@ -1,0 +1,60 @@
+{
+    "squat": {
+        "descending_threshold": 110,
+        "ascending_threshold": 110,
+        "start_angle": 165,
+        "end_angle": 60
+    },
+    "toes_to_bar": {
+        "descending_threshold": 30,
+        "ascending_threshold": 150,
+        "full_extension_threshold": 170,
+        "full_range_threshold": 10
+    },
+    "pull_up": {
+        "descending_threshold": 30,
+        "ascending_threshold": 150,
+        "full_extension_threshold": 170,
+        "ctb_full_range_threshold": 10,
+        "regular_full_range_threshold": 10
+    },
+    "push_up": {
+        "descending_threshold": 0,
+        "ascending_threshold": 0,
+        "full_extension_threshold": 0,
+        "full_range_threshold": 0
+    },
+     "thruster": {
+        "phases": [
+            {
+                "name": "front squat",
+                "descending_threshold": 110,
+                "ascending_threshold": 110,
+                "start_angle": 165,
+                "end_angle": 60
+            },
+            {
+                "name": "overhead press",
+                "start_angle": 60,
+                "end_angle": 180,
+                "ascending_threshold": 150
+            }
+        ]
+    },
+    "bar_muscle_up": {
+        "phases": [
+            {
+                "name": "pull_up",
+                "ascending_threshold": 150,
+                "chin_over_bar_threshold": 10
+            },
+            {
+                "name": "dip",
+                "start_above_bar": true,
+                "dip_depth_threshold": 30,
+                "extension_threshold": 180
+            }
+        ]
+    }
+
+}

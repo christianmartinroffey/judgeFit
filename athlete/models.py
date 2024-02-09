@@ -57,3 +57,17 @@ class Country(models.Model):
     class Meta:
         verbose_name = "Country"
         verbose_name_plural = "Countries"
+
+
+class Competition(models.Model):
+    name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    location = models.CharField(max_length=100)
+    description = models.TextField(max_length=1500, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Competition"
+        verbose_name_plural = "Competitions"
