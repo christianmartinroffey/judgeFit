@@ -26,8 +26,9 @@ is_pushup_complete = False
 full_extension = False
 full_depth = None
 outcome = ""
-descending_threshold = 110  # Threshold to indicate start of squat
+descending_threshold = 170  # Threshold to indicate start of squat
 ascending_threshold = 110
+paused = False
 
 
 while True:
@@ -36,24 +37,11 @@ while True:
 
     lmList = detector.getPosition(img, draw=False)
     if len(lmList) != 0:
-        left_hip_visibility = lmList[23][3]  # Visibility of left hip (landmark 23)
-        right_hip_visibility = lmList[24][3]  # Visibility of right hip (landmark 24)
-
         # Choose landmarks based on hip visibility
-        if left_hip_visibility > right_hip_visibility:
-            # Use left side landmarks
-            shoulder_index = 11
-            hip_index = 23
-            ankle_index = 27
-            wrist_index = 13
-            elbow_index = 15
-        else:
-            # Use right side landmarks
-            shoulder_index = 12
-            hip_index = 24
-            ankle_index = 28
-            wrist_index = 16
-            elbow_index = 14
+        # determine the best landmarks to use
+        shoulder_index, hip_index, ankle_index, wrist_index, elbow_index, toe_index = detector.getLandmarkIndices(
+            lmList, is_burpee=True
+        )
 
         # Calculate the angle for the analysis
         angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
@@ -87,6 +75,7 @@ while True:
                 full_depth = False
                 full_extension = False
 
+            # get the position of the toes and check if shoulder is at the same level
             if angle <= end_point:
                 full_depth = True
 
@@ -139,6 +128,11 @@ while True:
         cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
 
     cv2.imshow("Image", img)
-    cv2.waitKey(1)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
-    results = pose.process(imgRGB)
+
+    key = cv2.waitKey(1)
+    if key == 32:  # Space bar key
+        paused = not paused
+
+    elif key == ord('q') or key == 27:  # 'q' or ESC key for quitting
+        break

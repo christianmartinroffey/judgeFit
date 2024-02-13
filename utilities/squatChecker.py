@@ -51,8 +51,9 @@ while True:
             )
 
             # Update start and end points for the new angle range
-            start_point = 165  # extended value
-            end_point = 60  # full range when reached
+            start_point = squat_criteria.get('start_point', 165)  # Default if not found
+            end_point = squat_criteria.get('end_point', 60)
+               # extended value
 
             if direction == 0 and angle < descending_threshold:
                 if not is_squat_started:
