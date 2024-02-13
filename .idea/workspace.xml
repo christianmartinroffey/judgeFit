@@ -4,12 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0170035-3787-40ed-afb9-c040bc1875f7" name="Changes" comment="add logic to pullupChecker file and aux method to check full range into PoseModule">
-      <change afterPath="$PROJECT_DIR$/../judgeFit/videos/burpee.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../judgeFit/videos/pushup1.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../judgeFit/videos/pushup2.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../judgeFit/videos/toestobar.MOV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../judgeFit/videos/ttb1.mp4" afterDir="false" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="add new models to admin">
+      <change afterPath="$PROJECT_DIR$/../judgeFit/static/videos/burpee.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../judgeFit/static/videos/pushup1.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../judgeFit/static/videos/pushup2.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../judgeFit/static/videos/toestobar.MOV" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../judgeFit/static/videos/ttb1.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../judgeFit/api/athlete/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../judgeFit/api/athlete/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../judgeFit/api/athlete/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../judgeFit/api/athlete/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../judgeFit/athlete/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../judgeFit/judgeFit/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../judgeFit/judgeFit/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../judgeFit/judgeFit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../judgeFit/judgeFit/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -20,292 +27,383 @@
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
-  <component name="Git.Settings">
-    <option name="PUSH_AUTO_UPDATE" value="true" />
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$/../judgeFit" value="main" />
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <branch-grouping />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../judgeFit" />
     <option name="ROOT_SYNC" value="SYNC" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
 }</component>
-  <component name="ProjectId" id="2YPef5f1gOxF2EXcJGFLVTolk0u" />
+  <component name="ProjectId" id="2bAwmBy9XIh2HE8yE6znnTFtHvm" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/christianmartin-roffey/PycharmProjects/judgeFit/modules&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;diff.base&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Django Server.Run.executor": "Run",
+    "Python.addnewmovements.executor": "Run",
+    "Python.addnewmovments.executor": "Run",
+    "Python.settings.executor": "Run",
+    "Python.squatChecker.executor": "Run",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "develop",
+    "last_opened_file_path": "/Users/christianmartin-roffey/PycharmProjects/judgeFit/athlete",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/../judgeFit/modules" />
+      <recent name="$PROJECT_DIR$/../judgeFit/athlete" />
+      <recent name="$PROJECT_DIR$/../judgeFit/workout/managment/commands" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/../judgeFit/videos" />
+      <recent name="$PROJECT_DIR$/../judgeFit/workout/managment/commands" />
     </key>
+  </component>
+  <component name="RunManager" selected="Django Server.Run">
+    <configuration name="squatChecker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="judgeFit" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../judgeFit/utilities" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../judgeFit/utilities/squatChecker.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Run" type="Python.DjangoServer" factoryName="Django server">
+      <module name="judgeFit" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9 (venv)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../judgeFit" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="localhost" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.squatChecker" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-50da183f06c8-2887949eec09-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.13135.95" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="e0170035-3787-40ed-afb9-c040bc1875f7" name="Changes" comment="" />
-      <created>1700431741833</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1700431741833</updated>
-      <workItem from="1700431742834" duration="220000" />
-      <workItem from="1700432346099" duration="1264000" />
-      <workItem from="1700571118191" duration="598000" />
-      <workItem from="1700595311460" duration="3189000" />
-      <workItem from="1700686559741" duration="2622000" />
-      <workItem from="1700915660828" duration="23153000" />
-      <workItem from="1701452620097" duration="12255000" />
-      <workItem from="1701713805126" duration="2682000" />
-      <workItem from="1701973083699" duration="5047000" />
-      <workItem from="1702388458574" duration="2249000" />
-      <workItem from="1702646683098" duration="12785000" />
-      <workItem from="1702924272352" duration="570000" />
-      <workItem from="1703096179260" duration="2984000" />
-      <workItem from="1703437785247" duration="28451000" />
-      <workItem from="1704290334343" duration="237000" />
-    </task>
-    <task id="LOCAL-00001" summary="switch video">
+    <task id="LOCAL-00001" summary="add iml file">
       <option name="closed" value="true" />
-      <created>1700431818361</created>
+      <created>1705516903164</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1700431818361</updated>
+      <updated>1705516903164</updated>
     </task>
-    <task id="LOCAL-00002" summary="switch video check">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="add iml file" />
+      <created>1705671348691</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705671348691</updated>
+      <workItem from="1705671351274" duration="12194000" />
+      <workItem from="1706120847518" duration="1477000" />
+      <workItem from="1706551472327" duration="5513000" />
+      <workItem from="1706727005542" duration="1185000" />
+      <workItem from="1706979596738" duration="5877000" />
+      <workItem from="1707157602681" duration="2158000" />
+      <workItem from="1707499376925" duration="7186000" />
+      <workItem from="1707839623281" duration="3075000" />
+    </task>
+    <task id="LOCAL-00002" summary="add movement model and migration file">
       <option name="closed" value="true" />
-      <created>1700432990439</created>
+      <created>1705767479989</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1700432990439</updated>
+      <updated>1705767479989</updated>
     </task>
-    <task id="LOCAL-00003" summary="try alternative way of calculating angle between 3 points">
+    <task id="LOCAL-00003" summary="add new file to process movements csv">
       <option name="closed" value="true" />
-      <created>1700596326518</created>
+      <created>1705767827584</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1700596326518</updated>
+      <updated>1705767827584</updated>
     </task>
-    <task id="LOCAL-00004" summary="try alternative way of calculating angle between 3 points">
+    <task id="LOCAL-00004" summary="add logic to populate movement model and rename movement model">
       <option name="closed" value="true" />
-      <created>1700596630609</created>
+      <created>1705768570287</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1700596630609</updated>
+      <updated>1705768570287</updated>
     </task>
-    <task id="LOCAL-00005" summary="rework squatChecker and remove athlete orientation">
+    <task id="LOCAL-00005" summary="update movement model default fields">
       <option name="closed" value="true" />
-      <created>1700597689167</created>
+      <created>1705769493536</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1700597689167</updated>
+      <updated>1705769493536</updated>
     </task>
-    <task id="LOCAL-00006" summary="reworks maths logic to not divide by 0">
+    <task id="LOCAL-00006" summary="add file to process movements and init files">
       <option name="closed" value="true" />
-      <created>1700638844291</created>
+      <created>1705853233370</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1700638844291</updated>
+      <updated>1705853233370</updated>
     </task>
-    <task id="LOCAL-00007" summary="add logic to determine which angels to use based on visibility value">
+    <task id="LOCAL-00007" summary="add admin boilerplate for movementAdmin">
       <option name="closed" value="true" />
-      <created>1700688219107</created>
+      <created>1705853981763</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1700688219107</updated>
+      <updated>1705853981763</updated>
     </task>
-    <task id="LOCAL-00008" summary="remove unversioned file">
+    <task id="LOCAL-00008" summary="update addnewmovements.py command with prints">
       <option name="closed" value="true" />
-      <created>1700688489174</created>
+      <created>1705860574456</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1700688489175</updated>
+      <updated>1705860574456</updated>
     </task>
-    <task id="LOCAL-00009" summary="rework squatchecker logic to function with direction, squat depth and extention correctly assigning no reps">
+    <task id="LOCAL-00009" summary="update description model to 1000 characters">
       <option name="closed" value="true" />
-      <created>1700935847637</created>
+      <created>1705861907664</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1700935847637</updated>
+      <updated>1705861907664</updated>
     </task>
-    <task id="LOCAL-00010" summary="rework end_point and threshold values">
+    <task id="LOCAL-00010" summary="add boiletplate database data to settings">
       <option name="closed" value="true" />
-      <created>1700936138921</created>
+      <created>1706166488293</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1700936138921</updated>
+      <updated>1706166488293</updated>
     </task>
-    <task id="LOCAL-00011" summary="add more squat vids for testing">
+    <task id="LOCAL-00011" summary="set up postgres database connections and run migrations + addnewmovements command">
       <option name="closed" value="true" />
-      <created>1700936449932</created>
+      <created>1706554467117</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1700936449932</updated>
+      <updated>1706554467117</updated>
     </task>
-    <task id="LOCAL-00012" summary="reset outcome on new squat, create new file for burpees">
+    <task id="LOCAL-00012" summary="update allowed host in settings.py">
       <option name="closed" value="true" />
-      <created>1700942497007</created>
+      <created>1706555034782</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1700942497007</updated>
+      <updated>1706555034782</updated>
     </task>
-    <task id="LOCAL-00013" summary="remove video file">
+    <task id="LOCAL-00013" summary="add new fields to affiliate model">
       <option name="closed" value="true" />
-      <created>1700942778469</created>
+      <created>1706771180547</created>
       <option name="number" value="00013" />
       <option name="presentableId" value="LOCAL-00013" />
       <option name="project" value="LOCAL" />
-      <updated>1700942778469</updated>
+      <updated>1706771180547</updated>
     </task>
-    <task id="LOCAL-00014" summary="create pushup and burpee files, set push up logic and begin burpee logic">
+    <task id="LOCAL-00014" summary="rework affiliate model, add migrations files for workout and create addaffiliatedata command">
       <option name="closed" value="true" />
-      <created>1701016236826</created>
+      <created>1706980347085</created>
       <option name="number" value="00014" />
       <option name="presentableId" value="LOCAL-00014" />
       <option name="project" value="LOCAL" />
-      <updated>1701016236826</updated>
+      <updated>1706980347085</updated>
     </task>
-    <task id="LOCAL-00015" summary="create toestobar file">
+    <task id="LOCAL-00015" summary="add utils file to athlete app">
       <option name="closed" value="true" />
-      <created>1701068949230</created>
+      <created>1706980368832</created>
       <option name="number" value="00015" />
       <option name="presentableId" value="LOCAL-00015" />
       <option name="project" value="LOCAL" />
-      <updated>1701068949230</updated>
+      <updated>1706980368832</updated>
     </task>
-    <task id="LOCAL-00016" summary="rework logic to use angles for ttb">
+    <task id="LOCAL-00016" summary="update affiliate fields to blank True and null True, add migrations files">
       <option name="closed" value="true" />
-      <created>1701512806525</created>
+      <created>1706980640230</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1701512806525</updated>
+      <updated>1706980640230</updated>
     </task>
-    <task id="LOCAL-00017" summary="set up threading to process video quicker">
+    <task id="LOCAL-00017" summary=" add migrations files">
       <option name="closed" value="true" />
-      <created>1701760032008</created>
+      <created>1706980653456</created>
       <option name="number" value="00017" />
       <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1701760032008</updated>
+      <updated>1706980653456</updated>
     </task>
-    <task id="LOCAL-00018" summary="readd old ttb file and update threading version">
+    <task id="LOCAL-00018" summary="rework addaffiliatedata file for affiliate model and fields">
       <option name="closed" value="true" />
-      <created>1702390701720</created>
+      <created>1706980999709</created>
       <option name="number" value="00018" />
       <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1702390701720</updated>
+      <updated>1706980999709</updated>
     </task>
-    <task id="LOCAL-00019" summary="create aux function for direction in PoseModule&#10;rework threading logic in PoseModule and ttbcheckerThreading file">
+    <task id="LOCAL-00019" summary="add router code to Countries model to prepare imnport">
       <option name="closed" value="true" />
-      <created>1702665531384</created>
+      <created>1706981517984</created>
       <option name="number" value="00019" />
       <option name="presentableId" value="LOCAL-00019" />
       <option name="project" value="LOCAL" />
-      <updated>1702665531384</updated>
+      <updated>1706981517984</updated>
     </task>
-    <task id="LOCAL-00020" summary="update logic to ttbchecker">
+    <task id="LOCAL-00020" summary="add addcountriesdata.py command">
       <option name="closed" value="true" />
-      <created>1702883557679</created>
+      <created>1706981957204</created>
       <option name="number" value="00020" />
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
-      <updated>1702883557679</updated>
+      <updated>1706981957204</updated>
     </task>
-    <task id="LOCAL-00021" summary="rework ttb file logic to remove unnecssary code and move getLandmarks to PoseModule">
+    <task id="LOCAL-00021" summary="rename addcountrydata.py command">
       <option name="closed" value="true" />
-      <created>1703098680285</created>
+      <created>1706982081642</created>
       <option name="number" value="00021" />
       <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
-      <updated>1703098680285</updated>
+      <updated>1706982081642</updated>
     </task>
-    <task id="LOCAL-00022" summary="multiple logic fixes for toestobar file&#10;move direction to aux method in posemodule &#10;use hand coordinates for logic on full extension">
+    <task id="LOCAL-00022" summary="update addaffiliatedata.py command to take in correct timezone and countrycode and add migrations">
       <option name="closed" value="true" />
-      <created>1703692276773</created>
+      <created>1706982973964</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1703692276773</updated>
+      <updated>1706982973964</updated>
     </task>
-    <task id="LOCAL-00023" summary="fix direction logic in posemodule, remove additional unused processing code from squatChecker">
+    <task id="LOCAL-00023" summary="add country and affiliate to admin">
       <option name="closed" value="true" />
-      <created>1703694652369</created>
+      <created>1706984961413</created>
       <option name="number" value="00023" />
       <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
-      <updated>1703694652369</updated>
+      <updated>1706984961413</updated>
     </task>
-    <task id="LOCAL-00024" summary="add logic to distinguish between upward movement pattern and lower to control direction and angles">
+    <task id="LOCAL-00024" summary="formatting athlete admin file">
       <option name="closed" value="true" />
-      <created>1703774554789</created>
+      <created>1706985034714</created>
       <option name="number" value="00024" />
       <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
-      <updated>1703774554789</updated>
+      <updated>1706985034714</updated>
     </task>
-    <task id="LOCAL-00025" summary="clean up squatChecker and toestobarChecker files">
+    <task id="LOCAL-00025" summary="install drf_yasg and 'rest_framework_swagger', create api files for athlete">
       <option name="closed" value="true" />
-      <created>1703775516252</created>
+      <created>1707158639498</created>
       <option name="number" value="00025" />
       <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
-      <updated>1703775516252</updated>
+      <updated>1707158639498</updated>
     </task>
-    <task id="LOCAL-00026" summary="create pull up checker file, move getLandmarkIndicies function to PoseModule and update squatChecker, toestobarChecker files">
+    <task id="LOCAL-00026" summary="add workout, workoutcomponent, competition models &#10;add movement_analysis_criteria.json file to encapsulate movement requirements&#10;add movement_analysis_criteria.json to squatChecker.py and toestobarChecker.py">
       <option name="closed" value="true" />
-      <created>1703776740139</created>
+      <created>1707503833037</created>
       <option name="number" value="00026" />
       <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1703776740139</updated>
+      <updated>1707503833037</updated>
     </task>
-    <task id="LOCAL-00027" summary="add logic to pullupChecker file and aux method to check full range into PoseModule">
+    <task id="LOCAL-00027" summary="add migrations files and update workout model field">
       <option name="closed" value="true" />
-      <created>1703781890009</created>
+      <created>1707504688949</created>
       <option name="number" value="00027" />
       <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
-      <updated>1703781890009</updated>
+      <updated>1707504688949</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="add utils.py file">
+      <option name="closed" value="true" />
+      <created>1707504715226</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1707504715226</updated>
+    </task>
+    <task id="LOCAL-00029" summary="update views file for athlete">
+      <option name="closed" value="true" />
+      <created>1707504734078</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1707504734078</updated>
+    </task>
+    <task id="LOCAL-00030" summary="add new models to admin">
+      <option name="closed" value="true" />
+      <created>1707840520108</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1707840520108</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -317,6 +415,11 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -328,6 +431,7 @@
                   </entry>
                 </map>
               </option>
+              <option name="SHOW_DETAILS_IN_CHANGES" value="false" />
             </State>
           </value>
         </entry>
@@ -335,75 +439,55 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="switch video check" />
-    <MESSAGE value="try alternative way of calculating angle between 3 points" />
-    <MESSAGE value="rework squatChecker and remove athlete orientation" />
-    <MESSAGE value="reworks maths logic to not divide by 0" />
-    <MESSAGE value="add logic to determine which angels to use based on visibility value" />
-    <MESSAGE value="remove unversioned file" />
-    <MESSAGE value="rework squatchecker logic to function with direction, squat depth and extention correctly assigning no reps" />
-    <MESSAGE value="rework end_point and threshold values" />
-    <MESSAGE value="add more squat vids for testing" />
-    <MESSAGE value="reset outcome on new squat, create new file for burpees" />
-    <MESSAGE value="remove video file" />
-    <MESSAGE value="create pushup and burpee files, set push up logic and begin burpee logic" />
-    <MESSAGE value="create toestobar file" />
-    <MESSAGE value="rework logic to use angles for ttb" />
-    <MESSAGE value="set up threading to process video quicker" />
-    <MESSAGE value="readd old ttb file and update threading version" />
-    <MESSAGE value="create aux function for direction in PoseModule&#10;rework threading logic in PoseModule and ttbcheckerThreading file" />
-    <MESSAGE value="update logic to ttbchecker" />
-    <MESSAGE value="rework ttb file logic to remove unnecssary code and move getLandmarks to PoseModule" />
-    <MESSAGE value="multiple logic fixes for toestobar file&#10;move direction to aux method in posemodule &#10;use hand coordinates for logic on full extension" />
-    <MESSAGE value="fix direction logic in posemodule, remove additional unused processing code from squatChecker" />
-    <MESSAGE value="add logic to distinguish between upward movement pattern and lower to control direction and angles" />
-    <MESSAGE value="clean up squatChecker and toestobarChecker files" />
-    <MESSAGE value="create pull up checker file, move getLandmarkIndicies function to PoseModule and update squatChecker, toestobarChecker files" />
-    <MESSAGE value="add logic to pullupChecker file and aux method to check full range into PoseModule" />
-    <option name="LAST_COMMIT_MESSAGE" value="add logic to pullupChecker file and aux method to check full range into PoseModule" />
+    <MESSAGE value="add file to process movements and init files" />
+    <MESSAGE value="add admin boilerplate for movementAdmin" />
+    <MESSAGE value="update addnewmovements.py command with prints" />
+    <MESSAGE value="update description model to 1000 characters" />
+    <MESSAGE value="add boiletplate database data to settings" />
+    <MESSAGE value="set up postgres database connections and run migrations + addnewmovements command" />
+    <MESSAGE value="update allowed host in settings.py" />
+    <MESSAGE value="add new fields to affiliate model" />
+    <MESSAGE value="rework affiliate model, add migrations files for workout and create addaffiliatedata command" />
+    <MESSAGE value="add utils file to athlete app" />
+    <MESSAGE value="update affiliate fields to blank True and null True, add migrations files" />
+    <MESSAGE value=" add migrations files" />
+    <MESSAGE value="rework addaffiliatedata file for affiliate model and fields" />
+    <MESSAGE value="add router code to Countries model to prepare imnport" />
+    <MESSAGE value="add addcountriesdata.py command" />
+    <MESSAGE value="rename addcountrydata.py command" />
+    <MESSAGE value="update addaffiliatedata.py command to take in correct timezone and countrycode and add migrations" />
+    <MESSAGE value="add country and affiliate to admin" />
+    <MESSAGE value="formatting athlete admin file" />
+    <MESSAGE value="install drf_yasg and 'rest_framework_swagger', create api files for athlete" />
+    <MESSAGE value="add workout, workoutcomponent, competition models &#10;add movement_analysis_criteria.json file to encapsulate movement requirements&#10;add movement_analysis_criteria.json to squatChecker.py and toestobarChecker.py" />
+    <MESSAGE value="add migrations files and update workout model field" />
+    <MESSAGE value="add utils.py file" />
+    <MESSAGE value="update views file for athlete" />
+    <MESSAGE value="add new models to admin" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new models to admin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../judgeFit/modules/burpeeChecker.py</url>
+          <url>file://$PROJECT_DIR$/../judgeFit/venv/lib/python3.9/site-packages/django/conf/__init__.py</url>
           <line>80</line>
-          <option name="timeStamp" value="66" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../judgeFit/modules/toestobarChecker.py</url>
-          <line>113</line>
-          <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../judgeFit/modules/toestobarChecker.py</url>
-          <line>120</line>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/../judgeFit/modules/pullupChecker.py</url>
-          <line>145</line>
-          <option name="timeStamp" value="122" />
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
-      <default-breakpoints>
-        <breakpoint type="python-exception">
-          <properties notifyOnTerminate="true" exception="BaseException">
-            <option name="notifyOnTerminate" value="true" />
-          </properties>
-        </breakpoint>
-      </default-breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/judgeFit$addnewmovments.coverage" NAME="addnewmovements Coverage Results" MODIFIED="1706553204992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/judgeFit$toestobarCheckerTHREADING.coverage" NAME="toestobarCheckerTHREADING Coverage Results" MODIFIED="1702662963231" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$toestobarChecker.coverage" NAME="toestobarChecker Coverage Results" MODIFIED="1704290547144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
+    <SUITE FILE_PATH="coverage/judgeFit$toestobarChecker.coverage" NAME="toestobarChecker Coverage Results" MODIFIED="1705849942785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$pullupChecker.coverage" NAME="pullupChecker Coverage Results" MODIFIED="1704265608765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
+    <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1701016090396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
     <SUITE FILE_PATH="coverage/judgePukie$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1700688112859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
     <SUITE FILE_PATH="coverage/judgePukie$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1700686984275" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
     <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1701014328160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
+    <SUITE FILE_PATH="coverage/judgeFit$settings.coverage" NAME="settings Coverage Results" MODIFIED="1706552745429" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/judgeFit" />
     <SUITE FILE_PATH="coverage/judgeFit$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1704265598358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1704290489659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1701016090396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/modules" />
+    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1707840009763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../judgeFit/utilities" />
   </component>
 </project>
