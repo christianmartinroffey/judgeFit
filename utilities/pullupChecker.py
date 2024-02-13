@@ -1,6 +1,14 @@
 import cv2
 import numpy as np
 import PoseModule as pm
+from utilities.utils import load_movement_criteria
+
+
+criteria = load_movement_criteria()  # Assuming this function loads your JSON file
+
+# Example for a "Toes to Bar" analysis
+pull_up_criteria = criteria.get('pull_up', {})
+descending_threshold = pull_up_criteria.get('descending_threshold', 30)
 
 video = cv2.VideoCapture('../static/videos/toestobar.MOV')
 pTime = 0

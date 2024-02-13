@@ -24,9 +24,9 @@ SECRET_KEY = 'django-insecure-x_8c-#(_4+7q-e16jvns)t8r!5mm$3!5^npz8a6p2a11*81*#*
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+PAGINATOR_ITEMS_PER_PAGE = 10
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'athlete',
     'poses',
     'workout',
+    'rest_framework',
+    'drf_yasg',
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
@@ -77,12 +80,25 @@ WSGI_APPLICATION = 'judgeFit.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# SQLite
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'judgefit',
+        'USER': 'postgres',
+        'PASSWORD': 'TnKMn878',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
@@ -115,11 +131,44 @@ USE_I18N = True
 
 USE_TZ = True
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Set Value as: "Token XXXXXXXXXXXXXXXXXXXXXXXX"'
+        }
+    },
+    'DOC_EXPANSION': 'none',
+    'DEEP_LINKING': True,
+    'DEFAULT_MODEL_DEPTH': -1
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': PAGINATOR_ITEMS_PER_PAGE
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

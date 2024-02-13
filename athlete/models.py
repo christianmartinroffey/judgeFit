@@ -18,7 +18,6 @@ class Athlete(models.Model):
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     email = models.EmailField(max_length=100)
     country = models.ForeignKey("Country", on_delete=models.PROTECT)
-    region = models.ForeignKey('Region', on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now=True)
     affiliate = models.ForeignKey("Affiliate", on_delete=models.PROTECT)
     profile_photo = models.ImageField(upload_to='static/images/')
@@ -32,9 +31,16 @@ class Athlete(models.Model):
 
 class Affiliate(models.Model):
     name = models.CharField(max_length=40)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    city = models.CharField(max_length=40, blank=True, null=True)
+    postal_code = models.CharField(max_length=20, blank=True, null=True)
+    website = models.URLField(max_length=100, blank=True, null=True)
     country = models.ForeignKey("Country", on_delete=models.PROTECT)
-    region = models.ForeignKey('Region', on_delete=models.PROTECT)
+    state = models.CharField(max_length=40, blank=True, null=True)
+    crossfit_affiliate = models.BooleanField(default=False)
+    crossfit_affiliate_since = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True)
+    photo = models.ImageField(upload_to='static/images/affiliate_images', blank=True, null=True)
 
     class Meta:
         verbose_name = "Affiliate"
@@ -43,6 +49,7 @@ class Affiliate(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=24)
+    router_code = models.IntegerField(unique=True, blank=True, null=True, verbose_name=u'Router Code')
     code = models.CharField(
         max_length=4, blank=True, null=True, verbose_name=u'ISO Code', unique=True
     )
@@ -52,12 +59,15 @@ class Country(models.Model):
         verbose_name_plural = "Countries"
 
 
-class Region(models.Model):
-    name = models.CharField(max_length=24)
-    code = models.CharField(
-        max_length=4, blank=True, null=True, verbose_name=u'ISO Code', unique=True
-    )
+class Competition(models.Model):
+    name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    location = models.CharField(max_length=100)
+    description = models.TextField(max_length=1500, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Region"
-        verbose_name_plural = "Regions"
+        verbose_name = "Competition"
+        verbose_name_plural = "Competitions"
