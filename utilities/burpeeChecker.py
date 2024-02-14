@@ -23,10 +23,10 @@ start_point = 0
 end_point = 0
 is_burpee_started = False
 is_pushup_complete = False
-full_extension = False
-full_depth = None
+full_extension = False  # set when athlete has jumped
+full_depth = None  # set alongside pushup_complete
 outcome = ""
-descending_threshold = 170  # Threshold to indicate start of squat
+descending_threshold = 170  # Threshold to indicate start of burpee i.e. standing upright
 ascending_threshold = 110
 paused = False
 
@@ -44,6 +44,7 @@ while True:
         )
 
         # Calculate the angle for the analysis
+
         angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
         push_up_angle = detector.getAngle(img, shoulder_index, elbow_index, wrist_index)
 
@@ -65,11 +66,13 @@ while True:
             direction = 0
 
         # 2. Detect push-up phase
-        if direction == 0 and push_up_angle > 170:
+        # this option is based on the angle of the elbow
+        # TODO check if using coordinates is better
+        if direction == 0 and push_up_angle > 60:
             is_pushup_complete = True
 
         # movement analysis logic
-        if direction == 0 and angle < descending_threshold:
+        if direction == 0 and angle > descending_threshold:
             if not is_burpee_started:
                 is_burpee_started = True
                 full_depth = False
