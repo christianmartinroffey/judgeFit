@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/burpee.mp4')
+video = cv2.VideoCapture('../static/videos/burpee2.mov')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -79,7 +79,7 @@ while True:
                                          (left_toe[1] + right_toe[1]) / 2)
             ####### START ANALYSIS #######
             # 1. Detect descending to the ground for start of rep
-            if angle < descending_threshold and not full_depth:
+            if angle < descending_threshold and not full_depth and not full_extension and not is_burpee_started:
                 is_burpee_started = True
                 direction = 0
 
@@ -89,6 +89,16 @@ while True:
 
                 # Calculate the average height of the toes as the new baseline
                 average_toe_height_post_pushup = (left_toe_post_pushup[1] + right_toe_post_pushup[1]) / 2
+
+            # elif angle > descending_threshold and full_depth and not full_extension and is_burpee_started:
+            #     no_rep += 1
+            #     outcome = "no full extension"
+            #     is_burpee_started = False
+            #     full_depth = False
+            # elif angle > descending_threshold and not full_depth and full_extension and is_burpee_started:
+            #     is_burpee_started = False
+            #     no_rep += 1
+            #     outcome = "no full depth"
 
             # 2. Detect push-up phase
             if direction == 0:
@@ -163,10 +173,10 @@ while True:
                 "no reps", no_rep
             )
 
-            cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
+            cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
             # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
-            cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
-            cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
+            cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
         cv2.imshow("Image", img)
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
