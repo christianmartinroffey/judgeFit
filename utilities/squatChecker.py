@@ -42,7 +42,7 @@ while True:
 
             # Calculate the angle for the squat analysis
             angle = detector.getAngle(img, hip_index, knee_index, ankle_index)
-            direction = detector.checkDirection(
+            direction = detector.checkDirectionFromAngle(
                 angle,
                 descending_threshold,
                 ascending_threshold,

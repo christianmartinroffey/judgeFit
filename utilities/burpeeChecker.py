@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/burpee2.mov')
+video = cv2.VideoCapture('../static/videos/burpee1.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -26,7 +26,8 @@ is_burpee_started = False
 full_extension = False  # set when athlete has jumped
 full_depth = False  # this is if the pushup is complete
 outcome = ""
-descending_threshold = 150  # Threshold to indicate start of burpee i.e. standing upright
+descending_threshold = 150
+ascending_threshold = 150  # Threshold to indicate start of burpee i.e. standing upright
 jump_threshold = 1
 pushup_depth_check = 0
 upright_position_check = 0
@@ -79,6 +80,17 @@ while True:
                                          (left_toe[1] + right_toe[1]) / 2)
             ####### START ANALYSIS #######
             # 1. Detect descending to the ground for start of rep
+            # TODO once figured out how to tackle movement for a compount movement add to checkDirection
+            # previous_angle = 0
+            # direction = detector.checkDirection(
+            #     angle,
+            #     descending_threshold,
+            #     ascending_threshold,
+            #     previous_angle,
+            #     downward_movement=None,
+            #     compound_movement=True
+            # )
+
             if angle < descending_threshold and not full_depth and not full_extension and not is_burpee_started:
                 is_burpee_started = True
                 direction = 0

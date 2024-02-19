@@ -80,7 +80,7 @@ while True:
             # cv2.circle(img, tuple(left_hand_pixel), 15, (255, 0, 0), -1)  # Blue circle for left hand
             # cv2.circle(img, tuple(right_hand_pixel), 15, (0, 255, 0), -1)
 
-            direction = detector.checkDirection(
+            direction = detector.checkDirectionFromAngle(
                 angle,
                 descending_threshold,
                 ascending_threshold,
