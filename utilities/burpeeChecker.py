@@ -26,8 +26,6 @@ is_burpee_started = False
 full_extension = False  # set when athlete has jumped
 full_depth = False  # this is if the pushup is complete
 outcome = ""
-descending_threshold = 150
-ascending_threshold = 150  # Threshold to indicate start of burpee i.e. standing upright
 jump_threshold = 1
 pushup_depth_check = 0
 upright_position_check = 0
@@ -80,18 +78,17 @@ while True:
                                          (left_toe[1] + right_toe[1]) / 2)
             ####### START ANALYSIS #######
             # 1. Detect descending to the ground for start of rep
-            # TODO once figured out how to tackle movement for a compount movement add to checkDirection
-            # previous_angle = 0
-            # direction = detector.checkDirection(
+            # TODO once figured out how to tackle movement for a compount movement create new function is PoseModule
+            previous_angle = 0
+            # direction = detector.checkDirectionFromCoordinates(
             #     angle,
-            #     descending_threshold,
-            #     ascending_threshold,
+            #     extended_body_angle,
+            #     extended_body_angle,
             #     previous_angle,
             #     downward_movement=None,
-            #     compound_movement=True
             # )
-
-            if angle < descending_threshold and not full_depth and not full_extension and not is_burpee_started:
+            if upright_position_check < 0.3:
+            # if angle < extended_body_angle and not full_depth and not full_extension and not is_burpee_started:
                 is_burpee_started = True
                 direction = 0
 
@@ -111,7 +108,8 @@ while True:
             #     is_burpee_started = False
             #     no_rep += 1
             #     outcome = "no full depth"
-
+            elif upright_position_check > 0.3:
+                direction = 1
             # 2. Detect push-up phase
             if direction == 0:
                 # checks distance between x coordinates of the shoulders and feet
@@ -120,7 +118,7 @@ while True:
                                                 (left_toe[1] + right_toe[1]) / 2)
                 if pushup_depth_check < pushup_threshold:
                     full_depth = True
-                    direction = 1
+                    # direction = 1
 
             # 3. Detect ascending back to standing
             if direction == 1 and is_burpee_started and full_depth:
@@ -173,16 +171,16 @@ while True:
 
             # Output for debugging or display
             print(
-                int(angle),
-                direction,
-                outcome,
-                "burpee started", is_burpee_started,
-                "full depth", full_depth,
-                # "upright position", upright_position_check,
-                "vertical distance", vertical_distance_hands,
-                "extension", full_extension,
-                "reps", count,
-                "no reps", no_rep
+                # int(angle),
+                # direction,
+                # outcome,
+                # "burpee started", is_burpee_started,
+                # "full depth", full_depth,
+                "upright position", upright_position_check,
+                # "vertical distance", vertical_distance_hands,
+                # "extension", full_extension,
+                # "reps", count,
+                # "no reps", no_rep
             )
 
             cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
