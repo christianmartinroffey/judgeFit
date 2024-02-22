@@ -9,3 +9,9 @@ class AthleteSerializer(serializers.ModelSerializer):
         model = Athlete
         fields = '__all__'
 
+
+class CompetitionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Athlete
+        fields = '__all__'

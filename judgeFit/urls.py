@@ -33,6 +33,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/', include('athlete.urls')),  # Assuming 'athlete.urls' is the correct path to your app's urls.py
+    path('api/', include('athlete.urls')),
+    path('api/', include('workout.urls')),
 ]
 
