@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/burpee1.mp4')
+video = cv2.VideoCapture('../static/videos/burpee2.mov')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -78,7 +78,7 @@ while True:
                                          (left_toe[1] + right_toe[1]) / 2)
             ####### START ANALYSIS #######
             # 1. Detect descending to the ground for start of rep
-            # TODO once figured out how to tackle movement for a compount movement create new function is PoseModule
+            # TODO once figured out how to tackle movement for a compound movement create new function in PoseModule
             previous_angle = 0
             # direction = detector.checkDirectionFromCoordinates(
             #     angle,
@@ -172,7 +172,7 @@ while True:
             # Output for debugging or display
             print(
                 # int(angle),
-                # direction,
+                direction,
                 # outcome,
                 # "burpee started", is_burpee_started,
                 # "full depth", full_depth,

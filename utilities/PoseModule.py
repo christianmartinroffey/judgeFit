@@ -385,7 +385,7 @@ class PoseDetector:
         elif is_burpee:
             if left_hip_visibility > right_hip_visibility:
                 # Use left side landmarks
-                return 11, 23, 27, 13, 15, 31  # shoulder, hip, ankle, wrist_index, elbow_index, toes_index
+                return 11, 23, 27, 15, 13, 31  # shoulder, hip, ankle, wrist_index, elbow_index, toes_index
             else:
                 # Use right side landmarks
                 return 12, 24, 28, 16, 14, 32  # shoulder, hip, ankle, wrist_index, elbow_index, toes_index
