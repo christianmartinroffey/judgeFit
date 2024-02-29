@@ -303,7 +303,7 @@ class PoseDetector:
             )
         return angle
 
-    def getLandmarks(self):
+    def get_landmarks(self):
         if self.results.pose_landmarks:
             return self.results.pose_landmarks.landmark
         return None
@@ -357,6 +357,32 @@ class PoseDetector:
 
                 return None  # Direction not determined
 
+    def get_current_toe_height(self, landmarks):
+        # Get the current toe height
+        left_toe = [landmarks[31].x, landmarks[31].y]
+        right_toe = [landmarks[32].x, landmarks[32].y]
+        average_toe_height = (left_toe[1] + right_toe[1]) / 2
+        return average_toe_height
+
+    def check_hands_above_head(self, landmarks):
+        # detect hands above head only when full extension is reached
+        left_eye = [landmarks[5].x, landmarks[5].y]
+        right_eye = [landmarks[2].x, landmarks[2].y]
+        right_hand = [landmarks[20].x, landmarks[20].y]
+        left_hand = [landmarks[19].x, landmarks[19].y]
+        vertical_distance_hands = abs((left_hand[1] + right_hand[1]) / 2 - (left_eye[1] + right_eye[1]) / 2)
+        return vertical_distance_hands
+
+    def check_upright_position(self, landmarks):
+        # check body is straight first before jump or full extension
+        left_shoulder_coordinates = [landmarks[11].x, landmarks[11].y]
+        right_shoulder_coordinates = [landmarks[12].x, landmarks[12].y]
+        left_toe = [landmarks[31].x, landmarks[31].y]
+        right_toe = [landmarks[32].x, landmarks[32].y]
+        upright_position_check = abs((left_shoulder_coordinates[1] + right_shoulder_coordinates[1]) / 2 -
+                                     (left_toe[1] + right_toe[1]) / 2)
+        return upright_position_check
+
     def getLandmarkIndices(self, lmList, is_squat=False, is_arm_extension=False, is_burpee=False):
         """
         Determines the correct landmarks based on athlete's visibility and orientation.
@@ -398,8 +424,18 @@ class PoseDetector:
                 # Use right side landmarks
                 return 12, 24, 28  # shoulder, hip, ankle indices
 
-    def checkPullUpFullRange(self, left_hand_threshold_check,  right_hand_threshold_check, full_range_threshold):
+    def check_push_up_full_range(self, landmarks):
+        # checks distance between x coordinates of the shoulders and feet
+        left_shoulder_coordinates = [landmarks[11].x, landmarks[11].y]
+        right_shoulder_coordinates = [landmarks[12].x, landmarks[12].y]
+        left_toe = [landmarks[31].x, landmarks[31].y]
+        right_toe = [landmarks[32].x, landmarks[32].y]
 
+        return abs(
+            (left_shoulder_coordinates[1] + right_shoulder_coordinates[1]) / 2 - (left_toe[1] + right_toe[1]) / 2
+        )
+
+    def check_pull_up_full_range(self, left_hand_threshold_check,  right_hand_threshold_check, full_range_threshold):
         if left_hand_threshold_check < full_range_threshold or right_hand_threshold_check < full_range_threshold:
             full_range = True
             return full_range

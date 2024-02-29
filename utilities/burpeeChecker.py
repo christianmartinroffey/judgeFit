@@ -10,8 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/burpee2.mov')
-pTime = 0
+video = cv2.VideoCapture('../static/videos/burpee1.mp4')
 
 detector = pm.PoseDetector()
 
@@ -57,7 +56,7 @@ while True:
             end_point = 60  # full range when reached
             percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
-            landmarks = detector.getLandmarks()
+            landmarks = detector.get_landmarks()
 
             left_hip_y = landmarks[23].y
             right_hip_y = landmarks[24].y
@@ -74,89 +73,53 @@ while True:
             left_hip_coordinates = [landmarks[23].x, landmarks[23].y]
             right_hip_coordinates = [landmarks[24].x, landmarks[24].y]
 
-            upright_position_check = abs((left_shoulder_coordinates[1] + right_shoulder_coordinates[1]) / 2 -
-                                         (left_toe[1] + right_toe[1]) / 2)
+
             ####### START ANALYSIS #######
+            upright_position_check = detector.check_upright_position(landmarks)
             # 1. Detect descending to the ground for start of rep
-            # TODO once figured out how to tackle movement for a compound movement create new function in PoseModule
-            previous_angle = 0
-            # direction = detector.checkDirectionFromCoordinates(
-            #     angle,
-            #     extended_body_angle,
-            #     extended_body_angle,
-            #     previous_angle,
-            #     downward_movement=None,
-            # )
             if upright_position_check < 0.3:
             # if angle < extended_body_angle and not full_depth and not full_extension and not is_burpee_started:
                 is_burpee_started = True
                 direction = 0
 
-                # TODO move this to a separate function in PoseModule getCurrentToeHeight
-                left_toe_post_pushup = [landmarks[31].x, landmarks[31].y]
-                right_toe_post_pushup = [landmarks[32].x, landmarks[32].y]
-
                 # Calculate the average height of the toes as the new baseline
-                average_toe_height_post_pushup = (left_toe_post_pushup[1] + right_toe_post_pushup[1]) / 2
+                average_toe_height_post_pushup = detector.get_current_toe_height(landmarks)
 
-            # elif angle > descending_threshold and full_depth and not full_extension and is_burpee_started:
-            #     no_rep += 1
-            #     outcome = "no full extension"
-            #     is_burpee_started = False
-            #     full_depth = False
-            # elif angle > descending_threshold and not full_depth and full_extension and is_burpee_started:
-            #     is_burpee_started = False
-            #     no_rep += 1
-            #     outcome = "no full depth"
             elif upright_position_check > 0.3:
                 direction = 1
+
             # 2. Detect push-up phase
             if direction == 0:
-                # checks distance between x coordinates of the shoulders and feet
-                # if they are inline then set full_depth to True
-                pushup_depth_check = abs((left_shoulder_coordinates[1] + right_shoulder_coordinates[1]) / 2 -
-                                                (left_toe[1] + right_toe[1]) / 2)
+                pushup_depth_check = detector.check_push_up_full_range(landmarks)
                 if pushup_depth_check < pushup_threshold:
                     full_depth = True
-                    # direction = 1
 
             # 3. Detect ascending back to standing
             if direction == 1 and is_burpee_started and full_depth:
                 # check body is straight first before jump or full extension
                 if angle > extended_body_angle and upright_position_check > 0.2:
                     # .4 detect hands above head only when full extension is reached
-                    vertical_distance_hands = abs((left_hand[1] + right_hand[1]) / 2 - (left_eye[1] + right_eye[1]) / 2)
-
-                    # TODO move this to a separate function in PoseModule getCurrentToeHeight
+                    vertical_distance_hands = detector.check_hands_above_head(landmarks)
                     # .5 detect jump phase
-                    left_toe_current = [landmarks[31].x, landmarks[31].y]
-                    right_toe_current = [landmarks[32].x, landmarks[32].y]
-
                     # Calculate the difference between toe starting position and current position
-                    average_toe_height_current = (left_toe_current[1] + right_toe_current[1]) / 2
-                    # print(average_toe_height_current, "baseline", average_toe_height_post_pushup, "should be more")
+                    average_toe_height_current = detector.get_current_toe_height(landmarks)
 
                     # Check for a jump by comparing the current toe height to the new baseline
                     # if these checks pass then it's a good rep so set full_extension to True
                     if average_toe_height_post_pushup > average_toe_height_current and vertical_distance_hands > 0.1:
                         full_extension = True
-                    # reset parameters and add a no rep
-                    # TODO move this out - have to reset after the whole process
-                    # else:
-                    #     no_rep += 1
-                    #     outcome = "no full extension"
-                    #     direction = 0
-                    #     is_burpee_started = False
-                    #     full_depth = False
 
-                # if body is not straight, and they're starting to go down,
-                # i.e. angle is less than previous, it's a no rep and reset parameters
-                # elif angle < previous_angle:
-                #     no_rep += 1
-                #     outcome = "body not straight"
-                #     direction = 0
-                #     is_burpee_started = False
-                #     full_depth = False
+            elif direction == 1 and is_burpee_started and not full_depth:
+                # check if they reach full extension but didn't do the push up
+                vertical_distance_hands = detector.check_hands_above_head(landmarks)
+                average_toe_height_current = detector.get_current_toe_height(landmarks)
+
+                if average_toe_height_post_pushup > average_toe_height_current and vertical_distance_hands > 0.1:
+                    full_extension = True
+                    no_rep += 1
+                    outcome = "not deep enough"
+                    is_burpee_started = False
+                    full_depth = False
 
             if full_depth and full_extension:
                 count += 1

@@ -56,7 +56,7 @@ while True:
             # Calculate the angle
             # Need to use the angle to check for direction of movement
             angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
-            landmarks = detector.getLandmarks()
+            landmarks = detector.get_landmarks()
 
             left_hip_y = landmarks[23].y
             right_hip_y = landmarks[24].y

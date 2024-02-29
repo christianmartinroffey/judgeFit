@@ -59,7 +59,7 @@ while True:
             angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
             arm_angle = detector.getAngle(img, shoulder_index, elbow_index, wrist_index)
 
-            landmarks = detector.getLandmarks()
+            landmarks = detector.get_landmarks()
 
             left_hip_y = landmarks[23].y
             right_hip_y = landmarks[24].y
