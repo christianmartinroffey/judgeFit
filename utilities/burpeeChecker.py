@@ -10,7 +10,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/burpee1.mp4')
+video = cv2.VideoCapture('../static/videos/burpee2.mov')
 
 detector = pm.PoseDetector()
 
@@ -51,24 +51,19 @@ while True:
             angle = detector.getAngle(img, shoulder_index, hip_index, ankle_index)
             push_up_angle = detector.getAngle(img, shoulder_index, elbow_index, wrist_index)
 
-            # Update start and end points for the new angle range
-            start_point = 170  # extended value
-            end_point = 60  # full range when reached
-            percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
-
             landmarks = detector.get_landmarks()
 
             ####### START ANALYSIS #######
             upright_position_check = detector.check_upright_position(landmarks)
             # 1. Detect descending to the ground for start of rep
             if upright_position_check < 0.3:
-            # if angle < extended_body_angle and not full_depth and not full_extension and not is_burpee_started:
                 is_burpee_started = True
                 direction = 0
 
                 # Calculate the average height of the toes as the new baseline
                 average_toe_height_post_pushup = detector.get_current_toe_height(landmarks)
 
+            # check for upward movement
             elif upright_position_check > 0.3:
                 direction = 1
 
@@ -105,6 +100,7 @@ while True:
                     is_burpee_started = False
                     full_depth = False
 
+            # if checks are passed then it's a good rep
             if full_depth and full_extension:
                 count += 1
                 outcome = "good rep"
@@ -131,7 +127,6 @@ while True:
             )
 
             cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-            # cv2.putText(img, f'{int(percentage)} %', (50, 300), cv2.FONT_HERSHEY_PLAIN, 7, (0,0,255), 8)
             cv2.putText(img, f'no reps: {int(no_rep)}', (400, 100), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
             cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
