@@ -38,8 +38,8 @@ while True:
     if not paused:
         success, img = video.read()
         img = detector.getPose(img, draw=False)
-
         lmList = detector.getPosition(img, draw=False)
+
         if len(lmList) != 0:
             # Choose landmarks based on hip visibility
             # determine the best landmarks to use
@@ -57,22 +57,6 @@ while True:
             percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
             landmarks = detector.get_landmarks()
-
-            left_hip_y = landmarks[23].y
-            right_hip_y = landmarks[24].y
-
-            # this section gets and checks the coordinates for toes (Landmarks 31 and 32)
-            left_eye = [landmarks[5].x, landmarks[5].y]
-            right_eye = [landmarks[2].x, landmarks[2].y]
-            left_toe = [landmarks[31].x, landmarks[31].y]
-            right_toe = [landmarks[32].x, landmarks[32].y]
-            right_hand = [landmarks[20].x, landmarks[20].y]
-            left_hand = [landmarks[19].x, landmarks[19].y]
-            left_shoulder_coordinates = [landmarks[11].x, landmarks[11].y]
-            right_shoulder_coordinates = [landmarks[12].x, landmarks[12].y]
-            left_hip_coordinates = [landmarks[23].x, landmarks[23].y]
-            right_hip_coordinates = [landmarks[24].x, landmarks[24].y]
-
 
             ####### START ANALYSIS #######
             upright_position_check = detector.check_upright_position(landmarks)
