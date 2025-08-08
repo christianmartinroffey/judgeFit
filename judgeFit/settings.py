@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'poses',
     'workout',
     'rest_framework',
-    'drf_yasg',
-    'rest_framework_swagger'
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -157,13 +156,20 @@ REST_FRAMEWORK = {
     #     'django_filters.rest_framework.DjangoFilterBackend',
     #     'rest_framework.filters.OrderingFilter',
     # ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
+
+    # ... other settings
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': PAGINATOR_ITEMS_PER_PAGE
 }
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'JudgeFit API',
+    'DESCRIPTION': 'Fitness judging and workout management API',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
