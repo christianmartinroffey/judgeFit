@@ -3,34 +3,35 @@ import mediapipe as mp
 import time
 
 # section to access camera
-'''camera = cv2.VideoCapture(0)
-
-mpHands = mp.solutions.hands
-hands = mpHands.Hands()
-
-if not camera.isOpened():
-    print("Error: Could not open video capture.")
-    exit()
-
-while True:
-    success, img = camera.read()
-    if success:
-        cv2.imshow("image", img)
-        if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to quit the loop
-            break
-    else:
-        print("Error: Failed to read frame.")
-        break
-
-camera.release()
-cv2.destroyAllWindows()'''
+# camera = cv2.VideoCapture(0)
+#
+# mpHands = mp.solutions.hands
+# hands = mpHands.Hands()
+#
+# if not camera.isOpened():
+#     print("Error: Could not open video capture.")
+#     exit()
+#
+# while True:
+#     success, img = camera.read()
+#     if success:
+#         cv2.imshow("image", img)
+#         if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to quit the loop
+#             break
+#     else:
+#         print("Error: Failed to read frame.")
+#         break
+#
+# camera.release()
+# cv2.destroyAllWindows()
 
 # section to use a video
 mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/overhead_squat_person.mp4')
+#video = cv2.VideoCapture('../static/videos/overhead_squat_person.mp4')
+video = cv2.VideoCapture(0)
 pTime = 0
 
 while True:
