@@ -14,15 +14,15 @@ class Athlete(models.Model):
     surname = models.CharField(max_length=40)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
     date_of_birth = models.DateField()
-    height = models.DecimalField(max_digits=5, decimal_places=2)
-    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     email = models.EmailField(max_length=100)
-    country = models.ForeignKey("Country", on_delete=models.PROTECT)
+    country = models.ForeignKey("Country", on_delete=models.PROTECT, null=True, blank=True)
     created_at = models.DateTimeField(auto_now=True)
-    affiliate = models.ForeignKey("Affiliate", on_delete=models.PROTECT)
-    profile_photo = models.ImageField(upload_to='static/images/')
-    emergency_contact_name = models.CharField(max_length=100)
-    emergency_contact_phone = models.CharField(max_length=20)
+    affiliate = models.ForeignKey("Affiliate", on_delete=models.PROTECT,  null=True, blank=True)
+    profile_photo = models.ImageField(upload_to='static/images/', null=True, blank=True)
+    emergency_contact_name = models.CharField(max_length=100, blank=True, null=True)
+    emergency_contact_phone = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         verbose_name = "Athlete"
