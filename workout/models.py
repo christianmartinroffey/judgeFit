@@ -70,9 +70,9 @@ class WorkoutComponent(models.Model):
     workout = models.ForeignKey(Workout, related_name='components', on_delete=models.CASCADE)
     movement = models.ForeignKey(Movement, on_delete=models.CASCADE)
     sequence = models.IntegerField(default=0)
-    reps = models.CharField(blank=True, null=True)
-    weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)  # in lbs
-    height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)  # in inches
+    reps = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)  # in lbs
+    height = models.IntegerField(blank=True, null=True)  # in inches
     # TODO when ML has been developed to register numbers set the variations field
     # variations = JSONField(blank=True, null=True)  # Store gender-specific or other variations
 
