@@ -10,8 +10,8 @@ criteria = load_movement_criteria()  # Load criteria from JSON file
 squat_criteria = criteria.get('squat', {})
 descending_threshold = squat_criteria.get('descending_threshold', 110)  # Default if not found
 ascending_threshold = squat_criteria.get('ascending_threshold', 110)  # Default if not found
-video = cv2.VideoCapture(0)
-# video = cv2.VideoCapture('../static/videos/airsquat.mp4')
+# video = cv2.VideoCapture(0)
+video = cv2.VideoCapture('../static/videos/airsquat.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
