@@ -113,8 +113,25 @@ class Score(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     competition = models.ForeignKey('athlete.Competition', on_delete=models.CASCADE, blank=True, null=True)
 
+    def __init__(self):
+        super().__init__()
+
+
+    def process_video(self, video, workout):
+        # check if workout exists
+        # use name - there will be a dropdown of workout names
+
+        # depending on the workout call the specific pose util module to check the workout
+
+        # get the score from the processed video
+
+        # call save_score to save the score and create relation to athlete
+
+        return
 
 '''
     #TODO note for the structure the system needs to register the type of movement
-    if the athlete does less reps than needed and doesn't corret then the system needs to be able to move onto the next movement
+    if the athlete does less reps than needed and doesn't correct then the system needs to be able to move onto the next movement
 '''
+
+
