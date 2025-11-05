@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="add demo file for showing" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="update frontend" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,6 +73,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "ts.external.directory.path": "/Users/christianroffey/PycharmProjects/judgeFit/frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -85,10 +86,11 @@
       <recent name="$PROJECT_DIR$/workout/managment/commands" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend/app/components" />
       <recent name="$PROJECT_DIR$/workout/managment/commands" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.squatChecker">
+  <component name="RunManager" selected="Python.burpeeChecker">
     <configuration name="burpeeChecker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="judgeFit" />
       <option name="ENV_FILES" value="" />
@@ -240,8 +242,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.squatChecker" />
         <item itemvalue="Python.burpeeChecker" />
+        <item itemvalue="Python.squatChecker" />
         <item itemvalue="Python.pushupChecker" />
         <item itemvalue="Python.pullupChecker" />
         <item itemvalue="Python.fridayDemo" />
@@ -285,6 +287,7 @@
       <workItem from="1751304208879" duration="954000" />
       <workItem from="1754664560532" duration="3896000" />
       <workItem from="1761231412365" duration="6214000" />
+      <workItem from="1761403961205" duration="20417000" />
     </task>
     <task id="LOCAL-00002" summary="add movement model and migration file">
       <option name="closed" value="true" />
@@ -534,7 +537,63 @@
       <option name="project" value="LOCAL" />
       <updated>1761233101786</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="update model and settings.py">
+      <option name="closed" value="true" />
+      <created>1761673354108</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1761673354108</updated>
+    </task>
+    <task id="LOCAL-00034" summary="update serializer">
+      <option name="closed" value="true" />
+      <created>1761681800119</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1761681800119</updated>
+    </task>
+    <task id="LOCAL-00035" summary="add frontend folder and nextjs files">
+      <option name="closed" value="true" />
+      <created>1761745423819</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1761745423819</updated>
+    </task>
+    <task id="LOCAL-00036" summary="remove frontend folder and nextjs files">
+      <option name="closed" value="true" />
+      <created>1761745727762</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1761745727762</updated>
+    </task>
+    <task id="LOCAL-00037" summary="add cors to settings.py">
+      <option name="closed" value="true" />
+      <created>1761746147454</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1761746147454</updated>
+    </task>
+    <task id="LOCAL-00038" summary="add frontend config files">
+      <option name="closed" value="true" />
+      <created>1761746459457</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1761746459457</updated>
+    </task>
+    <task id="LOCAL-00039" summary="update frontend">
+      <option name="closed" value="true" />
+      <created>1762151560017</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1762151560017</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,13 +629,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update addnewmovements.py command with prints" />
-    <MESSAGE value="update description model to 1000 characters" />
-    <MESSAGE value="add boiletplate database data to settings" />
-    <MESSAGE value="set up postgres database connections and run migrations + addnewmovements command" />
-    <MESSAGE value="update allowed host in settings.py" />
-    <MESSAGE value="add new fields to affiliate model" />
-    <MESSAGE value="rework affiliate model, add migrations files for workout and create addaffiliatedata command" />
     <MESSAGE value="add utils file to athlete app" />
     <MESSAGE value="update affiliate fields to blank True and null True, add migrations files" />
     <MESSAGE value=" add migrations files" />
@@ -595,7 +647,14 @@
     <MESSAGE value="add new models to admin" />
     <MESSAGE value="updates to packages and urls" />
     <MESSAGE value="add demo file for showing" />
-    <option name="LAST_COMMIT_MESSAGE" value="add demo file for showing" />
+    <MESSAGE value="update model and settings.py" />
+    <MESSAGE value="update serializer" />
+    <MESSAGE value="add frontend folder and nextjs files" />
+    <MESSAGE value="remove frontend folder and nextjs files" />
+    <MESSAGE value="add cors to settings.py" />
+    <MESSAGE value="add frontend config files" />
+    <MESSAGE value="update frontend" />
+    <option name="LAST_COMMIT_MESSAGE" value="update frontend" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -613,8 +672,8 @@
     <SUITE FILE_PATH="coverage/judgePukie$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1700688112859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1761310218282" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1704265598358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1761310281893" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
-    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1761311696309" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1761682140584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1761682172632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$fridayDemo.coverage" NAME="fridayDemo Coverage Results" MODIFIED="1761309915317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$template_code.coverage" NAME="template_code Coverage Results" MODIFIED="1761232201749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$pullupChecker.coverage" NAME="pullupChecker Coverage Results" MODIFIED="1761310207916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
