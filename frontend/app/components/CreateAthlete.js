@@ -15,7 +15,7 @@ export default function CreateAthlete({ onAthleteCreated }) {
     setError(null);
 
     try {
-      await createAthlete({ name, surname });
+      await createAthlete({ name, surname, email });
       setName('');
       setSurname('');
       setEmail('');

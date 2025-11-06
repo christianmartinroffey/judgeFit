@@ -50,8 +50,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,14 +62,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'judgeFit.urls'
 
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    # CORS Settings
-    CORS_ALLOWED_ORIGINS = [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",  # Next.js dev server
-    ]
+
+# CORS Settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",  # Next.js dev server
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
+]
 
 CORS_ALLOW_HEADERS = [
     'accept',
