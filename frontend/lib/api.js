@@ -3,6 +3,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 // Helper function to handle responses
 async function handleResponse(response) {
   if (!response.ok) {
+    console.log("response not ok:", response)
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || 'Something went wrong');
   }
@@ -46,6 +47,7 @@ export const createAthlete = async (data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
+
   return handleResponse(response);
 };
 

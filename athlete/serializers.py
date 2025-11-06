@@ -9,6 +9,12 @@ class AthleteSerializer(serializers.ModelSerializer):
         model = Athlete
         fields = '__all__'
 
+    def create(self, validated_data):
+        athlete, created = Athlete.objects.get_or_create(
+            email=validated_data.get('email'),
+            defaults=validated_data
+        )
+        return athlete
 
 class CompetitionSerializer(serializers.ModelSerializer):
 

@@ -12,8 +12,8 @@ class Athlete(models.Model):
     ]
     name = models.CharField(max_length=40)
     surname = models.CharField(max_length=40)
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=2)
-    date_of_birth = models.DateField()
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=2, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     email = models.EmailField(max_length=100)

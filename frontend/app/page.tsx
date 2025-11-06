@@ -7,7 +7,7 @@ import Login from './components/Login';
 export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  console.log('Home component rendered. isAuthenticated:', isAuthenticated);
   useEffect(() => {
     // Check if user has a token
     const token = localStorage.getItem('access_token');

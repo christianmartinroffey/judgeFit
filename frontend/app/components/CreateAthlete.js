@@ -5,6 +5,7 @@ import { createAthlete } from '@/lib/api';
 export default function CreateAthlete({ onAthleteCreated }) {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -17,6 +18,7 @@ export default function CreateAthlete({ onAthleteCreated }) {
       await createAthlete({ name, surname });
       setName('');
       setSurname('');
+      setEmail('');
       if (onAthleteCreated) onAthleteCreated();
       alert('Athlete created successfully!');
     } catch (err) {
@@ -53,6 +55,17 @@ export default function CreateAthlete({ onAthleteCreated }) {
         <textarea
           value={surname}
           onChange={(e) => setSurname(e.target.value)}
+          required
+          rows="4"
+          className="w-full border p-2 rounded"
+        />
+      </div>
+
+        <div className="mb-4">
+        <label className="block mb-2">Email</label>
+        <textarea
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
           rows="4"
           className="w-full border p-2 rounded"

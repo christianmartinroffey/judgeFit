@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="update frontend" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="setup jwt token">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/squatChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/squatChecker.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,40 +49,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Django Server.Run.executor": "Run",
-    "Python.addnewmovements.executor": "Run",
-    "Python.addnewmovments.executor": "Run",
-    "Python.burpeeChecker.executor": "Run",
-    "Python.fridayDemo.executor": "Run",
-    "Python.pullupChecker.executor": "Run",
-    "Python.pushupChecker.executor": "Run",
-    "Python.settings.executor": "Run",
-    "Python.squatChecker.executor": "Run",
-    "Python.template_code.executor": "Run",
-    "Python.toestobarChecker.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/christianroffey/PycharmProjects/judgeFit",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "ts.external.directory.path": "/Users/christianroffey/PycharmProjects/judgeFit/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Django Server.Run.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.addnewmovements.executor&quot;: &quot;Run&quot;,
+    &quot;Python.addnewmovments.executor&quot;: &quot;Run&quot;,
+    &quot;Python.burpeeChecker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.fridayDemo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pullupChecker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pushupChecker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.settings.executor&quot;: &quot;Run&quot;,
+    &quot;Python.squatChecker.executor&quot;: &quot;Run&quot;,
+    &quot;Python.template_code.executor&quot;: &quot;Run&quot;,
+    &quot;Python.toestobarChecker.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/christianroffey/PycharmProjects/judgeFit&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/christianroffey/PycharmProjects/judgeFit/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": []
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: []
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/athlete" />
@@ -244,9 +247,9 @@
       <list>
         <item itemvalue="Python.burpeeChecker" />
         <item itemvalue="Python.squatChecker" />
+        <item itemvalue="Python.fridayDemo" />
         <item itemvalue="Python.pushupChecker" />
         <item itemvalue="Python.pullupChecker" />
-        <item itemvalue="Python.fridayDemo" />
       </list>
     </recent_temporary>
   </component>
@@ -288,6 +291,8 @@
       <workItem from="1754664560532" duration="3896000" />
       <workItem from="1761231412365" duration="6214000" />
       <workItem from="1761403961205" duration="20417000" />
+      <workItem from="1762360415533" duration="3508000" />
+      <workItem from="1762419576643" duration="919000" />
     </task>
     <task id="LOCAL-00002" summary="add movement model and migration file">
       <option name="closed" value="true" />
@@ -593,7 +598,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762151560017</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="setup jwt token">
+      <option name="closed" value="true" />
+      <created>1762362658885</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1762362658885</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -629,7 +642,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add utils file to athlete app" />
     <MESSAGE value="update affiliate fields to blank True and null True, add migrations files" />
     <MESSAGE value=" add migrations files" />
     <MESSAGE value="rework addaffiliatedata file for affiliate model and fields" />
@@ -654,7 +666,8 @@
     <MESSAGE value="add cors to settings.py" />
     <MESSAGE value="add frontend config files" />
     <MESSAGE value="update frontend" />
-    <option name="LAST_COMMIT_MESSAGE" value="update frontend" />
+    <MESSAGE value="setup jwt token" />
+    <option name="LAST_COMMIT_MESSAGE" value="setup jwt token" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -664,6 +677,11 @@
           <line>80</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/athlete/views.py</url>
+          <line>12</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -672,9 +690,9 @@
     <SUITE FILE_PATH="coverage/judgePukie$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1700688112859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1761310218282" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1704265598358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1761682140584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
-    <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1761682172632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
-    <SUITE FILE_PATH="coverage/judgeFit$fridayDemo.coverage" NAME="fridayDemo Coverage Results" MODIFIED="1761309915317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1762419891659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1762420116545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$fridayDemo.coverage" NAME="fridayDemo Coverage Results" MODIFIED="1762419769535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$template_code.coverage" NAME="template_code Coverage Results" MODIFIED="1761232201749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$pullupChecker.coverage" NAME="pullupChecker Coverage Results" MODIFIED="1761310207916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$addnewmovments.coverage" NAME="addnewmovements Coverage Results" MODIFIED="1706553204992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
