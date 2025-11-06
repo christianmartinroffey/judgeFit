@@ -7,8 +7,6 @@ export default function AthleteList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(athletes, "Fetched Athletes")
-
   useEffect(() => {
     fetchAthletes();
   }, []);
