@@ -7,6 +7,8 @@ export default function AthleteList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(athletes, "Fetched Athletes")
+
   useEffect(() => {
     fetchAthletes();
   }, []);
@@ -15,7 +17,6 @@ export default function AthleteList() {
     try {
       setLoading(true);
       const data = await getAthletes();
-      console.log(data, "data")
       setAthletes(data.results);
       setError(null);
     } catch (err) {
@@ -24,15 +25,13 @@ export default function AthleteList() {
     } finally {
       setLoading(false);
     }
-
   };
 
   const handleDelete = async (id) => {
     if (!confirm('Are you sure you want to delete this athlete?')) return;
-
     try {
       await deleteAthlete(id);
-      setAthlete(athletes.filter(athlete => athlete.id !== id));
+        setAthletes(athletes.filter((athlete) => athlete.id !== id));
     } catch (err) {
       alert('Failed to delete athlete');
       console.error(err);

@@ -41,7 +41,6 @@ export const getAthlete = async (id) => {
 };
 
 export const createAthlete = async (data) => {
-  console.log("called with:", data, getHeaders())
   const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/`, {
     method: 'POST',
     headers: getHeaders(),
