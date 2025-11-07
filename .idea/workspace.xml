@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="setup jwt token">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/squatChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/squatChecker.py" afterDir="false" />
-    </list>
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="switch to typescripts" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -93,7 +90,7 @@
       <recent name="$PROJECT_DIR$/workout/managment/commands" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.burpeeChecker">
+  <component name="RunManager" selected="Django Server.Run">
     <configuration name="burpeeChecker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="judgeFit" />
       <option name="ENV_FILES" value="" />
@@ -293,6 +290,7 @@
       <workItem from="1761403961205" duration="20417000" />
       <workItem from="1762360415533" duration="3508000" />
       <workItem from="1762419576643" duration="919000" />
+      <workItem from="1762445588281" duration="4299000" />
     </task>
     <task id="LOCAL-00002" summary="add movement model and migration file">
       <option name="closed" value="true" />
@@ -606,7 +604,47 @@
       <option name="project" value="LOCAL" />
       <updated>1762362658885</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="set fields to nullable">
+      <option name="closed" value="true" />
+      <created>1762447111593</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1762447111593</updated>
+    </task>
+    <task id="LOCAL-00042" summary="fix creating athlete">
+      <option name="closed" value="true" />
+      <created>1762447519662</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1762447519662</updated>
+    </task>
+    <task id="LOCAL-00043" summary="fix deleting athletes">
+      <option name="closed" value="true" />
+      <created>1762447900441</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1762447900441</updated>
+    </task>
+    <task id="LOCAL-00044" summary="remove console log">
+      <option name="closed" value="true" />
+      <created>1762448066896</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1762448066896</updated>
+    </task>
+    <task id="LOCAL-00045" summary="switch to typescripts">
+      <option name="closed" value="true" />
+      <created>1762448582323</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1762448582323</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -642,11 +680,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update affiliate fields to blank True and null True, add migrations files" />
-    <MESSAGE value=" add migrations files" />
-    <MESSAGE value="rework addaffiliatedata file for affiliate model and fields" />
-    <MESSAGE value="add router code to Countries model to prepare imnport" />
-    <MESSAGE value="add addcountriesdata.py command" />
     <MESSAGE value="rename addcountrydata.py command" />
     <MESSAGE value="update addaffiliatedata.py command to take in correct timezone and countrycode and add migrations" />
     <MESSAGE value="add country and affiliate to admin" />
@@ -667,7 +700,12 @@
     <MESSAGE value="add frontend config files" />
     <MESSAGE value="update frontend" />
     <MESSAGE value="setup jwt token" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup jwt token" />
+    <MESSAGE value="set fields to nullable" />
+    <MESSAGE value="fix creating athlete" />
+    <MESSAGE value="fix deleting athletes" />
+    <MESSAGE value="remove console log" />
+    <MESSAGE value="switch to typescripts" />
+    <option name="LAST_COMMIT_MESSAGE" value="switch to typescripts" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -676,11 +714,6 @@
           <url>file://$PROJECT_DIR$/venv/lib/python3.9/site-packages/django/conf/__init__.py</url>
           <line>80</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/athlete/views.py</url>
-          <line>12</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -43,11 +43,14 @@ INSTALLED_APPS = [
     'athlete',
     'poses',
     'workout',
+    "users",
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_spectacular',
     'corsheaders',
 ]
+
+AUTH_USER_MODEL = "users.User"  # Point to the users app
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -186,8 +189,8 @@ SWAGGER_SETTINGS = {
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-        'rest_framework.permissions.AllowAny',  # For now, to test
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        #'rest_framework.permissions.AllowAny',  # For now, to test
 
     ),
 
