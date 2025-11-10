@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-AUTH_USER_MODEL = "users.User"  # Point to the users app
+AUTH_USER_MODEL = "users.User"  # Point to the users src
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
