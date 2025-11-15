@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react';
-import AthleteList from './components/AthleteList';
-import CreateAthlete from './components/CreateAthlete';
-import Login from './components/Login';
+import AthleteList from '@/app/components/AthleteList';
+import CreateAthlete from '@/app/components/CreateAthlete';
+import Login from '@/app/components/Login';
 
 export default function Home() {
   const [refreshKey, setRefreshKey] = useState(0);

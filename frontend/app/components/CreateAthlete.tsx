@@ -1,25 +1,30 @@
 'use client'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { createAthlete } from '@/lib/api';
+import { Athlete } from './AthleteList';
 
-export default function CreateAthlete({ onAthleteCreated }) {
+interface CreateAthleteProps {
+  onAthleteCreated: (athlete: Athlete) => void;
+}
+
+export default function CreateAthlete({ onAthleteCreated  }: CreateAthleteProps) {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:  React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      await createAthlete({ name, surname, email });
+      const newAthlete = await createAthlete({ name, surname, email });
       setName('');
       setSurname('');
       setEmail('');
-      if (onAthleteCreated) onAthleteCreated();
+      if (onAthleteCreated) onAthleteCreated(newAthlete);
       alert('Athlete created successfully!');
     } catch (err) {
       setError('Failed to create Athlete');

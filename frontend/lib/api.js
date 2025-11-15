@@ -30,6 +30,7 @@ export const getAthletes = async () => {
   const response = await fetch(`${API_BASE_URL}/api/athlete/athletes`, {
     headers: getHeaders(),
   });
+  console.log(response, "response in getAthletes");
   return handleResponse(response);
 };
 

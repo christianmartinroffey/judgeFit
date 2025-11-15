@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="switch to typescripts" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="update folder name" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -291,6 +291,7 @@
       <workItem from="1762360415533" duration="3508000" />
       <workItem from="1762419576643" duration="919000" />
       <workItem from="1762445588281" duration="4299000" />
+      <workItem from="1762531217858" duration="6286000" />
     </task>
     <task id="LOCAL-00002" summary="add movement model and migration file">
       <option name="closed" value="true" />
@@ -644,7 +645,23 @@
       <option name="project" value="LOCAL" />
       <updated>1762448582323</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="clear migrations and add custom user model">
+      <option name="closed" value="true" />
+      <created>1762534582340</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1762534582340</updated>
+    </task>
+    <task id="LOCAL-00047" summary="update folder name">
+      <option name="closed" value="true" />
+      <created>1762759371458</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1762759371458</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,8 +697,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="rename addcountrydata.py command" />
-    <MESSAGE value="update addaffiliatedata.py command to take in correct timezone and countrycode and add migrations" />
     <MESSAGE value="add country and affiliate to admin" />
     <MESSAGE value="formatting athlete admin file" />
     <MESSAGE value="install drf_yasg and 'rest_framework_swagger', create api files for athlete" />
@@ -705,7 +720,9 @@
     <MESSAGE value="fix deleting athletes" />
     <MESSAGE value="remove console log" />
     <MESSAGE value="switch to typescripts" />
-    <option name="LAST_COMMIT_MESSAGE" value="switch to typescripts" />
+    <MESSAGE value="clear migrations and add custom user model" />
+    <MESSAGE value="update folder name" />
+    <option name="LAST_COMMIT_MESSAGE" value="update folder name" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

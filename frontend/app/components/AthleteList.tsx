@@ -2,10 +2,18 @@
 import { useState, useEffect } from 'react';
 import { getAthletes, deleteAthlete } from '@/lib/api';
 
+// Define the Athlete type
+export interface Athlete {
+  key: number;
+  id: number;
+  surname: string;
+  created_at: string;
+}
+
 export default function AthleteList() {
-  const [athletes, setAthletes] = useState([]);
+  const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAthletes();
@@ -25,7 +33,7 @@ export default function AthleteList() {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this athlete?')) return;
     try {
       await deleteAthlete(id);
@@ -48,8 +56,8 @@ export default function AthleteList() {
       ) : (
         <div className="grid gap-4">
           {athletes.map((athlete) => (
-            <div key={athlete.id} className="border p-4 rounded shadow">
-              <h2 className="text-xl font-semibold">{athlete.name}</h2>
+            <div key={athlete.id.toString()} className="border p-4 rounded shadow">
+              <h2 className="text-xl font-semibold">{athlete.id}</h2>
               <p className="text-gray-600 mt-2">{athlete.surname}</p>
               <div className="mt-4 flex gap-2">
                 <span className="text-sm text-gray-500">
