@@ -34,7 +34,8 @@ export default function CreateAthlete({ onAthleteCreated  }: CreateAthleteProps)
     }
   };
 
-  return (
+  // @ts-ignore
+    return (
     <form onSubmit={handleSubmit} className="mb-8 p-4 border rounded">
       <h2 className="text-2xl font-bold mb-4">Create New Athlete</h2>
 

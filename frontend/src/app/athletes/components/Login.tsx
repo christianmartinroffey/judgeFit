@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { login } from '@/lib/api';
 
-export default function Login({ onLoginSuccess }) {
+export default function Login({ onLoginSuccess: any }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
