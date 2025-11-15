@@ -1,7 +1,7 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 // Helper function to handle responses
-async function handleResponse(response) {
+export async function handleResponse(response) {
   if (!response.ok) {
     console.log("response not ok:", response)
     const error = await response.json().catch(() => ({}));
@@ -11,7 +11,7 @@ async function handleResponse(response) {
 }
 
 // Helper function to get headers
-function getHeaders() {
+export function getHeaders() {
   const headers = {
     'Content-Type': 'application/json',
   };
@@ -24,69 +24,3 @@ function getHeaders() {
 
   return headers;
 }
-
-// API functions
-export const getAthletes = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes`, {
-    headers: getHeaders(),
-  });
-  console.log(response, "response in getAthletes");
-  return handleResponse(response);
-};
-
-export const getAthlete = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/${id}/`, {
-    headers: getHeaders(),
-  });
-  return handleResponse(response);
-};
-
-export const createAthlete = async (data) => {
-  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/`, {
-    method: 'POST',
-    headers: getHeaders(),
-    body: JSON.stringify(data),
-  });
-
-  return handleResponse(response);
-};
-
-export const updateAthlete = async (id, data) => {
-  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/${id}/`, {
-    method: 'PUT',
-    headers: getHeaders(),
-    body: JSON.stringify(data),
-  });
-  return handleResponse(response);
-};
-
-export const deleteAthlete = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/${id}/`, {
-    method: 'DELETE',
-    headers: getHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error('Failed to delete Athlete');
-  }
-  // DELETE typically returns no content
-  return;
-};
-
-// Authentication
-export const login = async (credentials) => {
-  const response = await fetch(`${API_BASE_URL}/api/token/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-  return handleResponse(response);
-};
-
-export const refreshToken = async (refresh) => {
-  const response = await fetch(`${API_BASE_URL}/api/token/refresh/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ refresh }),
-  });
-  return handleResponse(response);
-};

@@ -52,7 +52,7 @@ export default function HomePage() {
             Welcome to JudgeFit
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Manage your athletes, briefings, and competitions all in one place.
+            Submit your video for review.
           </p>
         </div>
 
@@ -63,12 +63,25 @@ export default function HomePage() {
             className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition group"
           >
             <h2 className="text-2xl font-bold mb-4 group-hover:text-blue-600">
-              Athletes
+              Profile
             </h2>
             <p className="text-gray-600">
               Create, view, and manage athlete profiles
             </p>
           </Link>
+
+          <Link
+            href="/competitions"
+            className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition group"
+          >
+            <h2 className="text-2xl font-bold mb-4 group-hover:text-blue-600">
+              Competitions
+            </h2>
+            <p className="text-gray-600">
+              View your registered competitions
+            </p>
+          </Link>
+
         </div>
       </div>
     </div>

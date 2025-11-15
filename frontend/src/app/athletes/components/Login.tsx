@@ -1,14 +1,19 @@
 'use client'
-import { useState } from 'react';
-import { login } from '@/lib/api';
+import React, { useState } from 'react';
+import { login } from '@/lib/api/auth';
+import {Athlete} from "@/src/app/athletes/components/AthleteList";
 
-export default function Login({ onLoginSuccess: any }) {
+interface LoginProps {
+  onLoginSuccess: () => void;
+}
+
+export default function Login({ onLoginSuccess }: LoginProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:  React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { getAthletes, deleteAthlete } from '@/lib/api';
+import { getAthletes, deleteAthlete } from '@/lib/api/athletes';
 
 // Define the Athlete type
 export interface Athlete {
