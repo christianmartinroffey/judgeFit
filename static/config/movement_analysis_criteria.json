@@ -18,10 +18,12 @@
         "ctb_full_range_threshold": 10,
         "regular_full_range_threshold": 10
     },
-    "push_up": {
-        "descending_threshold": 0,
-        "ascending_threshold": 0,
-        "full_extension_threshold": 0,
+    "pushup": {
+        "descending_threshold": 110,
+        "ascending_threshold": 110,
+        "full_extension_threshold": 90 ,
+        "start_point": 165,
+        "end_point": 60,
         "full_range_threshold": 0
     },
      "thruster": {

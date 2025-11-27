@@ -4,13 +4,17 @@ import time
 import math
 import mediapipe as mp
 import PoseModule as pm
+from utilities.utils import load_movement_criteria
+
+
+criteria = load_movement_criteria()  # Load criteria from JSON file
 
 # section to use a video
 mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/pushup2.mp4')
+video = cv2.VideoCapture('../static/videos/pushup.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -25,8 +29,9 @@ is_movement_started = False
 full_depth = False
 full_extension = False
 outcome = ""
-descending_threshold = 110  # Threshold to indicate start of squat
-ascending_threshold = 110
+pushup_criteria = criteria.get('pushup', {})
+descending_threshold = pushup_criteria.get('descending_threshold', 110)  # Default if not found
+ascending_threshold = pushup_criteria.get('ascending_threshold', 110)
 
 
 while True:
@@ -58,8 +63,9 @@ while True:
         angle = detector.getAngle(img, shoulder_index, elbow_index, wrist_index)
 
         # Update start and end points for the new angle range
-        start_point = 170  # extended value
-        end_point = 60  # full range when reached
+        start_point = pushup_criteria.get('start_point', 165)  # Default if not found
+        end_point = pushup_criteria.get('end_point', 60)
+        # extended value # full range when reached
         percentage = int(round(np.interp(angle, (end_point, start_point), (100, 0))))
 
         # analysis logic
@@ -85,6 +91,7 @@ while True:
 
             # Check for no full extension
             # if angle is going higher it means athlete is going up
+            # TODO rework this as it's in reverse
             if full_depth:
                 if not full_extension:
                     if angle < previous_angle:
