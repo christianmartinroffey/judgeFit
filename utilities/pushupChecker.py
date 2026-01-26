@@ -91,7 +91,6 @@ while True:
 
             # Check for no full extension
             # if angle is going higher it means athlete is going up
-            # TODO rework this as it's in reverse
             if full_depth:
                 if not full_extension:
                     if angle < previous_angle:
