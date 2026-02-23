@@ -53,6 +53,7 @@ judge = CrossFitJudge('../static/videos/airsquat.mp4', criteria)
 judge.run()
 Controls
 
+
 SPACE: Pause/Resume video
 Q or ESC: Quit application
 
