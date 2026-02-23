@@ -13,8 +13,8 @@ admin.site.register(Movement, MovementAdmin)
 
 
 class WorkoutAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type', 'total_reps', 'time_cap', 'is_active', 'is_scaled')
-    list_filter = ('name', 'type', 'is_active', 'is_scaled')
+    list_display = ('name', 'type', 'total_reps', 'time_cap', 'is_active')
+    list_filter = ('name', 'type', 'is_active')
     search_fields = ('name', 'description')
 
 
@@ -31,9 +31,9 @@ admin.site.register(WorkoutComponent, WorkoutComponentAdmin)
 
 
 class ScoreAdmin(admin.ModelAdmin):
-    list_display = ('athlete', 'workout', 'score')
-    list_filter = ('athlete', 'workout')
-    search_fields = ('athlete', 'workout', 'competition')
-
+    # list_display = ('athlete', 'workout', 'score')
+    # list_filter = ('athlete', 'workout')
+    # search_fields = ('athlete', 'workout', 'competition')
+    pass
 
 admin.site.register(Score, ScoreAdmin)

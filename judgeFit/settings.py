@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'drf_spectacular',
     'corsheaders',
+    'utilities',
 ]
 
 AUTH_USER_MODEL = "users.User"  # Point to the users src

@@ -60,7 +60,6 @@ class Workout(models.Model):
     total_reps = models.IntegerField(blank=True, null=True)
     time_cap = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    is_scaled = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -104,18 +103,47 @@ class WorkoutComponent(models.Model):
 
 
 class Score(models.Model):
-    athlete = models.ForeignKey('athlete.Athlete', on_delete=models.CASCADE)
-    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
     is_valid = models.BooleanField(default=True)
     total_reps = models.IntegerField(blank=True, null=True)
     no_reps = models.IntegerField(blank=True, null=True)
     score = models.CharField(max_length=100)  # Flexible field to store different types of scores
     created_at = models.DateTimeField(auto_now_add=True)
-    competition = models.ForeignKey('athlete.Competition', on_delete=models.CASCADE, blank=True, null=True)
+    is_scaled = models.BooleanField(default=False)
 
     def __init__(self):
         super().__init__()
 
+    @staticmethod
+    def create_score():
+        Score.objects.create(is_valid=True, total_reps=0, no_reps=0, is_scaled=False)
+
+
+class Video(models.Model):
+    SUBMITTED = 'S'  # uploaded but not yet processed - i.e. queued
+    PROCESSING = 'P'  # system is processing i.e. judgefit
+    ERROR = 'E'  # error with the processing (system)
+    APPROVED = 'A'  # approved by judgefit / competition manager
+    REJECTED = 'R'  # rejected by judgefit / competition manager
+
+    STATUS_CHOICES = (
+        (SUBMITTED, 'Submitted'),
+        (PROCESSING, 'Processing'),
+        (ERROR, 'Error'),
+        (APPROVED, 'Approved'),
+        (REJECTED, 'Rejected'),
+    )
+
+    id = models.UUIDField(primary_key=True)
+    athlete = models.ForeignKey('athlete.Athlete', on_delete=models.CASCADE)
+    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=SUBMITTED)
+    is_deleted = models.BooleanField(default=False)
+    score = models.OneToOneField(Score, default=None, null=True, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    competition = models.ForeignKey('athlete.Competition', on_delete=models.CASCADE, blank=True, null=True)
+
+    def __init__(self):
+        super().__init__()
 
     def process_video(self, video, workout):
         # check if workout exists
@@ -129,9 +157,10 @@ class Score(models.Model):
 
         return
 
-'''
-    #TODO note for the structure the system needs to register the type of movement
-    if the athlete does less reps than needed and doesn't correct then the system needs to be able to move onto the next movement
-'''
+    '''
+        #TODO note for the structure the system needs to register the type of movement
+        if the athlete does less reps than needed and doesn't correct then the system needs to be able to move onto the next movement
+    '''
 
-
+    # TODO: there is the option to have the user upload video to youtube and then have the
+    # system process that instead of uploading

@@ -36,24 +36,3 @@ class CompetitionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name=name)
         return queryset
 
-class VideoSubmit(viewsets.ModelViewSet):
-
-
-    def perform_create(self, serializer):
-        video = self.video
-
-        # check if the workout exists, should be a dropdown
-
-        # if the workout does not exist then return
-
-        # if there is a duplicate workout for the athlete then check they want to overwrite it
-        # (handle this on the frontend?)
-
-        # if it all checks out ie:
-        # athlete exists
-        # workout exists and is not duplicate
-        # competition exists
-        # then call process_video method
-
-        return
-

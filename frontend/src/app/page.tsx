@@ -59,7 +59,17 @@ export default function HomePage() {
               Create, view, and manage athlete profiles
             </p>
           </Link>
-
+          <Link
+            href="/video"
+            className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition group"
+          >
+            <h2 className="text-2xl font-bold mb-4 group-hover:text-blue-600">
+              Video Submit
+            </h2>
+            <p className="text-gray-600">
+              Submit your video for review
+            </p>
+          </Link>
           <Link
             href="/competitions"
             className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition group"

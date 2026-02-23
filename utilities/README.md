@@ -33,13 +33,11 @@ Place the new files in your project:
 
 movement_classifier.py
 movement_counters.py
-crossfit_judge.py
-
 
 
 Usage
 Basic Usage
-pythonfrom crossfit_judge import CrossFitJudge
+
 from utilities.utils import load_movement_criteria
 
 # Load criteria

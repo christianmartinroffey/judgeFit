@@ -6,7 +6,6 @@ router = routers.DefaultRouter()
 
 router.register(r'athletes', views.AthleteViewSet)
 router.register(r'competitions', views.CompetitionViewSet)
-#router.register(r'submit-video', views.VideoSubmit)
 
 urlpatterns = []
 
