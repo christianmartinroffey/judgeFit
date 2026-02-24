@@ -1,17 +1,33 @@
+import sys
+import os
+
+sys.path.insert(0, '/Users/christianroffey/PycharmProjects/judgeFit')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'judgeFit.settings')
+
+import django
+django.setup()
+
 import cv2
-import numpy as np
-import mediapipe as mp
 import PoseModule as pm
-from utilities.utils import load_movement_criteria
+from utilities.utils import load_movement_criteria, get_youtube_stream_url, download_youtube_video
 from workout.models import Score
+
 
 criteria = load_movement_criteria()  # Load criteria from JSON file
 
 squat_criteria = criteria.get('squat', {})
 descending_threshold = squat_criteria.get('descending_threshold', 110)  # Default if not found
 ascending_threshold = squat_criteria.get('ascending_threshold', 110)  # Default if not found
+# live feed
 # video = cv2.VideoCapture(0)
-video = cv2.VideoCapture('../static/videos/airsquat.mp4')
+
+# youtube video
+yt_video = 'https://www.youtube.com/watch?v=QmZAiBqPvZw'
+stream_url = download_youtube_video(yt_video)
+video = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG)
+
+# static video
+# video = cv2.VideoCapture('../static/videos/airsquat.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()
@@ -127,6 +143,7 @@ def process_movement(video):
 
         elif key == ord('q') or key == 27:  # 'q' or ESC key for quitting
             break
+    os.unlink(stream_url)
 
     Score.create_score(is_valid=is_valid, total_reps=count, no_reps=no_rep, is_scaled=is_scaled)
 

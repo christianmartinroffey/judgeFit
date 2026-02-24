@@ -3,7 +3,7 @@
         "descending_threshold": 110,
         "ascending_threshold": 110,
         "start_point": 165,
-        "end_point": 60
+        "end_point": 65
     },
     "toes_to_bar": {
         "descending_threshold": 30,

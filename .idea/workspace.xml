@@ -4,25 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="fix push up criteria">
-      <change afterPath="$PROJECT_DIR$/frontend/lib/api/videos.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/video/[id]/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/video/components/SubmitVideo.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/video/components/VideoList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/video/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/app/video/submit/page.tsx" afterDir="false" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="video view,model and changes">
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/athlete/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/athlete/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/athlete/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/athlete/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/lib/api/athletes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/lib/api/athletes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/judgeFit/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/judgeFit/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/config/movement_analysis_criteria.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/config/movement_analysis_criteria.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utilities/squatChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/squatChecker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +56,9 @@
     <commands />
     <urls />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
@@ -105,7 +95,7 @@
     "deletionFromPopupRequiresConfirmation": "false",
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/video",
+    "last_opened_file_path": "/Users/christianroffey/PycharmProjects/judgeFit",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -129,11 +119,11 @@
       <recent name="$PROJECT_DIR$/workout/managment/commands" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/frontend/src" />
       <recent name="$PROJECT_DIR$/frontend" />
       <recent name="$PROJECT_DIR$/frontend/app/athletes" />
       <recent name="$PROJECT_DIR$/frontend/app/athletes/create" />
-      <recent name="$PROJECT_DIR$/frontend/app/components" />
     </key>
   </component>
   <component name="RunManager" selected="Python.squatChecker">
@@ -342,23 +332,8 @@
       <workItem from="1765382388807" duration="4104000" />
       <workItem from="1769251701798" duration="1982000" />
       <workItem from="1769520521916" duration="1000" />
-      <workItem from="1771754007194" duration="7954000" />
-    </task>
-    <task id="LOCAL-00007" summary="add admin boilerplate for movementAdmin">
-      <option name="closed" value="true" />
-      <created>1705853981763</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1705853981763</updated>
-    </task>
-    <task id="LOCAL-00008" summary="update addnewmovements.py command with prints">
-      <option name="closed" value="true" />
-      <created>1705860574456</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1705860574456</updated>
+      <workItem from="1771754007194" duration="8098000" />
+      <workItem from="1771959558918" duration="4016000" />
     </task>
     <task id="LOCAL-00009" summary="update description model to 1000 characters">
       <option name="closed" value="true" />
@@ -736,7 +711,23 @@
       <option name="project" value="LOCAL" />
       <updated>1769412098047</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="video view,model and changes">
+      <option name="closed" value="true" />
+      <created>1771831428590</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1771831428590</updated>
+    </task>
+    <task id="LOCAL-00057" summary="video view,model and changes">
+      <option name="closed" value="true" />
+      <created>1771831448360</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1771831448360</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -772,7 +763,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updates to packages and urls" />
     <MESSAGE value="add demo file for showing" />
     <MESSAGE value="update model and settings.py" />
     <MESSAGE value="update serializer" />
@@ -797,7 +787,8 @@
     <MESSAGE value="fix competition urls" />
     <MESSAGE value="start work on module that auto-identifies movement" />
     <MESSAGE value="fix push up criteria" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix push up criteria" />
+    <MESSAGE value="video view,model and changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="video view,model and changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -824,7 +815,7 @@
     <SUITE FILE_PATH="coverage/judgeFit$pullupChecker.coverage" NAME="pullupChecker Coverage Results" MODIFIED="1761310207916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgePukie$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1700686984275" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1769253615167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
-    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1771763933357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1771968480381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
