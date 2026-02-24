@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="video view,model and changes">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/config/movement_analysis_criteria.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/config/movement_analysis_criteria.json" afterDir="false" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="set up logic to get video from YT">
       <change beforePath="$PROJECT_DIR$/utilities/squatChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/squatChecker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/workout/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +49,10 @@
     &quot;accountId&quot;: &quot;f502c10b-403d-42a4-b96d-f8b48809898c&quot;
   }
 }</component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -333,15 +334,7 @@
       <workItem from="1769251701798" duration="1982000" />
       <workItem from="1769520521916" duration="1000" />
       <workItem from="1771754007194" duration="8098000" />
-      <workItem from="1771959558918" duration="4016000" />
-    </task>
-    <task id="LOCAL-00009" summary="update description model to 1000 characters">
-      <option name="closed" value="true" />
-      <created>1705861907664</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1705861907664</updated>
+      <workItem from="1771959558918" duration="5419000" />
     </task>
     <task id="LOCAL-00010" summary="add boiletplate database data to settings">
       <option name="closed" value="true" />
@@ -727,7 +720,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771831448360</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="set up logic to get video from YT">
+      <option name="closed" value="true" />
+      <created>1771968572857</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1771968572857</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -763,7 +764,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add demo file for showing" />
     <MESSAGE value="update model and settings.py" />
     <MESSAGE value="update serializer" />
     <MESSAGE value="add frontend folder and nextjs files" />
@@ -788,7 +788,8 @@
     <MESSAGE value="start work on module that auto-identifies movement" />
     <MESSAGE value="fix push up criteria" />
     <MESSAGE value="video view,model and changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="video view,model and changes" />
+    <MESSAGE value="set up logic to get video from YT" />
+    <option name="LAST_COMMIT_MESSAGE" value="set up logic to get video from YT" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -815,7 +816,7 @@
     <SUITE FILE_PATH="coverage/judgeFit$pullupChecker.coverage" NAME="pullupChecker Coverage Results" MODIFIED="1761310207916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgePukie$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1700686984275" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1769253615167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
-    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1771968480381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1771969891434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

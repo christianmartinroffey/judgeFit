@@ -10,8 +10,8 @@ django.setup()
 import cv2
 import PoseModule as pm
 from utilities.utils import load_movement_criteria, get_youtube_stream_url, download_youtube_video
-from workout.models import Score
-
+from workout.models import Score, Video, Workout
+from athlete.models import Athlete, Competition
 
 criteria = load_movement_criteria()  # Load criteria from JSON file
 
@@ -49,10 +49,14 @@ def process_movement(video):
     outcome = ""
     previous_angle = 0
     paused = False
+    video_exists = False
 
     while True:
+        video_exists = True
         if not paused:
             success, img = video.read()
+            if not success or img is None:
+                break
             img = detector.getPose(img, draw=False)
 
             lmList = detector.getPosition(img, draw=False)
@@ -145,7 +149,11 @@ def process_movement(video):
             break
     os.unlink(stream_url)
 
-    Score.create_score(is_valid=is_valid, total_reps=count, no_reps=no_rep, is_scaled=is_scaled)
+    Score.create_score(is_valid=video_exists, total_reps=count, no_reps=no_rep, is_scaled=is_scaled)
 
+athlete = Athlete.objects.get(id=1)
+workout = Workout.objects.get(id=1)
+competition = Competition.objects.get(id=1)
 
+Video.objects.get_or_create(athlete=athlete, workout=workout, competition=competition)
 process_movement(video)

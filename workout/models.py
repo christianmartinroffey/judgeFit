@@ -1,3 +1,6 @@
+import logging
+import uuid
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -110,12 +113,15 @@ class Score(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_scaled = models.BooleanField(default=False)
 
-    def __init__(self):
-        super().__init__()
 
     @staticmethod
-    def create_score():
-        Score.objects.create(is_valid=True, total_reps=0, no_reps=0, is_scaled=False)
+    def create_score(is_valid, total_reps, no_reps, is_scaled):
+        Score.objects.create(
+            is_valid=is_valid,
+            total_reps=total_reps,
+            no_reps=no_reps,
+            is_scaled=is_scaled
+        )
 
 
 class Video(models.Model):
@@ -133,7 +139,7 @@ class Video(models.Model):
         (REJECTED, 'Rejected'),
     )
 
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     athlete = models.ForeignKey('athlete.Athlete', on_delete=models.CASCADE)
     workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=SUBMITTED)
@@ -142,8 +148,6 @@ class Video(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     competition = models.ForeignKey('athlete.Competition', on_delete=models.CASCADE, blank=True, null=True)
 
-    def __init__(self):
-        super().__init__()
 
     def process_video(self, video, workout):
         # check if workout exists
