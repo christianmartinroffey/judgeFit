@@ -4,9 +4,9 @@ from workout import views
 
 router = routers.DefaultRouter()
 
-#router.register(r'workout', views.WorkoutViewSet)
-#router.register(r'workout-component', views.WorkoutComponentViewSet)
-#router.register(r'video', views.VideoSubmit)
+router.register(r'workouts', views.WorkoutsViewSet)
+router.register(r'workout-components', views.WorkoutComponentsViewSet)
+router.register(r'videos', views.VideosViewSet)
 
 urlpatterns = []
 urlpatterns += router.urls

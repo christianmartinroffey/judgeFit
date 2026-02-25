@@ -38,7 +38,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
-          <Link href="/" className="text-2xl font-bold text-white hover:text-blue-100 transition">
+          <Link href="/frontend/public" className="text-2xl font-bold text-white hover:text-blue-100 transition">
             JudgeFit
           </Link>
 

@@ -1,7 +1,6 @@
 import json
 import subprocess
 import yt_dlp
-import tempfile
 import os
 
 def load_movement_criteria():
@@ -11,7 +10,7 @@ def load_movement_criteria():
         with open(file_path, 'r') as file:
             criteria = json.load(file)
     except Exception as e:
-        print(f"Failed to load movement criteria: {e}")
+        raise Exception(f"Failed to load movement criteria: {e}")
     return criteria
 
 

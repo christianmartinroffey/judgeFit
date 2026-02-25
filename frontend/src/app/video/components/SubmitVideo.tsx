@@ -8,7 +8,7 @@ interface SubmitVideoProps {
 }
 
 export default function SubmitVideo({ onVideoSubmit  }: SubmitVideoProps) {
-  const [file, setFile] = useState('');
+  const [videoURL, setVideoURL] = useState('');
   const [competition, setCompetition] = useState('');
     const [workout, setWorkout] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,13 +21,13 @@ export default function SubmitVideo({ onVideoSubmit  }: SubmitVideoProps) {
 
     try {
       const newVideo = await submitVideo({ name, competition, workout });
-      setFile('');
+      setVideoURL('');
       setCompetition('');
       setWorkout('');
       if (onVideoSubmit) onVideoSubmit(newVideo);
-      alert('Video created successfully!');
+      alert('Video submitted successfully!');
     } catch (err) {
-      setError('Failed to create Video');
+      setError('Failed to submit Video');
       console.error(err);
     } finally {
       setLoading(false);
@@ -45,11 +45,10 @@ export default function SubmitVideo({ onVideoSubmit  }: SubmitVideoProps) {
       )}
 
       <div className="mb-4">
-        <label className="block mb-2">Upload your video</label>
-        <input
-          type="file"
-          value={file}
-          onChange={(e) => setFile(e.target.value)}
+        <label className="block mb-2">Add your video url</label>
+        <textarea
+          value={videoURL}
+          onChange={(e) => setVideoURL(e.target.value)}
           required
           className="w-full border p-2 rounded"
         />
