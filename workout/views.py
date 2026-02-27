@@ -1,8 +1,10 @@
+import logging
+
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 
 from workout.models import Workout, WorkoutComponent, Video
-from workout.serializers import WorkoutSerializer, WorkoutComponentSerializer
+from workout.serializers import WorkoutSerializer, WorkoutComponentSerializer, VideoSerializer
 
 
 class WorkoutsViewSet(viewsets.ModelViewSet):
@@ -31,6 +33,7 @@ class WorkoutComponentsViewSet(viewsets.ModelViewSet):
 
 class VideosViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
+    serializer_class = VideoSerializer
 
     def get_queryset(self):
         queryset = Video.objects.all()
@@ -38,11 +41,12 @@ class VideosViewSet(viewsets.ModelViewSet):
             return None
         return queryset
 
-    def perform_create(self, serializer):
-        print(serializer.validated_data)
-        video = self.video
 
+    def create(self, request, *args, **kwargs):
+        logging.info(request)
+        logging.info(f"input {self}")
 
+        Video.objects.get_or_create(ur)
         # check if the workout exists, should be a dropdown
 
         # if the workout does not exist then return
@@ -56,5 +60,5 @@ class VideosViewSet(viewsets.ModelViewSet):
         # competition exists
         # then call process_video method
 
-        return
+        return Response(status=status.HTTP_201_CREATED)
 

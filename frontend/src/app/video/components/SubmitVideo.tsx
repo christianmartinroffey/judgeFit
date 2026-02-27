@@ -20,7 +20,7 @@ export default function SubmitVideo({ onVideoSubmit  }: SubmitVideoProps) {
     setError(null);
 
     try {
-      const newVideo = await submitVideo({ name, competition, workout });
+      const newVideo = await submitVideo({ videoURL, competition, workout });
       setVideoURL('');
       setCompetition('');
       setWorkout('');
@@ -36,7 +36,7 @@ export default function SubmitVideo({ onVideoSubmit  }: SubmitVideoProps) {
 
     return (
     <form onSubmit={handleSubmit} className="mb-8 p-4 border rounded">
-      <h2 className="text-2xl font-bold mb-4">Subit your video</h2>
+      <h2 className="text-2xl font-bold mb-4">Submit your video</h2>
 
       {error && (
         <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">

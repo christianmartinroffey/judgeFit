@@ -147,6 +147,7 @@ class Video(models.Model):
     score = models.OneToOneField(Score, default=None, null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     competition = models.ForeignKey('athlete.Competition', on_delete=models.CASCADE, blank=True, null=True)
+    urlPath = models.CharField(max_length=255, blank=True, null=True)
 
 
     def process_video(self, video, workout):
