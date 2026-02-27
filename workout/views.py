@@ -43,10 +43,18 @@ class VideosViewSet(viewsets.ModelViewSet):
 
 
     def create(self, request, *args, **kwargs):
-        logging.info(request)
-        logging.info(f"input {self}")
 
-        Video.objects.get_or_create(ur)
+        video, created = Video.objects.get_or_create(
+            urlPath=request.data['videoURL'],
+            athlete_id=1,
+            workout_id=1,
+            competition_id=1,
+        )
+
+        if not created:
+            logging.info(f"video already exists {video}")
+
+        return Response(status=status.HTTP_201_CREATED)
         # check if the workout exists, should be a dropdown
 
         # if the workout does not exist then return
@@ -59,6 +67,4 @@ class VideosViewSet(viewsets.ModelViewSet):
         # workout exists and is not duplicate
         # competition exists
         # then call process_video method
-
-        return Response(status=status.HTTP_201_CREATED)
 
