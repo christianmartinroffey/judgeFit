@@ -27,6 +27,7 @@ class VideoScore(serializers.ModelSerializer):
         model = Video
         fields = '__all__'
 
+
     #competition = serializers.PrimaryKeyRelatedField(queryset=Competition.objects.all()).field_name('name')
     #workout = serializers.PrimaryKeyRelatedField(queryset=Workout.objects.all()).field_name('name')
     score = Score.objects.all().values_list(
