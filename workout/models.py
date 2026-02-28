@@ -1,8 +1,10 @@
-import logging
 import uuid
 
+import cv2
 from django.core.exceptions import ValidationError
 from django.db import models
+
+# from workout.utilities.squatChecker import process_movement
 
 
 class Movement(models.Model):
@@ -149,8 +151,11 @@ class Video(models.Model):
     competition = models.ForeignKey('athlete.Competition', on_delete=models.CASCADE, blank=True, null=True)
     urlPath = models.CharField(max_length=255, blank=True, null=True)
 
-
-    def process_video(self, video, workout):
+    @staticmethod
+    def process_video(video):
+        video = cv2.VideoCapture('../static/videos/airsquat.mp4')
+        # result = process_movement(video)
+        return True
         # check if workout exists
         # use name - there will be a dropdown of workout names
 

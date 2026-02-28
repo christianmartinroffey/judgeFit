@@ -1,17 +1,6 @@
-import sys
-import os
-
-sys.path.insert(0, '/Users/christianroffey/PycharmProjects/judgeFit')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'judgeFit.settings')
-
-import django
-django.setup()
-
 import cv2
 import PoseModule as pm
-from utilities.utils import load_movement_criteria, get_youtube_stream_url, download_youtube_video
-from workout.models import Score, Video, Workout
-from athlete.models import Athlete, Competition
+from workout.utilities.utils import load_movement_criteria, download_youtube_video
 
 criteria = load_movement_criteria()  # Load criteria from JSON file
 
@@ -23,8 +12,7 @@ ascending_threshold = squat_criteria.get('ascending_threshold', 110)  # Default 
 
 # youtube video
 yt_video = 'https://www.youtube.com/watch?v=QmZAiBqPvZw'
-stream_url = download_youtube_video(yt_video)
-video = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG)
+
 
 # static video
 # video = cv2.VideoCapture('../static/videos/airsquat.mp4')
@@ -34,6 +22,10 @@ detector = pm.PoseDetector()
 
 
 def process_movement(video):
+    # TODO uncomment when internet access is available
+    # stream_url = download_youtube_video(video)
+    # video = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG)
+
     count = 0
     no_rep = 0
     is_valid = True
@@ -147,13 +139,13 @@ def process_movement(video):
 
         elif key == ord('q') or key == 27:  # 'q' or ESC key for quitting
             break
-    os.unlink(stream_url)
 
-    Score.create_score(is_valid=video_exists, total_reps=count, no_reps=no_rep, is_scaled=is_scaled)
-
-athlete = Athlete.objects.get(id=1)
-workout = Workout.objects.get(id=1)
-competition = Competition.objects.get(id=1)
-
-Video.objects.get_or_create(athlete=athlete, workout=workout, competition=competition)
-process_movement(video)
+    # TODO uncomment when internet access is available
+    #os.unlink(stream_url)
+    # Return the result instead of calling Score.create_score here
+    return {
+        'total_reps': count,
+        'no_reps': no_rep,
+        'is_valid': video_exists,
+        'is_scaled': is_scaled,
+    }

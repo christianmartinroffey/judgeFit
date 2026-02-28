@@ -4,14 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="add migrations">
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="update create video view">
+      <change afterPath="$PROJECT_DIR$/workout/utilities/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/lib/api/videos.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/lib/api/videos.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/video/components/SubmitVideo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/video/components/SubmitVideo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/components/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilities/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utilities/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/video/components/VideoList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/video/components/VideoList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/judgeFit/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/judgeFit/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/PoseModule.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/PoseModule.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/burpeeChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/burpeeChecker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/calibrate_angles.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/calibrate_angles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/fridayDemo.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/fridayDemo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/judge.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/judge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/movement_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/movement_classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/movement_counters.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/movement_counters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/pullupChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/pullupChecker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/pushupChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/pushupChecker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/squatChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/squatChecker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/system_architecture.md" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/system_architecture.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/template_code.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/template_code.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/test_judge.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/test_judge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/toestobarChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/toestobarChecker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/toestobarCheckerTHREADING.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/toestobarCheckerTHREADING.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilities/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/workout/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/workout/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/workout/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +45,7 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="136" />
+    <option name="cachedIndexableFilesCount" value="140" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -55,10 +72,10 @@
     &quot;accountId&quot;: &quot;f502c10b-403d-42a4-b96d-f8b48809898c&quot;
   }
 }</component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -80,7 +97,7 @@
     "Django Server.Run.executor": "Debug",
     "Python.addnewmovements.executor": "Run",
     "Python.addnewmovments.executor": "Run",
-    "Python.burpeeChecker.executor": "Debug",
+    "Python.burpeeChecker.executor": "Run",
     "Python.fridayDemo.executor": "Run",
     "Python.pullupChecker.executor": "Run",
     "Python.pushupChecker.executor": "Run",
@@ -126,14 +143,14 @@
       <recent name="$PROJECT_DIR$/workout/managment/commands" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/workout" />
       <recent name="$PROJECT_DIR$/frontend/src/app" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/frontend/src" />
       <recent name="$PROJECT_DIR$/frontend" />
-      <recent name="$PROJECT_DIR$/frontend/app/athletes" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.squatChecker">
+  <component name="RunManager" selected="Django Server.Run">
     <configuration name="burpeeChecker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="judgeFit" />
       <option name="ENV_FILES" value="" />
@@ -143,13 +160,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workout/utilities" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utilities/burpeeChecker.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workout/utilities/burpeeChecker.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -191,13 +208,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workout/utilities" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utilities/pushupChecker.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workout/utilities/pushupChecker.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -215,13 +232,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utilities" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workout/utilities" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utilities/squatChecker.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workout/utilities/squatChecker.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -261,12 +278,11 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
-        <env name="DJANGO_SETTINGS_MODULE" value="/" />
+        <env name="DJANGO_SETTINGS_MODULE" value="judgeFit.settings" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9 (judgeFit)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/judgeFit" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="RUN_TOOL" value="" />
@@ -292,8 +308,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.squatChecker" />
-        <item itemvalue="Python.burpeeChecker" />
         <item itemvalue="Python.pushupChecker" />
+        <item itemvalue="Python.burpeeChecker" />
         <item itemvalue="Python.test_judge" />
         <item itemvalue="Python.fridayDemo" />
       </list>
@@ -340,31 +356,8 @@
       <workItem from="1769251701798" duration="1982000" />
       <workItem from="1769520521916" duration="1000" />
       <workItem from="1771754007194" duration="8098000" />
-      <workItem from="1771959558918" duration="7981000" />
-    </task>
-    <task id="LOCAL-00011" summary="set up postgres database connections and run migrations + addnewmovements command">
-      <option name="closed" value="true" />
-      <created>1706554467117</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1706554467117</updated>
-    </task>
-    <task id="LOCAL-00012" summary="update allowed host in settings.py">
-      <option name="closed" value="true" />
-      <created>1706555034782</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1706555034782</updated>
-    </task>
-    <task id="LOCAL-00013" summary="add new fields to affiliate model">
-      <option name="closed" value="true" />
-      <created>1706771180547</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1706771180547</updated>
+      <workItem from="1771959558918" duration="9816000" />
+      <workItem from="1772224461692" duration="12078000" />
     </task>
     <task id="LOCAL-00014" summary="rework affiliate model, add migrations files for workout and create addaffiliatedata command">
       <option name="closed" value="true" />
@@ -734,7 +727,31 @@
       <option name="project" value="LOCAL" />
       <updated>1771970172342</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="continue video submission work">
+      <option name="closed" value="true" />
+      <created>1772010028322</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1772010028322</updated>
+    </task>
+    <task id="LOCAL-00061" summary="add urlpath to video and modify views">
+      <option name="closed" value="true" />
+      <created>1772226082961</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1772226082961</updated>
+    </task>
+    <task id="LOCAL-00062" summary="update create video view">
+      <option name="closed" value="true" />
+      <created>1772226839652</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1772226839652</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -770,9 +787,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update serializer" />
-    <MESSAGE value="add frontend folder and nextjs files" />
-    <MESSAGE value="remove frontend folder and nextjs files" />
     <MESSAGE value="add cors to settings.py" />
     <MESSAGE value="add frontend config files" />
     <MESSAGE value="update frontend" />
@@ -795,7 +809,10 @@
     <MESSAGE value="video view,model and changes" />
     <MESSAGE value="set up logic to get video from YT" />
     <MESSAGE value="add migrations" />
-    <option name="LAST_COMMIT_MESSAGE" value="add migrations" />
+    <MESSAGE value="continue video submission work" />
+    <MESSAGE value="add urlpath to video and modify views" />
+    <MESSAGE value="update create video view" />
+    <option name="LAST_COMMIT_MESSAGE" value="update create video view" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -805,7 +822,29 @@
           <line>80</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/workout/views.py</url>
+          <line>66</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/workout/utilities/squatChecker.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/workout/views.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
@@ -815,14 +854,14 @@
     <SUITE FILE_PATH="coverage/judgeFit$addnewmovments.coverage" NAME="addnewmovements Coverage Results" MODIFIED="1706553204992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/judgeFit$toestobarChecker.coverage" NAME="toestobarChecker Coverage Results" MODIFIED="1754665190500" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgePukie$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1700688112859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1771762685768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$burpeeChecker.coverage" NAME="burpeeChecker Coverage Results" MODIFIED="1772294811169" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/workout/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$test_judge.coverage" NAME="test_judge Coverage Results" MODIFIED="1764270580129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$fridayDemo.coverage" NAME="fridayDemo Coverage Results" MODIFIED="1762419769535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgeFit$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1704265598358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
     <SUITE FILE_PATH="coverage/judgeFit$pullupChecker.coverage" NAME="pullupChecker Coverage Results" MODIFIED="1761310207916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
     <SUITE FILE_PATH="coverage/judgePukie$PoseModule.coverage" NAME="PoseModule Coverage Results" MODIFIED="1700686984275" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modules" />
-    <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1769253615167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
-    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1771969891434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$pushupChecker.coverage" NAME="pushupChecker Coverage Results" MODIFIED="1772294918198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/workout/utilities" />
+    <SUITE FILE_PATH="coverage/judgeFit$squatChecker.coverage" NAME="squatChecker Coverage Results" MODIFIED="1772295486777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/workout/utilities" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

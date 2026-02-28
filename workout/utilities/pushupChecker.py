@@ -1,10 +1,8 @@
 import cv2
 import numpy as np
-import time
-import math
 import mediapipe as mp
 import PoseModule as pm
-from utilities.utils import load_movement_criteria
+from workout.utilities.utils import load_movement_criteria
 
 
 criteria = load_movement_criteria()  # Load criteria from JSON file
@@ -14,7 +12,7 @@ mpPose = mp.solutions.pose
 mpDraw = mp.solutions.drawing_utils
 pose = mpPose.Pose()
 
-video = cv2.VideoCapture('../static/videos/pushup.mp4')
+video = cv2.VideoCapture('../../static/videos/pushup.mp4')
 pTime = 0
 
 detector = pm.PoseDetector()

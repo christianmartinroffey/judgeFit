@@ -2,10 +2,9 @@
 Test script for validating CrossFit Judge accuracy
 Compares automated counts against manual ground truth
 """
-import cv2
 import json
 from judge import Judge
-from utilities.utils import load_movement_criteria
+from workout.utilities.utils import load_movement_criteria
 
 
 class JudgeValidator:
@@ -239,7 +238,7 @@ def example_test():
 
     # Test 3: Push-ups
     suite.add_test(
-        video_path='../static/videos/pushup.mp4',
+        video_path='../../static/videos/pushup.mp4',
         ground_truth={
             'movement': 'push_up',
             'good_reps': 10,

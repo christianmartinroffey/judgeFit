@@ -3,8 +3,9 @@ import subprocess
 import yt_dlp
 import os
 
+
 def load_movement_criteria():
-    file_path = '../static/config/movement_analysis_criteria.json'
+    file_path = '/Users/christianroffey/PycharmProjects/judgeFit/static/config/movement_analysis_criteria.json'
     criteria = {}
     try:
         with open(file_path, 'r') as file:

@@ -6,8 +6,11 @@ import { getVideos, deleteVideo } from "@/lib/api/videos";
 export interface Video {
   key: number;
   id: number;
-  athlete_id: number;
+  competition: string;
+  workout: string;
+  score: number;
   created_at: string;
+  status: string;
 }
 
 export default function VideoList() {
@@ -23,6 +26,7 @@ export default function VideoList() {
     try {
       setLoading(true);
       const data = await getVideos();
+      console.log("video data", data)
       setVideos(data.results);
       setError(null);
     } catch (err) {
@@ -57,8 +61,11 @@ export default function VideoList() {
         <div className="grid gap-4">
           {videos.map((video) => (
             <div key={video.id.toString()} className="border p-4 rounded shadow">
-              <h2 className="text-xl font-semibold">{video.id}</h2>
+              <h2 className="text-xl font-semibold">{video.competition}</h2>
               <div className="mt-4 flex gap-2">
+                <p>{video.workout}</p>
+                <p>{video.score}</p>
+                <p>{video.status}</p>
                 <span className="text-sm text-gray-500">
                   {new Date(video.created_at).toLocaleDateString()}
                 </span>

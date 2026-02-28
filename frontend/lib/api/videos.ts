@@ -5,6 +5,7 @@ export const getVideos = async () => {
   const response = await fetch(`${API_BASE_URL}/api/workout/videos`, {
     headers: getHeaders(),
   });
+  console.log(response)
   return handleResponse(response);
 };
 

@@ -3,9 +3,8 @@ Main application for movement detection and counting
 Integrates movement classification with movement-specific rep counting
 """
 import cv2
-import numpy as np
 import PoseModule as pm
-from utilities.utils import load_movement_criteria
+from workout.utilities.utils import load_movement_criteria
 from movement_classifier import MovementClassifier
 from movement_counters import SquatCounter, PushUpCounter, PullUpCounter, ToesToBarCounter
 

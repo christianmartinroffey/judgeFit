@@ -1,7 +1,6 @@
 import cv2
-import numpy as np
 import PoseModule as pm
-from utilities.utils import load_movement_criteria
+from workout.utilities.utils import load_movement_criteria
 
 
 criteria = load_movement_criteria()  # Assuming this function loads your JSON file
