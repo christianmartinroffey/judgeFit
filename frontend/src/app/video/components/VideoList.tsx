@@ -8,9 +8,19 @@ export interface Video {
   id: number;
   competition: string;
   workout: string;
-  score: number;
+  score: Score;
   created_at: string;
   status: string;
+}
+
+// Define the video type
+export interface Score {
+  is_valid: string;
+  total_reps: string;
+  no_reps: number;
+  is_scaled: string;
+  score: number;
+  created_at: string;
 }
 
 export default function VideoList() {
@@ -64,7 +74,7 @@ export default function VideoList() {
               <h2 className="text-xl font-semibold">{video.competition}</h2>
               <div className="mt-4 flex gap-2">
                 <p>{video.workout}</p>
-                <p>{video.score}</p>
+                <p>{video.score.total_reps}</p>
                 <p>{video.status}</p>
                 <span className="text-sm text-gray-500">
                   {new Date(video.created_at).toLocaleDateString()}

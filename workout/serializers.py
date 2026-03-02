@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from athlete.models import Competition
+from athlete.serializers import CompetitionSerializer
 from workout.models import Workout, WorkoutComponent, Video, Score
 
 
@@ -16,6 +17,12 @@ class WorkoutComponentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Score
+        fields = ['is_valid', 'score', 'is_scaled', 'no_reps', 'total_reps']
+
+
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
@@ -23,18 +30,26 @@ class VideoSerializer(serializers.ModelSerializer):
 
 
 class VideoScore(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
+    competition = serializers.SerializerMethodField()
+    workout = serializers.SerializerMethodField()
+
+    def get_status(self, obj):
+        return obj.get_status_display()
+
+    def get_competition(self, obj):
+        return obj.competition.name
+
+    def get_workout(self, obj):
+        return obj.workout.name
+
+    score = ScoreSerializer()
+
+    def get_score(self, obj):
+        if obj.score:
+            return ScoreSerializer(obj.score).data
+        return None
+
     class Meta:
         model = Video
         fields = '__all__'
-
-
-    #competition = serializers.PrimaryKeyRelatedField(queryset=Competition.objects.all()).field_name('name')
-    #workout = serializers.PrimaryKeyRelatedField(queryset=Workout.objects.all()).field_name('name')
-    score = Score.objects.all().values_list(
-        'is_valid',
-        'score',
-        'is_scaled',
-        'no_reps',
-        'total_reps'
-    )
-    random = "some random"

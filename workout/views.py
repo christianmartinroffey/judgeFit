@@ -37,15 +37,13 @@ class VideosViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
-    def get_queryset(self):
-        serializer_class = VideoScore
-        queryset = Video.objects.all().select_related('competition', 'workout', 'score')
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return VideoScore  # use this for reads
+        return VideoSerializer  # use this for writes
 
-        if not queryset.exists():
-            return None
-        result = serializer_class.validate(serializer_class, queryset)
-        return result
-        #return queryset
+    def get_queryset(self):
+        return Video.objects.all().select_related('competition', 'workout', 'score')
 
     def create(self, request, *args, **kwargs):
         video_url = request.data.get('videoURL')
