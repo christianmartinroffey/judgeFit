@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import PoseModule as pm
 from workout.utilities.utils import load_movement_criteria, download_youtube_video
@@ -23,8 +25,8 @@ detector = pm.PoseDetector()
 
 def process_movement(video):
     # TODO uncomment when internet access is available
-    # stream_url = download_youtube_video(video)
-    # video = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG)
+    stream_url = download_youtube_video(video)
+    video = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG)
 
     count = 0
     no_rep = 0
@@ -141,7 +143,7 @@ def process_movement(video):
             break
 
     # TODO uncomment when internet access is available
-    #os.unlink(stream_url)
+    os.unlink(stream_url)
     # Return the result instead of calling Score.create_score here
     return {
         'total_reps': count,

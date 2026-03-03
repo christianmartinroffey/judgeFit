@@ -4,6 +4,9 @@ import cv2
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from workout.utilities.squatChecker import process_movement
+
+
 # from workout.utilities.squatChecker import process_movement
 
 
@@ -153,9 +156,10 @@ class Video(models.Model):
 
     @staticmethod
     def process_video(video):
-        video = cv2.VideoCapture('../static/videos/airsquat.mp4')
-        # result = process_movement(video)
-        return True
+        # video = cv2.VideoCapture('../static/videos/airsquat.mp4')
+        result = process_movement(video)
+        return result
+
         # check if workout exists
         # use name - there will be a dropdown of workout names
 
