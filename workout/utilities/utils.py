@@ -17,7 +17,12 @@ def load_movement_criteria():
 
 
 def get_youtube_stream_url(youtube_url):
-    ydl_opts = {'format': 'best[ext=mp4]', 'quiet': True}
+    ydl_opts = {
+        'format': 'best[ext=mp4]/best',
+        'quiet': True,
+        'cookiesfrombrowser': ('chrome',),
+        'extractor_args': {'youtube': {'player_client': ['ios']}},
+    }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(youtube_url, download=False)
         return info['url']
@@ -34,15 +39,14 @@ def download_youtube_video(youtube_url):
 
     result = subprocess.run([
         'yt-dlp',
-        '--cookies-from-browser', 'chrome',
-        '--js-runtimes', f'node:/opt/homebrew/bin/node',
-        '--format', '18',
+        '--extractor-args', 'youtube:player_client=android_vr',
+        '--format', 'best[ext=mp4]/best',
         '--output', output_path,
         youtube_url
-    ], capture_output=False, env=env)
+    ], capture_output=True, env=env)
 
     if result.returncode != 0:
-        raise Exception("yt-dlp download failed")
+        raise Exception(f"yt-dlp download failed: {result.stderr.decode()}")
 
     if not os.path.exists(output_path) or os.path.getsize(output_path) == 0:
         raise Exception("Downloaded file is empty or missing")

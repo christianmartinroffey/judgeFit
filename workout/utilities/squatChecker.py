@@ -1,7 +1,7 @@
 import os
 
 import cv2
-import PoseModule as pm
+import workout.utilities.PoseModule as pm
 from workout.utilities.utils import load_movement_criteria, download_youtube_video
 
 criteria = load_movement_criteria()  # Load criteria from JSON file
@@ -24,9 +24,12 @@ detector = pm.PoseDetector()
 
 
 def process_movement(video):
-    # TODO uncomment when internet access is available
     stream_url = download_youtube_video(video)
     video = cv2.VideoCapture(stream_url, cv2.CAP_FFMPEG)
+
+    if not video.isOpened():
+        raise Exception (f"Could not open video stream")
+
 
     count = 0
     no_rep = 0
@@ -128,21 +131,20 @@ def process_movement(video):
                     is_squat_started
                 )
 
-                cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
-                cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
-                cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
+            #     cv2.putText(img, f'reps: {int(count)}', (50, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 5)
+            #     cv2.putText(img, f'no reps: {int(no_rep)}', (500, 100), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
+            #     cv2.putText(img, f'outcome: {outcome}', (50, 200), cv2.FONT_HERSHEY_PLAIN, 3, (0, 0, 255), 5)
+            #
+            # cv2.imshow("Image", img)
+            # imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
 
-            cv2.imshow("Image", img)
-            imgRGB = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
+        # key = cv2.waitKey(1)
+        # if key == 32:  # Space bar key
+        #     paused = not paused
+        #
+        # elif key == ord('q') or key == 27:  # 'q' or ESC key for quitting
+        #     break
 
-        key = cv2.waitKey(1)
-        if key == 32:  # Space bar key
-            paused = not paused
-
-        elif key == ord('q') or key == 27:  # 'q' or ESC key for quitting
-            break
-
-    # TODO uncomment when internet access is available
     os.unlink(stream_url)
     # Return the result instead of calling Score.create_score here
     return {

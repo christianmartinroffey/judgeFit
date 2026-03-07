@@ -32,7 +32,11 @@ PAGINATOR_ITEMS_PER_PAGE = 10
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+INSTALLED_APPS = [
+    ...
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +53,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'workout.utilities',
+    'django_celery_results',
+
 ]
 
 AUTH_USER_MODEL = "users.User"  # Point to the users src
@@ -244,3 +250,5 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+
