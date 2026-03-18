@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
-DEBUG = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,11 +32,13 @@ PAGINATOR_ITEMS_PER_PAGE = 10
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# CELERY CONFIG
+CELERY_BROKER_URL = config('CELERY_BROKER_REDIS_URL', default='redis://localhost:6380')
 CELERY_RESULT_BACKEND = 'django-db'
-INSTALLED_APPS = [
-    ...
-]
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +56,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'workout.utilities',
     'django_celery_results',
-
+    'django_celery_beat',
 ]
 
 AUTH_USER_MODEL = "users.User"  # Point to the users src

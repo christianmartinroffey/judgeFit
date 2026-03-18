@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="switch to yt video">
-      <change afterPath="$PROJECT_DIR$/judgeFit/celery.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/workout/tasks.py" afterDir="false" />
+    <list default="true" id="14ab2e91-bb77-495e-9c6d-df1dd123a08f" name="Changes" comment="set up redis celery and task">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/judgeFit/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/judgeFit/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/judgeFit/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/judgeFit/celery.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/judgeFit/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/judgeFit/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/utilities/squatChecker.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/squatChecker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/utilities/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/utilities/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workout/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/workout/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +25,7 @@
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="140" />
+    <option name="cachedIndexableFilesCount" value="142" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -78,7 +74,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;Django Server.Run.executor&quot;: &quot;Debug&quot;,
+    &quot;Django Server.Run.executor&quot;: &quot;Run&quot;,
     &quot;Python.addnewmovements.executor&quot;: &quot;Run&quot;,
     &quot;Python.addnewmovments.executor&quot;: &quot;Run&quot;,
     &quot;Python.burpeeChecker.executor&quot;: &quot;Run&quot;,
@@ -344,15 +340,9 @@
       <workItem from="1772224461692" duration="15973000" />
       <workItem from="1772528219695" duration="1646000" />
       <workItem from="1772625124411" duration="1377000" />
-      <workItem from="1772904683499" duration="3685000" />
-    </task>
-    <task id="LOCAL-00018" summary="rework addaffiliatedata file for affiliate model and fields">
-      <option name="closed" value="true" />
-      <created>1706980999709</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1706980999709</updated>
+      <workItem from="1772904683499" duration="6346000" />
+      <workItem from="1773043412455" duration="668000" />
+      <workItem from="1773814684057" duration="2418000" />
     </task>
     <task id="LOCAL-00019" summary="add router code to Countries model to prepare imnport">
       <option name="closed" value="true" />
@@ -738,7 +728,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772521684020</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="set up redis celery and task">
+      <option name="closed" value="true" />
+      <created>1772908392932</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1772908392933</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -774,7 +772,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="setup jwt token" />
     <MESSAGE value="set fields to nullable" />
     <MESSAGE value="fix creating athlete" />
     <MESSAGE value="fix deleting athletes" />
@@ -799,7 +796,8 @@
     <MESSAGE value="rework utils" />
     <MESSAGE value="set up videoscore serializer and link with frontend" />
     <MESSAGE value="switch to yt video" />
-    <option name="LAST_COMMIT_MESSAGE" value="switch to yt video" />
+    <MESSAGE value="set up redis celery and task" />
+    <option name="LAST_COMMIT_MESSAGE" value="set up redis celery and task" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
