@@ -127,4 +127,5 @@ class VideosViewSet(viewsets.ModelViewSet):
             'status': score.status,
             'total_reps': score.total_reps,
             'no_reps': score.no_reps,
+            'movement_breakdown': score.movement_breakdown,
         })

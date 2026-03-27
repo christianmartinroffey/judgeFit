@@ -111,12 +111,24 @@ class WorkoutComponent(models.Model):
 
 
 class Score(models.Model):
+    PROCESSING = 'processing'
+    COMPLETE = 'complete'
+    FAILED = 'failed'
+    STATUS_CHOICES = [
+        (PROCESSING, 'Processing'),
+        (COMPLETE, 'Complete'),
+        (FAILED, 'Failed'),
+    ]
+
     is_valid = models.BooleanField(default=True)
     total_reps = models.IntegerField(blank=True, null=True)
     no_reps = models.IntegerField(blank=True, null=True)
     score = models.CharField(max_length=100)  # Flexible field to store different types of scores
     created_at = models.DateTimeField(auto_now_add=True)
     is_scaled = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, blank=True, null=True)
+    # Per-movement breakdown: list of {round, sequence, movement, reps, no_reps, expected_reps}
+    movement_breakdown = models.JSONField(default=list, blank=True)
 
 
     @staticmethod

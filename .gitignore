@@ -8,6 +8,7 @@ __pycache__/
 *.pyd
 
 # Virtual environments
+.venv/
 venv/
 env/
 *.env/
@@ -50,6 +51,13 @@ build/
 
 # macOS
 .DS_Store
+.idea/
+
+# Static media / uploaded videos
+static/videos/
+
+# Test output
+workout/utilities/test_results.json
 
 # Windows
 Thumbs.db
