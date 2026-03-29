@@ -351,3 +351,107 @@ class ToesToBarCounter(BaseCounter):
         super().reset()
         self.toes_to_bar = False
         self.full_extension = False
+
+
+class ThrusterCounter(BaseCounter):
+    """
+    Counter for thrusters (front squat into overhead press).
+
+    Primary angle tracked: hip-knee-ankle (squat depth).
+    At the top, also checks:
+      - shoulder-elbow-wrist angle >= overhead_angle_threshold (arms locked out)
+      - x-coordinate spread of wrist, elbow, shoulder, hip, knee <= alignment_tolerance
+        (landmarks vertically stacked, confirming barbell is overhead)
+    """
+
+    def __init__(self, criteria):
+        super().__init__(criteria)
+        self.full_depth = False
+        self.overhead_lockout = False
+
+        self.descending_threshold = criteria.get('descending_threshold', 110)
+        self.ascending_threshold = criteria.get('ascending_threshold', 110)
+        self.start_point = criteria.get('start_point', 165)        # full hip/knee extension
+        self.end_point = criteria.get('end_point', 65)             # full squat depth
+        self.overhead_angle_threshold = criteria.get('overhead_angle_threshold', 160)
+        self.alignment_tolerance = criteria.get('alignment_tolerance', 50)  # pixels
+
+    def _pick_side(self, lmList):
+        """Return (wrist, elbow, shoulder, hip, knee) indices for the more visible side."""
+        if lmList[23][3] > lmList[24][3]:
+            return 15, 13, 11, 23, 25   # left: wrist, elbow, shoulder, hip, knee
+        return 16, 14, 12, 24, 26       # right
+
+    def _check_overhead(self, lmList, detector):
+        """
+        Return True when the athlete has a valid overhead lockout:
+          1. Arm angle (shoulder-elbow-wrist) >= overhead_angle_threshold
+          2. Wrist, elbow, shoulder, hip, knee x-coordinates are within alignment_tolerance
+        """
+        wrist, elbow, shoulder, hip, knee = self._pick_side(lmList)
+
+        arm_angle = detector.getAngle(None, shoulder, elbow, wrist)
+        if arm_angle < self.overhead_angle_threshold:
+            return False
+
+        xs = [lmList[i][1] for i in (wrist, elbow, shoulder, hip, knee)]
+        return (max(xs) - min(xs)) <= self.alignment_tolerance
+
+    def process(self, angle, lmList, detector, direction):
+        """
+        Process a thruster rep.
+
+        Args:
+            angle: hip-knee-ankle angle (drives squat phase direction)
+            lmList: pose landmarks
+            detector: PoseDetector instance
+            direction: 0 = descending, 1 = ascending
+        """
+        # Descending — going into the squat
+        if direction == 0 and angle < self.descending_threshold:
+            if not self.is_started:
+                self.is_started = True
+                self.full_depth = False
+                self.overhead_lockout = False
+                self.outcome = ''
+
+            if angle <= self.end_point:
+                self.full_depth = True
+
+        # Ascending — driving up and pressing overhead
+        elif direction == 1 and self.is_started:
+            if angle >= self.start_point:
+                if self._check_overhead(lmList, detector):
+                    self.overhead_lockout = True
+
+            # Had depth but didn't lock out — athlete is heading back down
+            if self.full_depth and not self.overhead_lockout:
+                if angle < self.previous_angle:
+                    self.no_rep += 1
+                    self.outcome = 'no overhead lockout'
+                    self.is_started = False
+                    self.full_depth = False
+
+            # Locked out overhead but never reached depth
+            elif not self.full_depth and self.overhead_lockout:
+                if angle > self.previous_angle:
+                    self.no_rep += 1
+                    self.outcome = 'not deep enough'
+                    self.is_started = False
+                    self.overhead_lockout = False
+
+        # Valid rep: reached full depth AND overhead lockout
+        if self.full_depth and self.overhead_lockout:
+            self.count += 1
+            self.outcome = 'good rep'
+            self.is_started = False
+            self.full_depth = False
+            self.overhead_lockout = False
+
+        self.previous_angle = int(angle)
+        return self.get_stats()
+
+    def reset(self):
+        super().reset()
+        self.full_depth = False
+        self.overhead_lockout = False

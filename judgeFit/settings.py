@@ -34,9 +34,12 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 # CELERY CONFIG
-CELERY_BROKER_URL = config('CELERY_BROKER_REDIS_URL', default='redis://localhost:6380')
+CELERY_BROKER_URL = config('CELERY_BROKER_REDIS_URL', default='redis://localhost:6379')
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+# MediaPipe/OpenCV crash when Celery forks worker processes (SIGSEGV on fork).
+# Solo pool runs tasks in-process without forking.
+CELERY_WORKER_POOL = 'solo'
 
 
 INSTALLED_APPS = [

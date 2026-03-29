@@ -76,20 +76,15 @@ class Workout(models.Model):
 class WorkoutComponent(models.Model):
     workout = models.ForeignKey(Workout, related_name='components', on_delete=models.CASCADE)
     movement = models.ForeignKey(Movement, on_delete=models.CASCADE)
-    sequence = models.IntegerField(default=0)
+    round = models.IntegerField(default=1)
+    sequence = models.IntegerField(default=1)
     reps = models.IntegerField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)  # in lbs
     height = models.IntegerField(blank=True, null=True)  # in inches
-    # TODO when ML has been developed to register numbers set the variations field
-    # variations = JSONField(blank=True, null=True)  # Store gender-specific or other variations
 
     class Meta:
-        ordering = ['sequence']
-
-    def save(self, *args, **kwargs):
-        if WorkoutComponent.objects.filter(workout=self.workout, sequence=self.sequence).exclude(pk=self.pk).exists():
-            raise ValidationError('A component with this sequence already exists for the workout.')
-        super(WorkoutComponent, self).save(*args, **kwargs)
+        ordering = ['round', 'sequence']
+        unique_together = ('workout', 'round', 'sequence')
 
     @staticmethod
     def get_workout_details_for_athlete(workout_id, athlete_gender):

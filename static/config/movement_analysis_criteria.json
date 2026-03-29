@@ -26,22 +26,13 @@
         "end_point": 80,
         "full_range_threshold": 0
     },
-     "thruster": {
-        "phases": [
-            {
-                "name": "front squat",
-                "descending_threshold": 110,
-                "ascending_threshold": 110,
-                "start_angle": 165,
-                "end_angle": 60
-            },
-            {
-                "name": "overhead press",
-                "start_angle": 60,
-                "end_angle": 180,
-                "ascending_threshold": 150
-            }
-        ]
+    "thruster": {
+        "descending_threshold": 110,
+        "ascending_threshold": 110,
+        "start_point": 165,
+        "end_point": 65,
+        "overhead_angle_threshold": 160,
+        "alignment_tolerance": 50
     },
     "bar_muscle_up": {
         "phases": [

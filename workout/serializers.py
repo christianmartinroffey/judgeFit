@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from athlete.models import Competition
+from athlete.models import Athlete, Competition
 from athlete.serializers import CompetitionSerializer
 from workout.models import Workout, WorkoutComponent, Video, Score
 
@@ -24,6 +24,17 @@ class ScoreSerializer(serializers.ModelSerializer):
 
 
 class VideoSerializer(serializers.ModelSerializer):
+    # TODO Athlete is injected server-side for now (mock); not required from the frontend.
+    athlete = serializers.PrimaryKeyRelatedField(
+        queryset=Athlete.objects.all(), required=False
+    )
+    competition = serializers.PrimaryKeyRelatedField(
+        queryset=Competition.objects.all(), required=False
+    )
+    workout = serializers.PrimaryKeyRelatedField(
+        queryset=Workout.objects.all(), required=False
+    )
+
     class Meta:
         model = Video
         fields = '__all__'

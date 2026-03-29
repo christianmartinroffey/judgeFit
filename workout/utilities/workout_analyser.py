@@ -14,7 +14,7 @@ import cv2
 import workout.utilities.PoseModule as pm
 from workout.utilities.movement_classifier import MovementClassifier
 from workout.utilities.movement_counters import (
-    PullUpCounter, PushUpCounter, SquatCounter, ToesToBarCounter,
+    PullUpCounter, PushUpCounter, SquatCounter, ThrusterCounter, ToesToBarCounter,
 )
 from workout.utilities.utils import download_youtube_video, load_movement_criteria
 
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 _NAME_MAP = {
     'air squat': 'squat',
     'squat': 'squat',
+    'thruster': 'thruster',
     'back squat': 'squat',
     'front squat': 'squat',
     'overhead squat': 'squat',
@@ -116,6 +117,7 @@ class WorkoutAnalyser:
         # Note: the JSON config key for push-ups is 'pushup', not 'push_up'.
         self.counters: dict = {
             'squat': SquatCounter(criteria.get('squat', {})),
+            'thruster': ThrusterCounter(criteria.get('thruster', {})),
             'push_up': PushUpCounter(criteria.get('pushup', {})),
             'pull_up': PullUpCounter(criteria.get('pull_up', {})),
             'toes_to_bar': ToesToBarCounter(criteria.get('toes_to_bar', {})),
@@ -134,7 +136,9 @@ class WorkoutAnalyser:
 
     def _get_angle(self, movement: str, lmList: list):
         """Return the primary joint angle for the given movement type."""
-        if movement == 'squat':
+        if movement in ('squat', 'thruster'):
+            # Both squat and thruster use hip-knee-ankle as the primary angle.
+            # ThrusterCounter handles the additional overhead check internally.
             hip, knee, ankle = self.detector.getLandmarkIndices(lmList, is_squat=True)
             return self.detector.getAngle(None, hip, knee, ankle)
 
@@ -202,14 +206,7 @@ class WorkoutAnalyser:
         if self.current_counter:
             self.current_counter.reset()
 
-        # Warn if movement doesn't match what the plan expects at this index
-        if self.plan.components:
-            expected = self.plan.get_current_spec(self.plan_index)
-            if expected and expected['movement'] != new_movement:
-                logger.warning(
-                    "Movement mismatch at plan index %d: detected '%s', expected '%s'",
-                    self.plan_index, new_movement, expected['movement'],
-                )
+        logger.info("Switched to movement: %s (plan index %d)", new_movement, self.plan_index)
 
     def _reps_target_reached(self) -> bool:
         """True if the current counter has hit the required reps for this set."""
@@ -244,10 +241,26 @@ class WorkoutAnalyser:
         if not lmList:
             return stats
 
-        # Classify the movement visible in this frame
+        # In plan mode: initialise current movement from the plan on the first frame
+        # so we never rely on the classifier to name the first movement.
+        if self.current_movement is None and self.plan.components:
+            first_spec = self.plan.get_current_spec(self.plan_index)
+            if first_spec:
+                self.current_movement = first_spec['movement']
+                self.current_counter = self.counters.get(self.current_movement)
+
         detected = self.classifier.classify(lmList, self.detector)
+
         if detected and detected != self.current_movement:
-            self._switch_movement(detected)
+            if self.plan.components:
+                # Plan mode: only switch when the classifier sees the *next* expected
+                # movement — classifier noise on the current movement is ignored.
+                next_spec = self.plan.get_current_spec(self.plan_index + 1)
+                if next_spec and detected == next_spec['movement']:
+                    self._switch_movement(detected)
+            else:
+                # Free mode (no plan): follow the classifier freely.
+                self._switch_movement(detected)
 
         stats['movement'] = self.current_movement
 
@@ -260,7 +273,7 @@ class WorkoutAnalyser:
                     movement_criteria.get('descending_threshold', 110),
                     movement_criteria.get('ascending_threshold', 110),
                     self.current_counter.previous_angle,
-                    downward_movement=(self.current_movement in ['squat', 'push_up']),
+                    downward_movement=(self.current_movement in ['squat', 'push_up', 'thruster']),
                 )
 
                 counter_stats = self.current_counter.process(

@@ -22,11 +22,12 @@ def analyse_video(self, score_id, video_url):
             video = score.video  # reverse OneToOneField from Video.score
             workout = video.workout
             workout_type = workout.type
-            components = workout.components.select_related('movement').order_by('sequence')
+            components = workout.components.select_related('movement').order_by('round', 'sequence')
             workout_components = [
                 {
                     'movement': component.movement.name,
                     'expected_reps': component.reps,
+                    'round': component.round,
                     'sequence': component.sequence,
                 }
                 for component in components

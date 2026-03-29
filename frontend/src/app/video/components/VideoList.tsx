@@ -74,7 +74,7 @@ export default function VideoList() {
               <h2 className="text-xl font-semibold">{video.competition}</h2>
               <div className="mt-4 flex gap-2">
                 <p>{video.workout}</p>
-                <p>{video.score.total_reps}</p>
+                <p>{video.score?.total_reps ?? 'N/A'}</p>
                 <p>{video.status}</p>
                 <span className="text-sm text-gray-500">
                   {new Date(video.created_at).toLocaleDateString()}

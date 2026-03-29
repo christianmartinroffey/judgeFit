@@ -45,18 +45,31 @@ class VideosViewSet(viewsets.ModelViewSet):
         return VideoSerializer  # use this for writes
 
     def get_queryset(self):
-        return Video.objects.all().select_related('competition', 'workout', 'score')
+        return Video.objects.all().order_by('-created_at').select_related('competition', 'workout', 'score')
 
     def create(self, request, *args, **kwargs):
+        from athlete.models import Athlete
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        score = serializer.save()
+
+        # TODO: replace with the authenticated user's athlete profile
+        mock_athlete, _ = Athlete.objects.get_or_create(
+            name='Mock', surname='Athlete',
+            defaults={'email': 'mock@judgefit.com'},
+        )
+
+        # Create a Score record first so the task has an ID to update
+        new_score = Score.objects.create(score='')
+
+        video_url = request.data.get('videoURL')
+        video = serializer.save(athlete=mock_athlete, score=new_score, urlPath=video_url)
 
         # Queue the analysis
-        analyse_video.delay(str(score.id), score.video.url)
+        analyse_video.delay(str(new_score.id), video.urlPath)
 
         return Response(
-            {'id': str(score.id), 'status': 'queued'},
+            {'id': str(new_score.id), 'status': 'queued'},
             status=status.HTTP_202_ACCEPTED
         )
 
