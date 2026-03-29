@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { getAthletes, deleteAthlete } from '@/lib/api/athletes';
+import { Trash2 } from 'lucide-react';
 
-// Define the Athlete type
 export interface Athlete {
   key: number;
   id: number;
@@ -26,7 +26,7 @@ export default function AthleteList() {
       setAthletes(data.results);
       setError(null);
     } catch (err) {
-      setError('Failed to fetch Athletes');
+      setError('Failed to load athletes.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -34,46 +34,49 @@ export default function AthleteList() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this athlete?')) return;
+    if (!confirm('Delete this athlete?')) return;
     try {
       await deleteAthlete(id);
-        setAthletes(athletes.filter((athlete) => athlete.id !== id));
+      setAthletes(athletes.filter((a) => a.id !== id));
     } catch (err) {
-      alert('Failed to delete athlete');
+      alert('Failed to delete athlete.');
       console.error(err);
     }
   };
 
-  if (loading) return <div className="p-4">Loading...</div>;
-  if (error) return <div className="p-4 text-red-500">{error}</div>;
+  if (loading) return (
+    <div className="flex items-center gap-2 text-sm text-gray-400 py-8">
+      <div className="w-4 h-4 border-2 border-gray-200 border-t-gray-500 rounded-full animate-spin" />
+      Loading athletes…
+    </div>
+  );
+  if (error) return <p className="text-sm text-red-500 py-4">{error}</p>;
+
+  if (athletes.length === 0) {
+    return (
+      <div className="border border-dashed border-gray-200 rounded-xl p-10 text-center">
+        <p className="text-sm text-gray-400">No athletes yet. Add one above.</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Athletes</h1>
-
-      {athletes.length === 0 ? (
-        <p>No athlete yet. Create one from Django admin!</p>
-      ) : (
-        <div className="grid gap-4">
-          {athletes.map((athlete) => (
-            <div key={athlete.id.toString()} className="border p-4 rounded shadow">
-              <h2 className="text-xl font-semibold">{athlete.id}</h2>
-              <p className="text-gray-600 mt-2">{athlete.surname}</p>
-              <div className="mt-4 flex gap-2">
-                <span className="text-sm text-gray-500">
-                  {new Date(athlete.created_at).toLocaleDateString()}
-                </span>
-                <button
-                  onClick={() => handleDelete(athlete.id)}
-                  className="ml-auto text-red-500 hover:text-red-700"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+    <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
+      {athletes.map((athlete) => (
+        <div key={athlete.id} className="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors">
+          <div>
+            <p className="text-sm font-medium text-gray-900">{athlete.surname}</p>
+            <p className="text-xs text-gray-400 mt-0.5">ID {athlete.id} · Added {new Date(athlete.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+          </div>
+          <button
+            onClick={() => handleDelete(athlete.id)}
+            className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+            aria-label="Delete athlete"
+          >
+            <Trash2 size={15} />
+          </button>
         </div>
-      )}
+      ))}
     </div>
   );
 }

@@ -1,5 +1,35 @@
 import { API_BASE_URL, getHeaders, handleResponse } from "@/lib/api";
 
+// Returns the athlete data if a profile exists, or { _noProfile: true, userEmail } if not.
+export const getMyProfile = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/me/`, {
+    headers: getHeaders(),
+  });
+  if (response.status === 404) {
+    const body = await response.json().catch(() => ({}));
+    return { _noProfile: true as const, userEmail: (body.user_email as string) ?? '' };
+  }
+  return handleResponse(response);
+};
+
+export const createMyProfile = async (data: Record<string, unknown>) => {
+  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/me/`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+};
+
+export const updateMyProfile = async (data: Record<string, unknown>) => {
+  const response = await fetch(`${API_BASE_URL}/api/athlete/athletes/me/`, {
+    method: 'PATCH',
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+};
+
 // API functions
 export const getAthletes = async () => {
   const response = await fetch(`${API_BASE_URL}/api/athlete/athletes`, {

@@ -20,7 +20,7 @@ class WorkoutComponentSerializer(serializers.ModelSerializer):
 class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
-        fields = ['is_valid', 'score', 'is_scaled', 'no_reps', 'total_reps']
+        fields = ['is_valid', 'score', 'is_scaled', 'no_reps', 'total_reps', 'status', 'movement_breakdown']
 
 
 class VideoSerializer(serializers.ModelSerializer):

@@ -1,21 +1,17 @@
 'use client'
-import { useState } from 'react';
-import AthleteList from './components/AthleteList';
-import CreateAthlete from './components/CreateAthlete';
+import AthleteProfile from './components/AthleteProfile';
 
-export default function AthletesPage() {
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  const handleAthleteCreated = () => {
-    setRefreshKey(prev => prev + 1);
-  };
-
+export default function ProfilePage() {
   return (
-    <main className="min-h-screen p-8">
-      <div className="container mx-auto max-w-4xl">
-        <h1 className="text-4xl font-bold mb-8">Athletes</h1>
-        <CreateAthlete onAthleteCreated={handleAthleteCreated} />
-        <AthleteList key={refreshKey} />
+    <main className="min-h-screen bg-white">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">My profile</h1>
+          <p className="text-sm text-gray-500 mt-1">View and update your athlete profile.</p>
+        </div>
+        <div className="max-w-2xl">
+          <AthleteProfile />
+        </div>
       </div>
     </main>
   );

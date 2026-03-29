@@ -9,7 +9,7 @@ export const getVideos = async () => {
   return handleResponse(response);
 };
 
-export const getVideo = async (id: number) => {
+export const getVideo = async (id: string) => {
   const response = await fetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
     headers: getHeaders(),
   });
