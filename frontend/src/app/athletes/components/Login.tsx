@@ -5,9 +5,10 @@ import {Athlete} from "@/src/app/athletes/components/AthleteList";
 
 interface LoginProps {
   onLoginSuccess: () => void;
+  onBack?: () => void;
 }
 
-export default function Login({ onLoginSuccess }: LoginProps) {
+export default function Login({ onLoginSuccess, onBack }: LoginProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +35,11 @@ export default function Login({ onLoginSuccess }: LoginProps) {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
+        {onBack && (
+          <button onClick={onBack} className="text-sm text-gray-400 hover:text-gray-700 transition-colors mb-8 flex items-center gap-1">
+            ← Back
+          </button>
+        )}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Welcome back</h1>
           <p className="text-sm text-gray-500 mt-1">Sign in to your JudgeFit account.</p>

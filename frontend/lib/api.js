@@ -17,7 +17,6 @@ export function getHeaders() {
   };
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
-  console.log("token  :", token)
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
