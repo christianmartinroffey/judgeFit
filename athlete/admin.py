@@ -1,9 +1,17 @@
 from django.contrib import admin
 
-from athlete.models import Country, Affiliate, Competition
+from athlete.models import Athlete, Country, Affiliate, Competition
 
 
-# Register your models here.
+class AthleteAdmin(admin.ModelAdmin):
+    list_display = ('name', 'surname', 'email', 'gender', 'country', 'affiliate', 'created_at')
+    list_filter = ('gender', 'country', 'affiliate')
+    search_fields = ('name', 'surname', 'email')
+
+
+admin.site.register(Athlete, AthleteAdmin)
+
+
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('name', 'router_code', 'code')
     list_filter = ('name', 'router_code', 'code')

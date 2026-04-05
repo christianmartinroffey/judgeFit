@@ -1,19 +1,24 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { getCompetitions, deleteCompetition } from '@/lib/api/competitions';
+import { checkIsAdmin } from '@/lib/auth';
 import { Trash2 } from 'lucide-react';
 
 export interface Competition {
-  key: number;
   id: number;
-  surname: string;
+  name: string;
+  location: string;
+  start_date: string;
+  end_date: string;
   created_at: string;
+  description: string;
 }
 
 export default function CompetitionList() {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isAdmin = checkIsAdmin();
 
   useEffect(() => {
     fetchCompetitions();
@@ -55,7 +60,7 @@ export default function CompetitionList() {
   if (competitions.length === 0) {
     return (
       <div className="border border-dashed border-gray-200 rounded-xl p-10 text-center">
-        <p className="text-sm text-gray-400">No competitions yet. Add one above.</p>
+        <p className="text-sm text-gray-400">No competitions yet.</p>
       </div>
     );
   }
@@ -65,16 +70,23 @@ export default function CompetitionList() {
       {competitions.map((competition) => (
         <div key={competition.id} className="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors">
           <div>
-            <p className="text-sm font-medium text-gray-900">{competition.surname}</p>
-            <p className="text-xs text-gray-400 mt-0.5">ID {competition.id} · Added {new Date(competition.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+            <p className="text-sm font-medium text-gray-900">{competition.name}</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {competition.location} · {new Date(competition.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} – {new Date(competition.end_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+            </p>
+            {competition.description && (
+              <p className="text-xs text-gray-400 mt-0.5">{competition.description}</p>
+            )}
           </div>
-          <button
-            onClick={() => handleDelete(competition.id)}
-            className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
-            aria-label="Delete competition"
-          >
-            <Trash2 size={15} />
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => handleDelete(competition.id)}
+              className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+              aria-label="Delete competition"
+            >
+              <Trash2 size={15} />
+            </button>
+          )}
         </div>
       ))}
     </div>

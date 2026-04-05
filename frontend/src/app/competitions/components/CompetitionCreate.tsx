@@ -9,8 +9,10 @@ interface CreateCompetitionProps {
 
 export default function CreateCompetition({ onCompetitionCreated }: CreateCompetitionProps) {
   const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
+  const [description, setDescription] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,10 +22,12 @@ export default function CreateCompetition({ onCompetitionCreated }: CreateCompet
     setError(null);
 
     try {
-      const newCompetition = await createCompetition({ name, surname, email });
+      const newCompetition = await createCompetition({ name, description, startDate, endDate, location });
       setName('');
-      setSurname('');
-      setEmail('');
+      setDescription('');
+      setStartDate('');
+      setEndDate('');
+      setLocation('');
       if (onCompetitionCreated) onCompetitionCreated(newCompetition);
     } catch (err) {
       setError('Failed to create competition.');
@@ -35,8 +39,6 @@ export default function CreateCompetition({ onCompetitionCreated }: CreateCompet
 
   return (
     <form onSubmit={handleSubmit} className="border border-gray-100 rounded-xl p-6 mb-6">
-      <h2 className="text-sm font-semibold text-gray-900 mb-5">Add competition</h2>
-
       {error && (
         <div className="mb-4 px-4 py-3 bg-red-50 border border-red-100 text-red-600 text-sm rounded-lg">
           {error}
@@ -52,29 +54,51 @@ export default function CreateCompetition({ onCompetitionCreated }: CreateCompet
             onChange={(e) => setName(e.target.value)}
             required
             className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-900 transition-colors"
-            placeholder="Open 2025"
+            placeholder="Your Throwdown 2025"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1.5">Surname</label>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Description</label>
           <input
             type="text"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
             className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-900 transition-colors"
-            placeholder="Organisation"
+            placeholder=""
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1.5">Email</label>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Location</label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
             required
             className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-900 transition-colors"
-            placeholder="contact@example.com"
+            placeholder="Online"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">Start date</label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-900 transition-colors"
+            placeholder=""
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1.5">End date</label>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-gray-900 transition-colors"
+            placeholder=""
           />
         </div>
       </div>

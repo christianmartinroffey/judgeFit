@@ -1,16 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { jwtDecode } from 'jwt-decode';
-
-function isTokenValid(token: string): boolean {
-  try {
-    const { exp } = jwtDecode<{ exp: number }>(token);
-    return exp * 1000 > Date.now();
-  } catch {
-    return false;
-  }
-}
+import { isTokenValid } from '@/lib/auth';
 
 export default function ProtectedPage({ children }: { children: React.ReactNode }) {
   const [checking, setChecking] = useState(true);

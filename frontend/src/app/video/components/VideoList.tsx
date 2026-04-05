@@ -48,10 +48,40 @@ function StatusBadge({ status }: { status: string | null }) {
   );
 }
 
+function DeleteModal({ onConfirm, onCancel, deleting }: { onConfirm: () => void; onCancel: () => void; deleting: boolean }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/30" onClick={onCancel} />
+      <div className="relative bg-white rounded-xl shadow-lg p-6 w-full max-w-sm mx-4">
+        <h2 className="text-sm font-semibold text-gray-900 mb-2">Delete video?</h2>
+        <p className="text-sm text-gray-500 mb-6">This action cannot be undone.</p>
+        <div className="flex justify-end gap-3">
+          <button
+            onClick={onCancel}
+            disabled={deleting}
+            className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={deleting}
+            className="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {deleting ? 'Deleting…' : 'Delete'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function VideoList() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchVideos();
@@ -71,15 +101,24 @@ export default function VideoList() {
     }
   };
 
-  const handleDelete = async (id: string, e: React.MouseEvent) => {
+  const handleDeleteClick = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
-    if (!confirm('Delete this video?')) return;
+    setPendingDeleteId(id);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!pendingDeleteId) return;
+    setDeleting(true);
     try {
-      await deleteVideo(id);
-      setVideos(videos.filter((v) => v.id !== id));
+      await deleteVideo(pendingDeleteId);
+      setVideos(videos.filter((v) => v.id !== pendingDeleteId));
+      setPendingDeleteId(null);
     } catch (err) {
-      alert('Failed to delete video.');
       console.error(err);
+      setError('Failed to delete video.');
+      setPendingDeleteId(null);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -100,45 +139,54 @@ export default function VideoList() {
   }
 
   return (
-    <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
-      {videos.map((video) => (
-        <Link
-          key={video.id}
-          href={`/video/${video.id}`}
-          className="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors group"
-        >
-          <div className="flex-1 min-w-0 mr-4">
-            <div className="flex items-center gap-3 mb-1">
-              <p className="text-sm font-medium text-gray-900 truncate">{video.workout}</p>
-              <StatusBadge status={video.score?.status ?? null} />
+    <>
+      {pendingDeleteId && (
+        <DeleteModal
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setPendingDeleteId(null)}
+          deleting={deleting}
+        />
+      )}
+      <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
+        {videos.map((video) => (
+          <Link
+            key={video.id}
+            href={`/video/${video.id}`}
+            className="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors group"
+          >
+            <div className="flex-1 min-w-0 mr-4">
+              <div className="flex items-center gap-3 mb-1">
+                <p className="text-sm font-medium text-gray-900 truncate">{video.workout}</p>
+                <StatusBadge status={video.score?.status ?? null} />
+              </div>
+              <p className="text-xs text-gray-400">
+                {video.competition} · {new Date(video.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </p>
+              <div className="flex items-center gap-4 mt-2">
+                <span className="text-xs text-gray-500">
+                  Reps: <strong className="text-gray-800">{video.score?.total_reps ?? '—'}</strong>
+                </span>
+                <span className="text-xs text-gray-500">
+                  No-reps: <strong className="text-red-500">{video.score?.no_reps ?? '—'}</strong>
+                </span>
+                <span className="text-xs text-gray-500">
+                  Valid: <strong className="text-gray-800">{video.score?.is_valid ? 'Yes' : 'No'}</strong>
+                </span>
+              </div>
             </div>
-            <p className="text-xs text-gray-400">
-              {video.competition} · {new Date(video.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-            </p>
-            <div className="flex items-center gap-4 mt-2">
-              <span className="text-xs text-gray-500">
-                Reps: <strong className="text-gray-800">{video.score?.total_reps ?? '—'}</strong>
-              </span>
-              <span className="text-xs text-gray-500">
-                No-reps: <strong className="text-red-500">{video.score?.no_reps ?? '—'}</strong>
-              </span>
-              <span className="text-xs text-gray-500">
-                Valid: <strong className="text-gray-800">{video.score?.is_valid ? 'Yes' : 'No'}</strong>
-              </span>
+            <div className="flex items-center gap-2 shrink-0">
+              <ArrowRight size={14} className="text-gray-300 group-hover:text-gray-600 transition-colors" />
+              <button
+                onClick={(e) => handleDeleteClick(video.id, e)}
+                className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+                aria-label="Delete video"
+              >
+                <Trash2 size={14} />
+              </button>
             </div>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <ArrowRight size={14} className="text-gray-300 group-hover:text-gray-600 transition-colors" />
-            <button
-              onClick={(e) => handleDelete(video.id, e)}
-              className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
-              aria-label="Delete video"
-            >
-              <Trash2 size={14} />
-            </button>
-          </div>
-        </Link>
-      ))}
-    </div>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }

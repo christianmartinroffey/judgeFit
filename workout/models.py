@@ -115,7 +115,7 @@ class Score(models.Model):
         (FAILED, 'Failed'),
     ]
 
-    is_valid = models.BooleanField(default=True)
+    is_valid = models.BooleanField(default=False)
     total_reps = models.IntegerField(blank=True, null=True)
     no_reps = models.IntegerField(blank=True, null=True)
     score = models.CharField(max_length=100)  # Flexible field to store different types of scores
