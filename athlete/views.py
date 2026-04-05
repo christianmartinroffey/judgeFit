@@ -1,10 +1,15 @@
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
 from athlete.serializers import AthleteSerializer, CompetitionSerializer
 from athlete.models import Athlete, Competition
+
+
+class IsCompetitionAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and request.user.is_competition_admin)
 
 
 class AthleteViewSet(viewsets.ModelViewSet):
@@ -64,7 +69,7 @@ class CompetitionViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ('create', 'update', 'partial_update', 'destroy'):
-            return [IsAdminUser()]
+            return [IsCompetitionAdmin()]
         return [IsAuthenticated()]
 
     def get_queryset(self):

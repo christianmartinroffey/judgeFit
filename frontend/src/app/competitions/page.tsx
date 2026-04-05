@@ -1,11 +1,16 @@
 'use client'
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import CompetitionList from './components/CompetitionList';
 import ProtectedPage from '../components/ProtectedPage';
 import { checkIsAdmin } from '@/lib/auth';
 
 export default function CompetitionsPage() {
-  const isAdmin = checkIsAdmin();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(checkIsAdmin());
+  }, []);
 
   return (
     <ProtectedPage>

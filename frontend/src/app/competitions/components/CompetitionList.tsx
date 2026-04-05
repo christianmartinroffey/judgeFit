@@ -18,7 +18,11 @@ export default function CompetitionList() {
   const [competitions, setCompetitions] = useState<Competition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const isAdmin = checkIsAdmin();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(checkIsAdmin());
+  }, []);
 
   useEffect(() => {
     fetchCompetitions();

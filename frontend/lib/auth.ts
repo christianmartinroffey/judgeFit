@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 
 interface JWTPayload {
   exp: number;
-  is_staff: boolean;
+  is_competition_admin: boolean;
 }
 
 export function isTokenValid(token: string): boolean {
@@ -17,7 +17,7 @@ export function isTokenValid(token: string): boolean {
 export function isAdminToken(token: string): boolean {
   try {
     const decoded = jwtDecode<JWTPayload>(token);
-    return decoded.exp * 1000 > Date.now() && decoded.is_staff === true;
+    return decoded.exp * 1000 > Date.now() && decoded.is_competition_admin === true;
   } catch {
     return false;
   }
