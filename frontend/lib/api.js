@@ -2,6 +2,14 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost
 
 // Helper function to handle responses
 export async function handleResponse(response) {
+  if (response.status === 401) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      window.location.href = '/';
+    }
+    throw new Error('Session expired. Please log in again.');
+  }
   if (!response.ok) {
     console.log("response not ok:", response)
     const error = await response.json().catch(() => ({}));

@@ -22,6 +22,7 @@ export default function Register({ onRegisterSuccess, onBack }: RegisterProps) {
       const data = await register({ username, email, password });
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
+      window.dispatchEvent(new Event('auth-change'));
       onRegisterSuccess();
     } catch (err: unknown) {
       const msg = (err as { message?: string })?.message;

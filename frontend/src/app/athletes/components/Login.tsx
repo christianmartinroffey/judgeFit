@@ -23,6 +23,7 @@ export default function Login({ onLoginSuccess, onBack }: LoginProps) {
       const data = await login({ username, password });
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
+      window.dispatchEvent(new Event('auth-change'));
       if (onLoginSuccess) onLoginSuccess();
     } catch (err) {
       setError('Invalid username or password.');

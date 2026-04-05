@@ -1,10 +1,20 @@
 'use client'
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { jwtDecode } from 'jwt-decode';
 import Login from './athletes/components/Login';
 import Register from './athletes/components/Register';
 
 type View = 'landing' | 'login' | 'register';
+
+function isTokenValid(token: string): boolean {
+  try {
+    const { exp } = jwtDecode<{ exp: number }>(token);
+    return exp * 1000 > Date.now();
+  } catch {
+    return false;
+  }
+}
 
 export default function HomePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,7 +23,15 @@ export default function HomePage() {
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    setIsAuthenticated(!!token);
+    if (token && isTokenValid(token)) {
+      setIsAuthenticated(true);
+    } else {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      setIsAuthenticated(false);
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('view') === 'login') setView('login');
+    }
     setIsLoading(false);
   }, []);
 

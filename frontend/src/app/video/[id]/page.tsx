@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getVideo } from '@/lib/api/videos';
 import { Video, BreakdownSet } from '@/src/app/video/components/VideoList';
 import { ArrowLeft } from 'lucide-react';
+import ProtectedPage from '@/src/app/components/ProtectedPage';
 
 function formatMovement(key: string): string {
   return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
@@ -154,7 +155,7 @@ function BreakdownSection({ breakdown }: { breakdown: BreakdownSet[] }) {
   );
 }
 
-export default function VideoDetailPage() {
+function VideoDetailContent() {
   const { id } = useParams<{ id: string }>();
   const [video, setVideo] = useState<Video | null>(null);
   const [loading, setLoading] = useState(true);
@@ -223,5 +224,13 @@ export default function VideoDetailPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function VideoDetailPage() {
+  return (
+    <ProtectedPage>
+      <VideoDetailContent />
+    </ProtectedPage>
   );
 }
