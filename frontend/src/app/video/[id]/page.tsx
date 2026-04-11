@@ -114,7 +114,7 @@ function RoundCard({ round, sets }: { round: number; sets: BreakdownSet[] }) {
                     )}
                     {set.advance_reason === 'video_end' && (
                       <span className="text-xs bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded-full">
-                        Video ended mid-set
+                        Video complete
                       </span>
                     )}
                   </div>

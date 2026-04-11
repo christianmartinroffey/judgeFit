@@ -34,6 +34,17 @@
         "overhead_angle_threshold": 160,
         "alignment_tolerance": 50
     },
+    "wall_ball": {
+        "descending_threshold": 110,
+        "ascending_threshold": 110,
+        "start_point": 165,
+        "end_point": 65,
+        "ball_height_tolerance_px": 40,
+        "min_throw_frames": 3,
+        "ball_confidence_threshold": 0.35,
+        "calibration_frames": 30,
+        "detect_every_n_frames": 3
+    },
     "bar_muscle_up": {
         "phases": [
             {

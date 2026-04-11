@@ -39,6 +39,12 @@ _NAME_MAP = {
     'toes to bar': 'toes_to_bar',
     'toes-to-bar': 'toes_to_bar',
     't2b': 'toes_to_bar',
+    'wall ball': 'wall_ball',
+    'wall balls': 'wall_ball',
+    'wall-ball': 'wall_ball',
+    'wallball': 'wall_ball',
+    'wall ball shot': 'wall_ball',
+    'wall ball shots': 'wall_ball',
 }
 
 
@@ -386,6 +392,25 @@ def analyse_workout_video(
         }
         for c in workout_components
     ]
+
+    # Dispatch to the dedicated wall ball analyser when all components are wall ball.
+    if normalised and all(c['movement'] == 'wall_ball' for c in normalised):
+        from workout.utilities.wall_ball_analyser import WallBallAnalyser  # noqa: PLC0415
+        total_expected = sum(c['expected_reps'] for c in normalised if c.get('expected_reps'))
+        #TODO TEMP: manual target override for testing — remove once auto-detection is confirmed.
+        # _MANUAL_TARGET_Y = 94  # set to None to use auto-detection
+        video_path = download_youtube_video(video_url)
+        try:
+            analyser = WallBallAnalyser(
+                video_path,
+                expected_reps=total_expected or None,
+                criteria=criteria,
+                target_y_px=None,
+            )
+            return analyser.analyse()
+        finally:
+            if os.path.exists(video_path):
+                os.unlink(video_path)
 
     plan = WorkoutPlan(normalised, workout_type=workout_type)
 
