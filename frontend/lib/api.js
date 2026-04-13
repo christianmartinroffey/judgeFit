@@ -3,10 +3,11 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost
 // Helper function to handle responses
 export async function handleResponse(response) {
   if (response.status === 401) {
-    if (typeof window !== 'undefined') {
+    const isAuthEndpoint = response.url?.includes('/api/token/');
+    if (!isAuthEndpoint && typeof window !== 'undefined') {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
-      window.location.href = '/';
+      window.location.href = '/?view=login';
     }
     throw new Error('Session expired. Please log in again.');
   }

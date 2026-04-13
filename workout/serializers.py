@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
 from athlete.models import Athlete, Competition
-from athlete.serializers import CompetitionSerializer
-from workout.models import Workout, WorkoutComponent, Video, Score
+from workout.models import Workout, WorkoutComponent, Video, Score, ScoreBreakdown
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
@@ -17,10 +16,30 @@ class WorkoutComponentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ScoreBreakdownSerializer(serializers.ModelSerializer):
+    movement = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    no_rep_reason = serializers.CharField(source='get_no_rep_reason_display', read_only=True)
+
+    class Meta:
+        model = ScoreBreakdown
+        fields = ['id', 'is_good_rep', 'movement', 'no_rep_reason', 'rep_number', 'rep_timestamp', 'created_at']
+
+
 class ScoreSerializer(serializers.ModelSerializer):
+    score_breakdown = ScoreBreakdownSerializer(many=True, read_only=True, source='scorebreakdown_set')
+
     class Meta:
         model = Score
-        fields = ['is_valid', 'score', 'is_scaled', 'no_reps', 'total_reps', 'status', 'movement_breakdown']
+        fields = [
+            'score_breakdown',
+            'is_valid',
+            'score',
+            'is_scaled',
+            'no_reps',
+            'total_reps',
+            'status',
+            'movement_breakdown'
+        ]
 
 
 class VideoSerializer(serializers.ModelSerializer):

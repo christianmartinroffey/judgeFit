@@ -7,9 +7,6 @@ from django.db import models
 from workout.utilities.squatChecker import process_movement
 
 
-# from workout.utilities.squatChecker import process_movement
-
-
 class Movement(models.Model):
     GYMNASTICS = 'G'
     MONOSTRUCTURAL = 'M'
@@ -126,14 +123,29 @@ class Score(models.Model):
     movement_breakdown = models.JSONField(default=list, blank=True)
 
 
-    @staticmethod
-    def create_score(is_valid, total_reps, no_reps, is_scaled):
-        Score.objects.create(
-            is_valid=is_valid,
-            total_reps=total_reps,
-            no_reps=no_reps,
-            is_scaled=is_scaled
-        )
+class ScoreBreakdown(models.Model):
+    """
+        This is a breakdown for each individual rep in the workout
+        which will later be used to give an overview to the user on their
+        result. If there are no reps the user will be able to see which rep
+        did not meet the standard and the reason why.
+    """
+
+    DEPTH = 'D'
+    EXTENSION = 'E'
+    TARGET = 'T'  # this is for wallballs, ctb, pu, etc
+    NO_REP_REASON_CHOICES = [
+        (DEPTH, 'Did not reach full depth'),
+        (EXTENSION, 'Did not reach full extension'),
+        (TARGET, 'Did not hit target'),
+    ]
+    score = models.ForeignKey(Score, on_delete=models.CASCADE)
+    is_good_rep = models.BooleanField(default=False)
+    movement = models.ForeignKey(Movement, on_delete=models.PROTECT)
+    no_rep_reason = models.CharField(max_length=2, choices=NO_REP_REASON_CHOICES, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    rep_number = models.IntegerField(blank=True, null=True)
+    rep_timestamp = models.IntegerField(blank=True, null=True, help_text='seconds at which the rep occurred')
 
 
 class Video(models.Model):
@@ -182,6 +194,3 @@ class Video(models.Model):
         #TODO note for the structure the system needs to register the type of movement
         if the athlete does less reps than needed and doesn't correct then the system needs to be able to move onto the next movement
     '''
-
-    # TODO: there is the option to have the user upload video to youtube and then have the
-    # system process that instead of uploading

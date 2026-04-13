@@ -13,6 +13,7 @@ export const getVideo = async (id: string) => {
   const response = await fetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
     headers: getHeaders(),
   });
+  console.log(response, "DA RESPONSE")
   return handleResponse(response);
 };
 
@@ -26,14 +27,6 @@ export const submitVideo = async (data) => {
   return handleResponse(response);
 };
 
-export const updateVideo = async (id, data) => {
-  const response = await fetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
-    method: 'PUT',
-    headers: getHeaders(),
-    body: JSON.stringify(data),
-  });
-  return handleResponse(response);
-};
 
 export const deleteVideo = async (id) => {
   const response = await fetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {

@@ -14,6 +14,16 @@ export interface BreakdownSet {
   advance_reason: string;
 }
 
+export interface ScoreBreakdown {
+  id: number;
+  is_good_rep: boolean;
+  movement: string;
+  no_rep_reason: string | null;
+  rep_number: number | null;
+  rep_timestamp: number | null;
+  created_at: string;
+}
+
 export interface Score {
   is_valid: boolean;
   total_reps: number | null;
@@ -22,6 +32,7 @@ export interface Score {
   score: string;
   status: string | null;
   movement_breakdown: BreakdownSet[];
+  score_breakdown: ScoreBreakdown[];
 }
 
 export interface Video {

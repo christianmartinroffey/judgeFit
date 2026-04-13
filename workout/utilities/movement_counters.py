@@ -521,6 +521,12 @@ class WallBallCounter(BaseCounter):
         # Observed ball peaks (minimum Y per throw) used to recalibrate target.
         self._peak_samples: list[int] = []
 
+        # Per-rep event log — each entry is saved as a ScoreBreakdown record.
+        # {'rep_number', 'is_good_rep', 'no_rep_reason', 'rep_timestamp'}
+        self._rep_log: list[dict] = []
+        self._frame_counter: int = 0
+        self._video_fps: float = 30.0
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -528,6 +534,15 @@ class WallBallCounter(BaseCounter):
     def set_target_y(self, target_y_px: int) -> None:
         """Called by WallBallAnalyser once TargetDetector has calibrated."""
         self.target_y_px = target_y_px
+
+    def set_fps(self, fps: float) -> None:
+        """Set video FPS so rep timestamps can be converted to seconds."""
+        self._video_fps = fps if fps > 0 else 30.0
+
+    def get_stats(self) -> dict:
+        stats = super().get_stats()
+        stats['rep_log'] = self._rep_log
+        return stats
 
     def update_ball_position(self, ball_detection: dict | None) -> None:
         """
@@ -569,6 +584,7 @@ class WallBallCounter(BaseCounter):
             if wrists:
                 self._wrist_y_px = min(wrists)
 
+        self._frame_counter += 1
         self._advance_state(angle, direction)
         self.previous_angle = int(angle)
         return self.get_stats()
@@ -588,6 +604,8 @@ class WallBallCounter(BaseCounter):
         self._phase_frames = 0
         self._throw_min_y = None
         self._peak_samples = []
+        self._rep_log = []
+        self._frame_counter = 0
 
     # ------------------------------------------------------------------
     # State machine
@@ -793,6 +811,12 @@ class WallBallCounter(BaseCounter):
                 "Rep #%d counted  ✓  (squat_depth=OK, ball_at_target=OK)",
                 self.count,
             )
+            self._rep_log.append({
+                'rep_number': self.count + self.no_rep,
+                'is_good_rep': True,
+                'no_rep_reason': None,
+                'rep_timestamp': int(self._frame_counter / self._video_fps),
+            })
         else:
             reasons = []
             if not self._squat_achieved:
@@ -801,6 +825,14 @@ class WallBallCounter(BaseCounter):
                 reasons.append("ball didn't reach target")
             reason = " + ".join(reasons)
             self._record_no_rep(reason)
+
+    # Maps reason strings to ScoreBreakdown.no_rep_reason codes.
+    _NO_REP_CODE_MAP = {
+        'not deep enough': 'D',
+        'ball didn\'t reach target': 'T',
+        'ball dropped': 'T',
+        'not deep enough + ball didn\'t reach target': 'D',
+    }
 
     def _record_no_rep(self, reason: str) -> None:
         self.no_rep += 1
@@ -813,6 +845,12 @@ class WallBallCounter(BaseCounter):
             "OK" if self._squat_achieved else "FAIL",
             "OK" if self._ball_at_target_achieved else "FAIL",
         )
+        self._rep_log.append({
+            'rep_number': self.count + self.no_rep,
+            'is_good_rep': False,
+            'no_rep_reason': self._NO_REP_CODE_MAP.get(reason, 'T'),
+            'rep_timestamp': int(self._frame_counter / self._video_fps),
+        })
         self._reset_phase()
 
     def _reset_phase(self) -> None:

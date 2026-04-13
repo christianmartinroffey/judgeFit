@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getVideo } from '@/lib/api/videos';
-import { Video, BreakdownSet } from '@/src/app/video/components/VideoList';
+import { Video, BreakdownSet, ScoreBreakdown } from '@/src/app/video/components/VideoList';
 import { ArrowLeft } from 'lucide-react';
 import ProtectedPage from '@/src/app/components/ProtectedPage';
 
@@ -155,6 +155,47 @@ function BreakdownSection({ breakdown }: { breakdown: BreakdownSet[] }) {
   );
 }
 
+function RepBreakdownSection({ reps }: { reps: ScoreBreakdown[] }) {
+  if (!reps || reps.length === 0) return null;
+
+  return (
+    <div className="mt-6">
+      <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Rep-by-Rep Breakdown</p>
+      <div className="border border-gray-100 rounded-xl overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-left border-b border-gray-100 bg-gray-50">
+              <th className="px-5 py-3 text-xs font-medium text-gray-400">Rep</th>
+              <th className="px-5 py-3 text-xs font-medium text-gray-400">Movement</th>
+              <th className="px-5 py-3 text-xs font-medium text-gray-400 text-center">Result</th>
+              <th className="px-5 py-3 text-xs font-medium text-gray-400">Reason</th>
+              <th className="px-5 py-3 text-xs font-medium text-gray-400 text-center">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reps.map((rep) => (
+              <tr key={rep.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
+                <td className="px-5 py-3.5 font-medium text-gray-900">#{rep.rep_number ?? '—'}</td>
+                <td className="px-5 py-3.5 text-gray-700">{formatMovement(rep.movement)}</td>
+                <td className="px-5 py-3.5 text-center">
+                  {rep.is_good_rep
+                    ? <span className="text-xs font-medium bg-green-50 text-green-700 border border-green-100 px-2 py-0.5 rounded-full">Good rep</span>
+                    : <span className="text-xs font-medium bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full">No rep</span>
+                  }
+                </td>
+                <td className="px-5 py-3.5 text-gray-500 text-xs">{rep.no_rep_reason ?? '—'}</td>
+                <td className="px-5 py-3.5 text-center text-gray-400 text-xs">
+                  {rep.rep_timestamp != null ? `${rep.rep_timestamp}s` : '—'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 function VideoDetailContent() {
   const { id } = useParams<{ id: string }>();
   const [video, setVideo] = useState<Video | null>(null);
@@ -164,7 +205,10 @@ function VideoDetailContent() {
   useEffect(() => {
     if (!id) return;
     getVideo(id)
-      .then((data) => setVideo(data))
+      .then((data) => (
+          console.log("data", data),
+setVideo(data))
+      )
       .catch(() => setError('Failed to load video results.'))
       .finally(() => setLoading(false));
   }, [id]);
@@ -210,6 +254,9 @@ function VideoDetailContent() {
 
         {/* Breakdown */}
         <BreakdownSection breakdown={video.score?.movement_breakdown ?? []} />
+
+        {/* Rep-by-rep breakdown */}
+        <RepBreakdownSection reps={video.score?.score_breakdown ?? []} />
 
         {/* No-rep guidance */}
         {(video.score?.no_reps ?? 0) > 0 && (

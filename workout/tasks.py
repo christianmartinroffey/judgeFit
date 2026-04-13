@@ -18,11 +18,12 @@ def analyse_video(self, score_id, video_url):
         # Load workout context from the linked Video → Workout → WorkoutComponents
         workout_components = []
         workout_type = 'FT'
+        components = []
         try:
             video = score.video  # reverse OneToOneField from Video.score
             workout = video.workout
             workout_type = workout.type
-            components = workout.components.select_related('movement').order_by('round', 'sequence')
+            components = list(workout.components.select_related('movement').order_by('round', 'sequence'))
             workout_components = [
                 {
                     'movement': component.movement.name,
@@ -54,6 +55,42 @@ def analyse_video(self, score_id, video_url):
         score.movement_breakdown = result.get('breakdown', [])
         score.status = Score.COMPLETE
         score.save()
+
+        # Create per-rep ScoreBreakdown records if the analyser produced a rep log.
+        rep_log = result.get('rep_log', [])
+        if rep_log:
+            from workout.models import ScoreBreakdown
+            try:
+                # Resolve the Movement FK — use the first wall_ball component.
+                movement_obj = None
+                for component in components:
+                    if 'wall' in component.movement.name.lower():
+                        movement_obj = component.movement
+                        break
+                if movement_obj is None and components:
+                    movement_obj = components[0].movement
+
+                if movement_obj is not None:
+                    ScoreBreakdown.objects.bulk_create([
+                        ScoreBreakdown(
+                            score=score,
+                            is_good_rep=rep['is_good_rep'],
+                            movement=movement_obj,
+                            no_rep_reason=rep.get('no_rep_reason'),
+                            rep_number=rep.get('rep_number'),
+                            rep_timestamp=rep.get('rep_timestamp'),
+                        )
+                        for rep in rep_log
+                    ])
+                    logger.info(
+                        "Created %d ScoreBreakdown records for score %s",
+                        len(rep_log), score_id,
+                    )
+            except Exception as breakdown_err:
+                logger.warning(
+                    "Could not create ScoreBreakdown records for score %s: %s",
+                    score_id, breakdown_err,
+                )
 
     except Exception as e:
         logger.error("Task failed for score %s: %s", score_id, e)

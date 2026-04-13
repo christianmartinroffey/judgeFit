@@ -127,7 +127,31 @@ Both of these must be true for a rep to count:
 
 ## Target Detection
 
-### Auto-detection (default)
+Target detection runs in three stages. Each stage is tried in order; whichever succeeds first wins.
+
+### Stage 1 — Ball trajectory pre-scan (primary, most reliable)
+
+Before the main analysis loop starts, `WallBallAnalyser._pre_scan_target_from_ball()` scans the
+first 600 frames (~20 s at 30 fps) using YOLO ball detection only (no pose needed). It collects
+every ball centroid Y, then takes the **8th percentile** of those values as the target height.
+
+**Why this works:** The ball spends most of its time at mid-frame (held, squatting) or lower
+(rising and descending). Only at the apex of each throw does it reach the actual target. The bottom
+~8% of Y values (smallest Y = highest on screen) cluster tightly around the target height.
+
+Log lines to look for:
+```
+Ball trajectory pre-scan: scanning up to 600 frames…
+Ball trajectory pre-scan complete: 87 detections, ball Y range [91, 312], target estimate y=97 (p8)
+Target detected from ball trajectory pre-scan: y=97 px
+```
+
+Requires at least **15 ball detections** in the scan window to trust the result. If YOLO doesn't
+find the ball enough (e.g. first 600 frames are pre-workout setup with no throws), it logs a warning
+and falls through to Stage 2.
+
+### Stage 2 — Image-based detection (fallback)
+
 `TargetDetector` runs on the first 30 frames and tries three methods in order:
 1. **Circle detection** (HoughCircles) — for round disc targets on a rig.
 2. **Horizontal line detection** (Canny + HoughLinesP) — for tape lines on a wall.
@@ -135,15 +159,28 @@ Both of these must be true for a rep to count:
 
 Commits when 5 consistent candidates are found OR after 30 frames.
 
-### Common failure: locks onto a rig bar
-The first 30 frames may not show the athlete actively throwing. Horizontal rig bars, ceiling edges,
-and gym lights are detected as strong horizontal lines. If `Target calibrated at y=NNN` appears in
-the logs very early (frames 0–5) and the Y value seems wrong, the detector locked onto background.
+**Common failure — locks onto a rig bar:** The first 30 frames often show no throwing. Horizontal
+rig bars and ceiling edges register as strong lines and can win over the actual target disc.
+If `Target calibrated at y=NNN` appears in the logs very early (frames 0–5), and the pre-scan
+didn't run (no ball detected), the detector locked onto background.
 
 **How to identify:** Run `test_wall_ball.py` — a green band is drawn at the detected target zone.
-If the band is on a rig bar rather than the actual target disc, it's miscalibrated.
+If the band sits on a rig bar rather than the actual target, it's miscalibrated.
+
+### Stage 3 — Dynamic recalibration during analysis (correction)
+
+After 3 throws have been observed during the main loop, `WallBallAnalyser._maybe_recalibrate_target()`
+recalculates `target_y_px` from the median ball peak across those throws. This corrects a bad
+Stage 2 result that slipped through. Fires once per video.
+
+Log line to look for:
+```
+Recalibrating target from ball peaks: y=160 → y=94  (samples=[91, 94, 97])
+```
 
 ### Manual target override
+
+Use this when all three automatic stages are failing and you know the correct value.
 
 **For local testing (`test_wall_ball.py`):**
 ```python
@@ -152,7 +189,7 @@ MANUAL_TARGET_Y = 94   # set to None for auto-detection
 
 **For YouTube submission flow (`workout/utilities/workout_analyser.py` ~line 400):**
 ```python
-_MANUAL_TARGET_Y = 94   # set to None for auto-detection
+_MANUAL_TARGET_Y = 94   # set to None to use automatic detection
 analyser = WallBallAnalyser(
     video_path,
     ...
@@ -164,14 +201,6 @@ analyser = WallBallAnalyser(
 1. Run `test_wall_ball.py` on a local copy of the video.
 2. Press Space to pause when the ball is at the target.
 3. Read the `ball y=NNN` value from the bottom of the frame — that is your target Y.
-
-### Dynamic recalibration (automatic correction)
-After 3 throws have been observed, `WallBallAnalyser._maybe_recalibrate_target()` recalculates
-`target_y_px` from the median ball peak across those throws. This self-corrects a bad initial
-calibration without manual intervention. Log line to look for:
-```
-Recalibrating target from ball peaks: y=171 → y=94  (samples=[91, 94, 97])
-```
 
 ---
 

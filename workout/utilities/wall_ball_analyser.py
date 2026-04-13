@@ -67,12 +67,29 @@ class WallBallAnalyser:
 
         # Counter
         wall_ball_criteria = criteria.get('wall_ball', {})
-        logging.info(wall_ball_criteria)
         self.counter = WallBallCounter(wall_ball_criteria)
         if target_y_px is not None:
             self.counter.set_target_y(target_y_px)
 
         self._frame_idx: int = 0
+
+        # Pass video FPS to the counter so it can convert frame numbers to seconds.
+        fps = self.video.get(cv2.CAP_PROP_FPS)
+        self.counter.set_fps(fps if fps > 0 else 30.0)
+
+        # If no manual target given, run a ball-trajectory pre-scan to find the
+        # target height before the main loop starts.  This is more reliable than
+        # image-based detection (rig bars, ceiling lines, etc.) because the ball
+        # literally travels to the target every rep.
+        if target_y_px is None:
+            scanned = self._pre_scan_target_from_ball()
+            if scanned is not None:
+                logger.info(
+                    "Target detected from ball trajectory pre-scan: y=%d px", scanned
+                )
+                self.target_detector.target_y_px = scanned
+                self.target_detector.is_calibrated = True
+                self.counter.set_target_y(scanned)
 
     # ------------------------------------------------------------------
     # Public API
@@ -91,15 +108,60 @@ class WallBallAnalyser:
             raise RuntimeError("Could not open video for wall ball analysis")
 
         has_frames = False
+        _pose_detected = 0
+        _pose_missing = 0
+        _angle_errors = 0
+        _min_angle = float('inf')
+        _max_angle = float('-inf')
+
         while True:
             success, img = self.video.read()
             if not success or img is None:
                 break
             has_frames = True
-            self._process_frame(img)
+
+            result = self._process_frame(img)
+
+            # Accumulate diagnostics returned from _process_frame
+            if result:
+                if result.get('pose_missing'):
+                    _pose_missing += 1
+                elif result.get('angle_error'):
+                    _angle_errors += 1
+                else:
+                    _pose_detected += 1
+                    a = result.get('angle')
+                    if a is not None:
+                        _min_angle = min(_min_angle, a)
+                        _max_angle = max(_max_angle, a)
+
             self._frame_idx += 1
 
         self.video.release()
+
+        # Diagnostic summary — always logged so you can see what happened
+        logger.info(
+            "Pose diagnostics: frames_with_pose=%d  frames_no_pose=%d  "
+            "angle_errors=%d  angle_range=[%.1f, %.1f]",
+            _pose_detected, _pose_missing, _angle_errors,
+            _min_angle if _min_angle != float('inf') else -1,
+            _max_angle if _max_angle != float('-inf') else -1,
+        )
+        if _pose_detected == 0:
+            logger.warning(
+                "No pose was detected in any frame. Check that the athlete is "
+                "visible and MediaPipe can track them (single person, good lighting, "
+                "side-on or front-on camera angle)."
+            )
+        elif _min_angle > 110:
+            logger.warning(
+                "Squat angle never dropped below descending_threshold (110°). "
+                "Minimum angle seen: %.1f°. Possible causes: "
+                "(1) MediaPipe is tracking a background person who never squats, "
+                "(2) camera angle makes the squat look shallow — try lowering "
+                "descending_threshold in movement_analysis_criteria.json.",
+                _min_angle,
+            )
 
         stats = self.counter.get_stats()
         total_reps = stats['count']
@@ -127,13 +189,84 @@ class WallBallAnalyser:
             'breakdown': breakdown,
             'rounds_completed': 1 if (is_valid and total_reps > 0) else 0,
             'target_y_px': self.target_detector.target_y_px,
+            'rep_log': stats.get('rep_log', []),
         }
 
     # ------------------------------------------------------------------
     # Internal frame processing
     # ------------------------------------------------------------------
 
-    def _process_frame(self, img) -> None:
+    def _pre_scan_target_from_ball(
+        self,
+        max_frames: int = 600,
+        min_detections: int = 15,
+        peak_percentile: float = 8.0,
+    ) -> int | None:
+        """
+        Quick ball-only pass over the first ``max_frames`` frames.
+
+        Collects every ball centroid Y detected by YOLO, then takes the
+        ``peak_percentile``-th percentile of those values as the target height.
+
+        The ball spends most of its time either in the athlete's hands (mid-frame)
+        or in flight (rising and falling).  The top ~8% of Y values correspond to
+        the ball's highest flight positions, which cluster around the target height.
+
+        Args:
+            max_frames:       How many frames to scan (default 600 ≈ 20 s at 30 fps).
+            min_detections:   Minimum ball detections required to trust the result.
+            peak_percentile:  Percentile of ball-Y distribution used as target estimate.
+
+        Returns:
+            Target Y in pixels, or None if insufficient ball data was found.
+        """
+        import numpy as np
+
+        if not self.video.isOpened():
+            return None
+
+        self.video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        ball_ys: list[int] = []
+        frame_idx = 0
+
+        logger.info("Ball trajectory pre-scan: scanning up to %d frames…", max_frames)
+
+        while frame_idx < max_frames:
+            success, img = self.video.read()
+            if not success or img is None:
+                break
+
+            # Ball detection only — no pose needed here.
+            detection = self.object_detector.detect(img, frame_idx, athlete_torso_bbox=None)
+            ball = detection.get('ball')
+            if ball and ball.get('centroid'):
+                ball_ys.append(ball['centroid'][1])
+
+            frame_idx += 1
+
+        # Reset video to start for the main analysis loop.
+        self.video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        self._frame_idx = 0
+        self.object_detector.reset_tracker()
+
+        if len(ball_ys) < min_detections:
+            logger.warning(
+                "Ball trajectory pre-scan: only %d detections in %d frames "
+                "(need %d) — falling back to image-based target detection.",
+                len(ball_ys), frame_idx, min_detections,
+            )
+            return None
+
+        target_y = int(np.percentile(ball_ys, peak_percentile))
+        logger.info(
+            "Ball trajectory pre-scan complete: %d detections, "
+            "ball Y range [%d, %d], target estimate y=%d (p%.0f)",
+            len(ball_ys), min(ball_ys), max(ball_ys), target_y, peak_percentile,
+        )
+        return target_y
+
+    def _process_frame(self, img) -> dict:
+        """Process one frame. Returns a small diagnostic dict for the analyse() summary."""
         # 1. Pose detection
         img = self.pose_detector.getPose(img, draw=False)
         lmList = self.pose_detector.getPosition(img, draw=False)
@@ -159,13 +292,14 @@ class WallBallAnalyser:
 
         # 4. Squat angle + counter
         if not lmList:
-            return
+            return {'pose_missing': True}
 
         try:
             hip, knee, ankle = self.pose_detector.getLandmarkIndices(lmList, is_squat=True)
             angle = self.pose_detector.getAngle(None, hip, knee, ankle)
-        except Exception:
-            return
+        except Exception as exc:
+            logger.debug("Angle computation failed on frame %d: %s", self._frame_idx, exc)
+            return {'angle_error': True}
 
         wall_ball_criteria = self.criteria.get('wall_ball', {})
         direction = self.pose_detector.checkDirectionFromAngle(
@@ -179,9 +313,9 @@ class WallBallAnalyser:
         self.counter.process(angle, lmList, self.pose_detector, direction)
 
         # 5. Dynamic target recalibration from observed ball peaks.
-        # After 3 throw peaks have been recorded, use their median as the target.
-        # This corrects a miscalibrated initial target (e.g. rig bar instead of disc).
         self._maybe_recalibrate_target()
+
+        return {'angle': angle}
 
     def _maybe_recalibrate_target(self) -> None:
         """
