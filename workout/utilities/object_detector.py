@@ -91,12 +91,15 @@ class GymObjectDetector:
                 'ball': {'centroid': (cx, cy), 'bbox': (x1,y1,x2,y2), 'confidence': float}
                         or None if no ball detected.
                 'frame_idx': int
+                'source': 'yolo' | 'tracker' | 'none'
         """
         ball = None
+        source = 'none'
 
         if frame_idx % self.detect_every_n_frames == 0:
             ball = self._run_yolo(frame, athlete_torso_bbox)
             if ball:
+                source = 'yolo'
                 x1, y1, x2, y2 = ball['bbox']
                 w, h = x2 - x1, y2 - y1
                 self._last_bbox = (x1, y1, w, h)
@@ -105,8 +108,10 @@ class GymObjectDetector:
                 self._tracker_active = False
         else:
             ball = self._update_tracker(frame)
+            if ball:
+                source = 'tracker'
 
-        return {'ball': ball, 'frame_idx': frame_idx}
+        return {'ball': ball, 'frame_idx': frame_idx, 'source': source}
 
     def reset_tracker(self) -> None:
         """Reset the CSRT tracker (call between reps or at start of new set)."""
