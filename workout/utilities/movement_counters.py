@@ -542,7 +542,27 @@ class WallBallCounter(BaseCounter):
     def get_stats(self) -> dict:
         stats = super().get_stats()
         stats['rep_log'] = self._rep_log
+        stats['phase'] = self._phase
         return stats
+
+    def get_debug_state(self) -> dict:
+        """Return state-machine internals for wall-ball diagnostics."""
+        return {
+            'phase': self._phase,
+            'squat_achieved': self._squat_achieved,
+            'ball_at_target_achieved': self._ball_at_target_achieved,
+            'target_y_px': self.target_y_px,
+            'ball_y': self._ball_y(),
+            'ball_loss_frames': self._ball_loss_frames,
+            'throw_frame_count': self._throw_frame_count,
+            'phase_frames': self._phase_frames,
+            'throw_min_y': self._throw_min_y,
+            'shoulder_y_px': self._shoulder_y_px,
+            'wrist_y_px': self._wrist_y_px,
+            'count': self.count,
+            'no_rep': self.no_rep,
+            'outcome': self.outcome,
+        }
 
     def update_ball_position(self, ball_detection: dict | None) -> None:
         """
