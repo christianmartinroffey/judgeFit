@@ -397,9 +397,8 @@ def analyse_workout_video(
     if normalised and all(c['movement'] == 'wall_ball' for c in normalised):
         from workout.utilities.wall_ball_analyser import WallBallAnalyser  # noqa: PLC0415
         total_expected = sum(c['expected_reps'] for c in normalised if c.get('expected_reps'))
-        #TODO TEMP: manual target override for testing — remove once auto-detection is confirmed.
-        # _MANUAL_TARGET_Y = 94  # set to None to use auto-detection
-        video_path = download_youtube_video(video_url)
+        is_local = os.path.exists(video_url)
+        video_path = video_url if is_local else download_youtube_video(video_url)
         try:
             analyser = WallBallAnalyser(
                 video_path,
@@ -409,15 +408,16 @@ def analyse_workout_video(
             )
             return analyser.analyse()
         finally:
-            if os.path.exists(video_path):
+            if not is_local and os.path.exists(video_path):
                 os.unlink(video_path)
 
     plan = WorkoutPlan(normalised, workout_type=workout_type)
 
-    video_path = download_youtube_video(video_url)
+    is_local = os.path.exists(video_url)
+    video_path = video_url if is_local else download_youtube_video(video_url)
     try:
         analyser = WorkoutAnalyser(video_path, plan, criteria)
         return analyser.analyse()
     finally:
-        if os.path.exists(video_path):
+        if not is_local and os.path.exists(video_path):
             os.unlink(video_path)
