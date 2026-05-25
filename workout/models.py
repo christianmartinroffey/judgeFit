@@ -134,10 +134,12 @@ class ScoreBreakdown(models.Model):
     DEPTH = 'D'
     EXTENSION = 'E'
     TARGET = 'T'  # this is for wallballs, ctb, pu, etc
+    EQUIPMENT = 'Q'  # equipment not in hands at required phase
     NO_REP_REASON_CHOICES = [
         (DEPTH, 'Did not reach full depth'),
         (EXTENSION, 'Did not reach full extension'),
         (TARGET, 'Did not hit target'),
+        (EQUIPMENT, 'Equipment not in hands'),
     ]
     score = models.ForeignKey(Score, on_delete=models.CASCADE)
     is_good_rep = models.BooleanField(default=False)

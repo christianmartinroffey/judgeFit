@@ -32,7 +32,12 @@
         "start_point": 165,
         "end_point": 65,
         "overhead_angle_threshold": 160,
-        "alignment_tolerance": 50
+        "alignment_tolerance": 50,
+        "equipment": {
+            "name": "barbell",
+            "check_phase": "squat_bottom",
+            "prompt": "Is the athlete holding a barbell?"
+        }
     },
     "wall_ball": {
         "descending_threshold": 110,
@@ -43,7 +48,12 @@
         "min_throw_frames": 3,
         "ball_confidence_threshold": 0.35,
         "calibration_frames": 30,
-        "detect_every_n_frames": 3
+        "detect_every_n_frames": 3,
+        "equipment": {
+            "name": "medicine ball",
+            "check_phase": "squat_bottom",
+            "prompt": "Is the athlete holding a medicine ball or wall ball?"
+        }
     },
     "bar_muscle_up": {
         "phases": [

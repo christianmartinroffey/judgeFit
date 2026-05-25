@@ -11,6 +11,7 @@ import os
 import cv2
 
 import workout.utilities.PoseModule as pm
+from workout.utilities.llava_client import LLaVAClient, LLaVATargetDetectionError
 from workout.utilities.movement_counters import WallBallCounter
 from workout.utilities.object_detector import GymObjectDetector
 from workout.utilities.target_detector import TargetDetector
@@ -49,7 +50,9 @@ class WallBallAnalyser:
         target_y_px: int | None = None,
         detect_every_n_frames: int = 3,
         calibration_frames: int = 30,
+        use_llava: bool = True,
     ):
+        self.video_path = video_path
         self.video = cv2.VideoCapture(video_path)
         self.expected_reps = expected_reps
         self.criteria = criteria
@@ -68,6 +71,7 @@ class WallBallAnalyser:
         # Counter
         wall_ball_criteria = criteria.get('wall_ball', {})
         self.counter = WallBallCounter(wall_ball_criteria)
+        self._equipment_criteria = wall_ball_criteria.get('equipment')
         if target_y_px is not None:
             self.counter.set_target_y(target_y_px)
 
@@ -77,19 +81,125 @@ class WallBallAnalyser:
         fps = self.video.get(cv2.CAP_PROP_FPS)
         self.counter.set_fps(fps if fps > 0 else 30.0)
 
-        # If no manual target given, run a ball-trajectory pre-scan to find the
-        # target height before the main loop starts.  This is more reliable than
-        # image-based detection (rig bars, ceiling lines, etc.) because the ball
-        # literally travels to the target every rep.
+        self.llava_client: LLaVAClient | None = None
+
         if target_y_px is None:
-            scanned = self._pre_scan_target_from_ball()
-            if scanned is not None:
-                logger.info(
-                    "Target detected from ball trajectory pre-scan: y=%d px", scanned
-                )
-                self.target_detector.target_y_px = scanned
+            if use_llava:
+                self.llava_client = LLaVAClient()
+                target_y = self._detect_target_with_llava()
+                self.target_detector.target_y_px = target_y
                 self.target_detector.is_calibrated = True
-                self.counter.set_target_y(scanned)
+                self.counter.set_target_y(target_y)
+            else:
+                scanned = self._pre_scan_target_from_ball()
+                if scanned is not None:
+                    logger.info("Target detected from ball trajectory pre-scan: y=%d px", scanned)
+                    self.target_detector.target_y_px = scanned
+                    self.target_detector.is_calibrated = True
+                    self.counter.set_target_y(scanned)
+
+    # ------------------------------------------------------------------
+    # LLaVA integration
+    # ------------------------------------------------------------------
+
+    def _detect_target_with_llava(self) -> int:
+        """
+        Use LLaVA to locate the target region, then run CV on that crop for
+        a precise Y pixel coordinate.
+
+        Raises LLaVATargetDetectionError if the target cannot be found.
+        """
+        # Grab frame ~10 — athlete should be in position but not yet moving.
+        self.video.set(cv2.CAP_PROP_POS_FRAMES, 10)
+        ret, frame = self.video.read()
+        self.video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        self._frame_idx = 0
+
+        if not ret or frame is None:
+            raise LLaVATargetDetectionError(
+                "Target could not be detected — could not read video frame. "
+                "Ensure the target is clearly visible in the first few seconds of the video."
+            )
+
+        crop_bbox = self.llava_client.locate_target_crop(frame)
+        if crop_bbox is None:
+            raise LLaVATargetDetectionError(
+                "Target could not be detected. Ensure the target is clearly visible "
+                "in the first few seconds of the video."
+            )
+
+        x1, y1, x2, y2 = crop_bbox
+        crop = frame[y1:y2, x1:x2]
+        h, w = frame.shape[:2]
+
+        # Run CV on the narrowed crop for sub-pixel precision.
+        target_y_local = (
+            self.target_detector._detect_horizontal_line(crop, w)
+            or self.target_detector._detect_colour_target(crop)
+            or self.target_detector._detect_circle_target(crop)
+        )
+
+        if target_y_local is not None:
+            target_y = y1 + target_y_local
+        else:
+            # CV couldn't refine — use LLaVA's estimated centre.
+            target_y = (y1 + y2) // 2
+
+        logger.info("LLaVA+CV target detected at y=%d px", target_y)
+        return target_y
+
+    def _run_equipment_checks(self, stats: dict) -> dict:
+        """
+        Post-processing pass: for each rep in rep_log, check equipment presence
+        at squat bottom using LLaVA. Overrides good reps to no-rep if equipment
+        not detected.
+        """
+        if not self._equipment_criteria:
+            return stats
+
+        prompt = self._equipment_criteria['prompt']
+        rep_log = stats.get('rep_log', [])
+        if not rep_log:
+            return stats
+
+        video = cv2.VideoCapture(self.video_path)
+
+        for entry in rep_log:
+            squat_frame = entry.get('squat_bottom_frame')
+            if squat_frame is None:
+                continue
+
+            # Grab 3 frames around squat bottom.
+            frames = []
+            for offset in (-1, 0, 1):
+                fn = max(0, squat_frame + offset)
+                video.set(cv2.CAP_PROP_POS_FRAMES, fn)
+                ret, frame = video.read()
+                if ret and frame is not None:
+                    frames.append(frame)
+
+            if not frames:
+                continue
+
+            present, raw_response = self.llava_client.check_equipment(frames, prompt)
+            entry['llava_equipment_response'] = raw_response
+            entry['llava_equipment_present'] = present
+
+            if not present and entry['is_good_rep']:
+                entry['is_good_rep'] = False
+                entry['no_rep_reason'] = 'Q'  # Equipment not in hands
+                stats['count'] = max(0, stats['count'] - 1)
+                stats['no_rep'] = stats['no_rep'] + 1
+                logger.info(
+                    "Rep #%d overridden to no-rep: %s not detected at squat bottom. "
+                    "LLaVA: %s",
+                    entry['rep_number'],
+                    self._equipment_criteria['name'],
+                    raw_response,
+                )
+
+        video.release()
+        return stats
 
     # ------------------------------------------------------------------
     # Public API
@@ -139,6 +249,11 @@ class WallBallAnalyser:
 
         self.video.release()
 
+        stats = self.counter.get_stats()
+
+        if self.llava_client and self._equipment_criteria:
+            stats = self._run_equipment_checks(stats)
+
         # Diagnostic summary — always logged so you can see what happened
         logger.info(
             "Pose diagnostics: frames_with_pose=%d  frames_no_pose=%d  "
@@ -163,7 +278,6 @@ class WallBallAnalyser:
                 _min_angle,
             )
 
-        stats = self.counter.get_stats()
         total_reps = stats['count']
         total_no_reps = stats['no_rep']
 

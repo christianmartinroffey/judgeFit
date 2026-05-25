@@ -53,3 +53,4 @@ uritemplate==4.2.0
 ultralytics==8.3.145
 yt-dlp==2025.10.14
 zipp==3.21.0
+graphify==0.7.15

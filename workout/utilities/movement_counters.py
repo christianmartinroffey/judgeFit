@@ -522,10 +522,11 @@ class WallBallCounter(BaseCounter):
         self._peak_samples: list[int] = []
 
         # Per-rep event log — each entry is saved as a ScoreBreakdown record.
-        # {'rep_number', 'is_good_rep', 'no_rep_reason', 'rep_timestamp'}
+        # {'rep_number', 'is_good_rep', 'no_rep_reason', 'rep_timestamp', 'squat_bottom_frame'}
         self._rep_log: list[dict] = []
         self._frame_counter: int = 0
         self._video_fps: float = 30.0
+        self._squat_bottom_frame: int | None = None
 
     # ------------------------------------------------------------------
     # Public API
@@ -606,6 +607,7 @@ class WallBallCounter(BaseCounter):
         self._peak_samples = []
         self._rep_log = []
         self._frame_counter = 0
+        self._squat_bottom_frame = None
 
     # ------------------------------------------------------------------
     # State machine
@@ -648,6 +650,7 @@ class WallBallCounter(BaseCounter):
             if angle <= self.end_point:
                 if not self._squat_achieved:
                     logging.debug("Squat depth achieved (angle=%.1f <= end_point=%d)", angle, self.end_point)
+                    self._squat_bottom_frame = self._frame_counter
                 self._squat_achieved = True
 
             if direction == 1:
@@ -816,6 +819,7 @@ class WallBallCounter(BaseCounter):
                 'is_good_rep': True,
                 'no_rep_reason': None,
                 'rep_timestamp': int(self._frame_counter / self._video_fps),
+                'squat_bottom_frame': self._squat_bottom_frame,
             })
         else:
             reasons = []
@@ -850,6 +854,7 @@ class WallBallCounter(BaseCounter):
             'is_good_rep': False,
             'no_rep_reason': self._NO_REP_CODE_MAP.get(reason, 'T'),
             'rep_timestamp': int(self._frame_counter / self._video_fps),
+            'squat_bottom_frame': self._squat_bottom_frame,
         })
         self._reset_phase()
 
@@ -862,4 +867,5 @@ class WallBallCounter(BaseCounter):
         self._throw_min_y = None
         self._ball_positions.clear()
         self._ball_loss_frames = 0
+        self._squat_bottom_frame = None
         self.is_started = False
