@@ -24,7 +24,7 @@ jsonschema==4.25.0
 jsonschema-specifications==2025.4.1
 kiwisolver==1.4.7
 matplotlib==3.9.4
-mediapipe==0.10.21
+mediapipe==0.10.18
 ml_dtypes==0.5.1
 numpy==1.26.4
 opencv-contrib-python==4.11.0.86
@@ -53,4 +53,3 @@ uritemplate==4.2.0
 ultralytics==8.3.145
 yt-dlp==2025.10.14
 zipp==3.21.0
-graphify==0.7.15

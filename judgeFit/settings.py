@@ -144,25 +144,13 @@ WSGI_APPLICATION = 'judgeFit.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'judgefit',
-        'USER': 'thestealthyllama',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config('POSTGRES_DB', default='judgefit'),
+        'USER': config('POSTGRES_USER', default='judgefit'),
+        'PASSWORD': config('POSTGRES_PASSWORD', default='judgefit'),
+        'HOST': config('POSTGRES_HOST', default='localhost'),
+        'PORT': config('POSTGRES_PORT', default='5432'),
     }
 }
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": env("POSTGRES_DB"),
-#         "USER": env("POSTGRES_USER"),
-#         "PASSWORD": env("POSTGRES_PASSWORD"),
-#         "HOST": env("POSTGRES_HOST"),
-#         "PORT": env("POSTGRES_PORT"),
-#         "OPTIONS": {"sslmode": "require"},
-#     }
-# }
 
 
 

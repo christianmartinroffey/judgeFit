@@ -2,10 +2,13 @@ import json
 import subprocess
 import yt_dlp
 import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def load_movement_criteria():
-    file_path = '/Users/christianroffey/PycharmProjects/judgeFit/static/config/movement_analysis_criteria.json'
+    file_path = BASE_DIR / 'static' / 'config' / 'movement_analysis_criteria.json'
     criteria = {}
     try:
         with open(file_path, 'r') as file:
