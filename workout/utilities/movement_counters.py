@@ -633,6 +633,13 @@ class WallBallCounter(BaseCounter):
         if self._phase != self.IDLE:
             self._phase_frames += 1
 
+        if self._frame_counter % 30 == 0:
+            logging.info(
+                "[WallBall] frame=%d phase=%s angle=%.1f dir=%d ball_y=%s loss=%d throw_frames=%d target_y=%s",
+                self._frame_counter, self._phase, angle, direction, ball_y,
+                self._ball_loss_frames, self._throw_frame_count, self.target_y_px,
+            )
+
         # ---- IDLE ---------------------------------------------------
         if self._phase == self.IDLE:
             if direction == 0 and angle < self.descending_threshold:
@@ -711,12 +718,11 @@ class WallBallCounter(BaseCounter):
                 if self._throw_min_y > self.target_y_px + self.ball_height_tolerance_px:
                     self._record_no_rep("ball didn't reach target")
 
-            # Ball was thrown but then lost (CSRT unavailable / occlusion at peak).
+            # Ball lost during throw (CSRT unavailable, occlusion, or YOLO missed entirely).
             # Advance optimistically rather than getting stuck in this phase.
             if (
                 self._phase == self.THROWING
                 and not self._ball_at_target_achieved
-                and self._throw_frame_count >= self.min_throw_frames
                 and ball_y is None
                 and self._ball_loss_frames >= self._MAX_BALL_LOSS_FRAMES
             ):

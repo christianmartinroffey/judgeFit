@@ -52,7 +52,7 @@
         "equipment": {
             "name": "medicine ball",
             "check_phase": "squat_bottom",
-            "prompt": "Is the athlete holding a medicine ball or wall ball?"
+            "prompt": "Has the medicine ball been dropped? Answer YES only if you can clearly see the ball sitting on the floor away from the athlete. Answer NO if the ball is being held, in motion, partially hidden behind the body, or if you are unsure."
         }
     },
     "bar_muscle_up": {

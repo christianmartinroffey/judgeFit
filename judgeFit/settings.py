@@ -40,6 +40,7 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 # MediaPipe/OpenCV crash when Celery forks worker processes (SIGSEGV on fork).
 # Solo pool runs tasks in-process without forking.
 CELERY_WORKER_POOL = 'solo'
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
 
 
 INSTALLED_APPS = [
@@ -241,7 +242,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
 }
 
 

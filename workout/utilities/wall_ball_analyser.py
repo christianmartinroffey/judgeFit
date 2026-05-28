@@ -11,7 +11,7 @@ import os
 import cv2
 
 import workout.utilities.PoseModule as pm
-from workout.utilities.llava_client import LLaVAClient, LLaVATargetDetectionError
+from workout.utilities.llava_client import LLaVAClient, LLaVAClockDetectionError, LLaVATargetDetectionError
 from workout.utilities.movement_counters import WallBallCounter
 from workout.utilities.object_detector import GymObjectDetector
 from workout.utilities.target_detector import TargetDetector
@@ -51,6 +51,7 @@ class WallBallAnalyser:
         detect_every_n_frames: int = 3,
         calibration_frames: int = 30,
         use_llava: bool = True,
+        use_clock_detection: bool = False,
     ):
         self.video_path = video_path
         self.video = cv2.VideoCapture(video_path)
@@ -76,6 +77,7 @@ class WallBallAnalyser:
             self.counter.set_target_y(target_y_px)
 
         self._frame_idx: int = 0
+        self._use_clock_detection = use_clock_detection
 
         # Pass video FPS to the counter so it can convert frame numbers to seconds.
         fps = self.video.get(cv2.CAP_PROP_FPS)
@@ -102,30 +104,91 @@ class WallBallAnalyser:
     # LLaVA integration
     # ------------------------------------------------------------------
 
+    def _find_workout_start_frame(self) -> int:
+        """
+        Scan the video every second looking for the 00:00 → 00:01 clock transition.
+
+        Returns the frame number of the 00:01 frame (workout start).
+        Raises LLaVAClockDetectionError if no transition is found within 3 minutes.
+        """
+        fps = self.video.get(cv2.CAP_PROP_FPS) or 30.0
+        total_frames = int(self.video.get(cv2.CAP_PROP_FRAME_COUNT))
+        max_seconds = 180
+
+        prev_time = None
+        for second in range(max_seconds):
+            fn = int(fps * second)
+            if fn >= total_frames:
+                break
+
+            self.video.set(cv2.CAP_PROP_POS_FRAMES, fn)
+            ret, frame = self.video.read()
+            if not ret or frame is None:
+                continue
+
+            clock_time = self.llava_client.read_clock(frame)
+            logger.info("Clock scan at %ds: %s", second, clock_time)
+
+            if prev_time == "00:00" and clock_time == "00:01":
+                logger.info("Workout start detected at frame %d (t=%ds)", fn, second)
+                return fn
+
+            if clock_time is not None:
+                prev_time = clock_time
+
+        raise LLaVAClockDetectionError(
+            "Workout start could not be detected. Ensure a competition clock is "
+            "visible and starts from 00:00."
+        )
+
     def _detect_target_with_llava(self) -> int:
         """
         Use LLaVA to locate the target region, then run CV on that crop for
         a precise Y pixel coordinate.
 
+        Raises LLaVAClockDetectionError if no clock transition is found.
         Raises LLaVATargetDetectionError if the target cannot be found.
         """
-        # Grab frame ~10 — athlete should be in position but not yet moving.
-        self.video.set(cv2.CAP_PROP_POS_FRAMES, 10)
-        ret, frame = self.video.read()
-        self.video.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        fps = self.video.get(cv2.CAP_PROP_FPS) or 30.0
+        total_frames = int(self.video.get(cv2.CAP_PROP_FRAME_COUNT))
+
+        if self._use_clock_detection:
+            start_frame = self._find_workout_start_frame()
+            self._workout_start_frame = start_frame
+            retry_frames = [
+                start_frame + int(fps * s)
+                for s in range(6)
+                if start_frame + int(fps * s) < total_frames
+            ]
+        else:
+            # Clock detection disabled — sample early frames to find the target.
+            retry_frames = [int(fps * s) for s in (2, 5, 8, 10, 15) if int(fps * s) < total_frames]
+
+        frame = None
+        crop_bbox = None
+        ret = False
+        for fn in retry_frames:
+            self.video.set(cv2.CAP_PROP_POS_FRAMES, fn)
+            ret, candidate = self.video.read()
+            if ret and candidate is not None:
+                frame = candidate
+                crop_bbox = self.llava_client.locate_target_crop(candidate)
+                if crop_bbox is not None:
+                    logger.info("LLaVA target found at frame %d", fn)
+                    break
+
+        self.video.set(cv2.CAP_PROP_POS_FRAMES, getattr(self, '_workout_start_frame', 0))
         self._frame_idx = 0
 
         if not ret or frame is None:
             raise LLaVATargetDetectionError(
-                "Target could not be detected — could not read video frame. "
-                "Ensure the target is clearly visible in the first few seconds of the video."
+                "Target could not be detected — could not read video frame."
             )
 
-        crop_bbox = self.llava_client.locate_target_crop(frame)
         if crop_bbox is None:
             raise LLaVATargetDetectionError(
                 "Target could not be detected. Ensure the target is clearly visible "
-                "in the first few seconds of the video."
+                "at the start of the workout."
             )
 
         x1, y1, x2, y2 = crop_bbox
@@ -169,9 +232,9 @@ class WallBallAnalyser:
             if squat_frame is None:
                 continue
 
-            # Grab 3 frames around squat bottom.
+            # Grab frames around squat bottom — wider window to catch ball in motion.
             frames = []
-            for offset in (-1, 0, 1):
+            for offset in range(-5, 6):
                 fn = max(0, squat_frame + offset)
                 video.set(cv2.CAP_PROP_POS_FRAMES, fn)
                 ret, frame = video.read()
@@ -181,13 +244,15 @@ class WallBallAnalyser:
             if not frames:
                 continue
 
-            present, raw_response = self.llava_client.check_equipment(frames, prompt)
+            # Prompt asks "has the ball been dropped?" — YES means absent.
+            ball_dropped, raw_response = self.llava_client.check_equipment(frames, prompt)
+            present = not ball_dropped
             entry['llava_equipment_response'] = raw_response
             entry['llava_equipment_present'] = present
 
             if not present and entry['is_good_rep']:
                 entry['is_good_rep'] = False
-                entry['no_rep_reason'] = 'Q'  # Equipment not in hands
+                entry['no_rep_reason'] = 'Q'
                 stats['count'] = max(0, stats['count'] - 1)
                 stats['no_rep'] = stats['no_rep'] + 1
                 logger.info(
@@ -216,6 +281,9 @@ class WallBallAnalyser:
         """
         if not self.video.isOpened():
             raise RuntimeError("Could not open video for wall ball analysis")
+
+        if hasattr(self, '_workout_start_frame'):
+            self.video.set(cv2.CAP_PROP_POS_FRAMES, self._workout_start_frame)
 
         has_frames = False
         _pose_detected = 0

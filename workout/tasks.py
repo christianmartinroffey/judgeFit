@@ -1,6 +1,9 @@
 from celery import shared_task
 import logging
 
+from rest_framework import status
+from rest_framework.response import Response
+
 logger = logging.getLogger(__name__)
 
 
@@ -43,10 +46,12 @@ def analyse_video(self, score_id, video_url):
         if workout_components:
             result = analyse_workout_video(video_url, workout_components, workout_type)
         else:
-            # Fallback: single-movement squat analysis (no workout plan available)
-            result = process_movement(video_url)
-            result.setdefault('breakdown', [])
-            result.setdefault('rounds_completed', 0)
+            logger.error("Task failed for score %s: %s", score_id, e)
+            score.status = Score.FAILED
+            score.save()
+            return Response({'detail': 'workout miscoinfuguration: no components found'},
+                status=status.HTTP_406_NOT_ACCEPTABLE
+                )
 
         score.total_reps = result['total_reps']
         score.no_reps = result['no_reps']
@@ -93,7 +98,11 @@ def analyse_video(self, score_id, video_url):
                 )
 
     except Exception as e:
-        logger.error("Task failed for score %s: %s", score_id, e)
+        from workout.utilities.llava_client import LLaVAClockDetectionError, LLaVATargetDetectionError
+        if isinstance(e, (LLaVAClockDetectionError, LLaVATargetDetectionError)):
+            logger.error("Task failed for score %s: %s", score_id, e)
+        else:
+            logger.error("Task failed for score %s: %s", score_id, e, exc_info=True)
         score.status = Score.FAILED
         score.save()
         raise

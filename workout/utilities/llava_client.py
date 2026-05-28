@@ -18,6 +18,10 @@ class LLaVATargetDetectionError(Exception):
     pass
 
 
+class LLaVAClockDetectionError(Exception):
+    pass
+
+
 class LLaVAClient:
     def __init__(self, host: str | None = None):
         raw = (host or os.environ.get("OLLAMA_HOST", _DEFAULT_HOST)).strip()
@@ -49,56 +53,117 @@ class LLaVAClient:
         Returns a (x1, y1, x2, y2) strip bounding box for CV to refine,
         or None if no target is found.
         """
+        _TARGET_PROMPTS = [
+            (
+                "Look at this gym image carefully. Find the wall ball target on the wall. "
+                "It could be any of these: a coloured circle or dot (red, orange, yellow, blue), "
+                "a horizontal tape line, a painted mark, a white spot, a colour boundary or edge "
+                "where two different coloured sections of wall meet, a coloured panel or section on the wall, "
+                "or any other distinct visual marker on the wall surface. "
+                "The target is usually in the upper half of the frame. "
+                "Reply with exactly: TARGET <fraction> "
+                "where fraction is the vertical position of the target as a decimal from 0.0 (top) to 1.0 (bottom). "
+                "If you truly cannot identify any target or wall marker, reply with exactly: NO TARGET"
+            ),
+            (
+                "Look at this gym image. In the upper half of the image, find the most prominent "
+                "colour change, boundary, panel edge, or marking on the wall. "
+                "Reply with exactly: TARGET <fraction> "
+                "where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom)."
+            ),
+            (
+                "Look at this gym image. The wall ball target is a blue section or coloured area on the wall. "
+                "Find the top edge of the blue or coloured section and reply with exactly: TARGET <fraction> "
+                "where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom). "
+                "If no coloured section is visible, reply with exactly: NO TARGET"
+            ),
+        ]
+
         h, w = frame.shape[:2]
+        encoded = self._encode(frame)
+
+        for i, prompt in enumerate(_TARGET_PROMPTS):
+            try:
+                response = self._chat(prompt, [encoded])
+                logger.info("LLaVA target locate response (attempt %d): %s", i + 1, response)
+
+                if "no target" in response.lower():
+                    continue
+
+                matches = re.findall(r"\b(0?\.\d+|1\.0)\b", response)
+                if not matches:
+                    continue
+
+                fraction = float(matches[0])
+                if not (0.05 < fraction < 0.95):
+                    logger.warning("LLaVA target fraction out of range: %s", fraction)
+                    continue
+
+                center_y = int(fraction * h)
+                strip = max(int(h * 0.10), 30)
+                y1 = max(0, center_y - strip)
+                y2 = min(h, center_y + strip)
+                logger.info("LLaVA target crop: y=[%d, %d] (fraction=%.2f, attempt=%d)", y1, y2, fraction, i + 1)
+                return (0, y1, w, y2)
+
+            except Exception as exc:
+                logger.warning("LLaVA target location request failed (attempt %d): %s", i + 1, exc)
+
+        return None
+
+    def read_clock(self, frame: np.ndarray) -> str | None:
+        """
+        Ask LLaVA to read a competition clock from the frame.
+
+        Returns the time string (e.g. "00:00", "00:01") if a MM:SS clock is
+        visible, or None if no clock is found.
+        """
         prompt = (
-            "Look at this gym image. Is there a wall ball target visible? "
-            "A wall ball target is a tape line, painted circle, or marker on the wall, "
-            "usually in the upper half of the frame. "
-            "If yes, reply with exactly: TARGET <fraction> "
-            "where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom). "
-            "If no target is visible, reply with exactly: NO TARGET"
+            "Look at this image carefully, including the floor area. "
+            "There may be a physical competition timer — a black rectangular device on the floor "
+            "displaying time in MM:SS format (e.g. 00:00, 00:01, 01:30). "
+            "If you can see a timer or clock showing MM:SS time anywhere in the image, "
+            "reply with exactly: CLOCK MM:SS where MM:SS is the exact time shown. "
+            "If no MM:SS clock is visible, reply with exactly: NO CLOCK"
         )
         try:
             response = self._chat(prompt, [self._encode(frame)])
-            logger.debug("LLaVA target locate response: %s", response)
+            logger.info("LLaVA clock read response: %s", response)
 
-            if "no target" in response.lower():
+            if "no clock" in response.lower():
                 return None
 
-            matches = re.findall(r"\b0?\.\d+\b", response)
-            if not matches:
-                return None
+            match = re.search(r'\b(\d{2}:\d{2})\b', response)
+            if match:
+                return match.group(1)
 
-            fraction = float(matches[0])
-            if not (0.05 < fraction < 0.95):
-                logger.warning("LLaVA target fraction out of range: %s", fraction)
-                return None
-
-            center_y = int(fraction * h)
-            strip = max(int(h * 0.10), 30)
-            y1 = max(0, center_y - strip)
-            y2 = min(h, center_y + strip)
-            logger.info("LLaVA target crop: y=[%d, %d] (fraction=%.2f)", y1, y2, fraction)
-            return (0, y1, w, y2)
-
+            return None
         except Exception as exc:
-            logger.warning("LLaVA target location request failed: %s", exc)
+            logger.warning("LLaVA clock read failed: %s", exc)
             return None
 
     def check_equipment(self, frames: list[np.ndarray], prompt: str) -> tuple[bool, str]:
         """
-        Check whether equipment is present in the given frames.
+        Check whether equipment is present across sampled frames.
 
-        Uses the middle frame. Returns (present, raw_llava_response).
-        Ambiguous or error responses are treated as not present (strict judging).
+        Samples up to 3 evenly-spaced frames and uses majority vote.
+        Returns (present, last_raw_response). Present if >50% of checks say YES.
         """
-        frame = frames[len(frames) // 2]
         full_prompt = f"{prompt} Answer YES or NO at the very start of your response."
-        try:
-            response = self._chat(full_prompt, [self._encode(frame)])
-            logger.debug("LLaVA equipment check response: %s", response)
-            present = response.strip().upper().startswith("YES")
-            return present, response
-        except Exception as exc:
-            logger.warning("LLaVA equipment check failed: %s", exc)
-            return False, f"error: {exc}"
+        n = len(frames)
+        indices = sorted({0, n // 2, n - 1}) if n >= 3 else list(range(n))
+
+        votes = []
+        last_response = ""
+        for i in indices:
+            try:
+                response = self._chat(full_prompt, [self._encode(frames[i])])
+                logger.info("LLaVA equipment check response: %s", response)
+                votes.append(response.strip().upper().startswith("YES"))
+                last_response = response
+            except Exception as exc:
+                logger.warning("LLaVA equipment check failed: %s", exc)
+                votes.append(False)
+
+        present = all(votes)
+        return present, last_response

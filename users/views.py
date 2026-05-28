@@ -1,4 +1,8 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.db import IntegrityError
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -13,7 +17,7 @@ class RegisterView(APIView):
 
     def post(self, request):
         username = request.data.get('username', '').strip()
-        email = request.data.get('email', '').strip()
+        email = request.data.get('email', '').strip().lower()
         password = request.data.get('password', '')
 
         if not username or not email or not password:
@@ -22,13 +26,20 @@ class RegisterView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if User.objects.filter(username=username).exists():
-            return Response({'detail': 'Username already taken.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            validate_email(email)
+        except ValidationError:
+            return Response({'detail': 'Invalid email address.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if User.objects.filter(email=email).exists():
-            return Response({'detail': 'An account with that email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            return Response({'detail': e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.create_user(username=username, email=email, password=password)
+        try:
+            user = User.objects.create_user(username=username, email=email, password=password)
+        except IntegrityError:
+            return Response({'detail': 'Username or email already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         refresh = RefreshToken.for_user(user)
         return Response(
