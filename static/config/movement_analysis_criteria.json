@@ -49,6 +49,13 @@
         "ball_confidence_threshold": 0.35,
         "calibration_frames": 30,
         "detect_every_n_frames": 3,
+        "target_location": {
+            "prompts": [
+                "Look at this gym image carefully. Find the wall ball target on the wall. It could be any of these: a coloured circle or dot (red, orange, yellow, blue), a horizontal tape line, a painted mark, a white spot, a colour boundary or edge where two different coloured sections of wall meet, a coloured panel or section on the wall, or any other distinct visual marker on the wall surface. The target is usually in the upper half of the frame. Reply with exactly: TARGET <fraction> where fraction is the vertical position of the target as a decimal from 0.0 (top) to 1.0 (bottom). If you truly cannot identify any target or wall marker, reply with exactly: NO TARGET",
+                "Look at this gym image. In the upper half of the image, find the most prominent colour change, boundary, panel edge, or marking on the wall. Reply with exactly: TARGET <fraction> where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom).",
+                "Look at this gym image. The wall ball target is a blue section or coloured area on the wall. Find the top edge of the blue or coloured section and reply with exactly: TARGET <fraction> where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom). If no coloured section is visible, reply with exactly: NO TARGET"
+            ]
+        },
         "equipment": {
             "name": "medicine ball",
             "check_phase": "squat_bottom",

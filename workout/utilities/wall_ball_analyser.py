@@ -17,6 +17,7 @@ from workout.utilities.movement_counters import WallBallCounter
 from workout.utilities.object_detector import GymObjectDetector
 from workout.utilities.target_detector import TargetDetector
 from workout.utilities.utils import download_youtube_video, load_movement_criteria
+from workout.utilities.vision_utils import read_clock
 
 logger = logging.getLogger(__name__)
 
@@ -130,7 +131,7 @@ class WallBallAnalyser:
             if not ret or frame is None:
                 continue
 
-            clock_time = self.llava_client.read_clock(frame)
+            clock_time = read_clock(frame, self.llava_client)
             logger.info("Clock scan at %ds: %s", second, clock_time)
 
             if prev_time == "00:00" and clock_time == "00:01":
@@ -168,17 +169,19 @@ class WallBallAnalyser:
             # Clock detection disabled — sample early frames to find the target.
             retry_frames = [int(fps * s) for s in (2, 5, 8, 10, 15) if int(fps * s) < total_frames]
 
+        target_prompts = self.criteria.get('wall_ball', {}).get('target_location', {}).get('prompts', [])
+
         frame = None
-        crop_bbox = None
+        fraction = None
         ret = False
         for fn in retry_frames:
             self.video.set(cv2.CAP_PROP_POS_FRAMES, fn)
             ret, candidate = self.video.read()
             if ret and candidate is not None:
                 frame = candidate
-                crop_bbox = self.llava_client.locate_target_crop(candidate)
-                if crop_bbox is not None:
-                    logger.info("LLaVA target found at frame %d", fn)
+                fraction = self.llava_client.ask_fraction(candidate, target_prompts)
+                if fraction is not None:
+                    logger.info("LLaVA target found at frame %d (fraction=%.2f)", fn, fraction)
                     break
 
         self.video.set(cv2.CAP_PROP_POS_FRAMES, getattr(self, '_workout_start_frame', 0))
@@ -189,15 +192,18 @@ class WallBallAnalyser:
                 "Target could not be detected — could not read video frame."
             )
 
-        if crop_bbox is None:
+        if fraction is None:
             raise LLaVATargetDetectionError(
                 "Target could not be detected. Ensure the target is clearly visible "
                 "at the start of the workout."
             )
 
-        x1, y1, x2, y2 = crop_bbox
-        crop = frame[y1:y2, x1:x2]
         h, w = frame.shape[:2]
+        center_y = int(fraction * h)
+        strip = max(int(h * 0.10), 30)
+        y1 = max(0, center_y - strip)
+        y2 = min(h, center_y + strip)
+        crop = frame[y1:y2, 0:w]
 
         # Run CV on the narrowed crop for sub-pixel precision.
         target_y_local = (
@@ -241,7 +247,7 @@ class WallBallAnalyser:
             if not jpeg_frames:
                 continue
 
-            ball_dropped, raw_response = self.llava_client.check_equipment(jpeg_frames, prompt)
+            ball_dropped, raw_response = self.llava_client.ask_yes_no(jpeg_frames, prompt)
             entry['llava_equipment_response'] = raw_response
             entry['llava_equipment_present'] = not ball_dropped
 

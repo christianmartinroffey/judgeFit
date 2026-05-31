@@ -46,46 +46,23 @@ class LLaVAClient:
         resp.raise_for_status()
         return resp.json()["message"]["content"]
 
-    def locate_target_crop(self, frame: np.ndarray) -> tuple[int, int, int, int] | None:
-        """
-        Ask LLaVA where the wall ball target is in the frame.
+    def query(self, frame: np.ndarray, prompt: str) -> str:
+        """Single-frame query — returns raw model response."""
+        return self._chat(prompt, [self._encode(frame)])
 
-        Returns a (x1, y1, x2, y2) strip bounding box for CV to refine,
-        or None if no target is found.
+    def ask_fraction(self, frame: np.ndarray, prompts: list[str]) -> float | None:
         """
-        _TARGET_PROMPTS = [
-            (
-                "Look at this gym image carefully. Find the wall ball target on the wall. "
-                "It could be any of these: a coloured circle or dot (red, orange, yellow, blue), "
-                "a horizontal tape line, a painted mark, a white spot, a colour boundary or edge "
-                "where two different coloured sections of wall meet, a coloured panel or section on the wall, "
-                "or any other distinct visual marker on the wall surface. "
-                "The target is usually in the upper half of the frame. "
-                "Reply with exactly: TARGET <fraction> "
-                "where fraction is the vertical position of the target as a decimal from 0.0 (top) to 1.0 (bottom). "
-                "If you truly cannot identify any target or wall marker, reply with exactly: NO TARGET"
-            ),
-            (
-                "Look at this gym image. In the upper half of the image, find the most prominent "
-                "colour change, boundary, panel edge, or marking on the wall. "
-                "Reply with exactly: TARGET <fraction> "
-                "where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom)."
-            ),
-            (
-                "Look at this gym image. The wall ball target is a blue section or coloured area on the wall. "
-                "Find the top edge of the blue or coloured section and reply with exactly: TARGET <fraction> "
-                "where fraction is its vertical position as a decimal from 0.0 (top) to 1.0 (bottom). "
-                "If no coloured section is visible, reply with exactly: NO TARGET"
-            ),
-        ]
+        Try each prompt in sequence to locate a vertical position in the frame.
 
-        h, w = frame.shape[:2]
+        Returns the first valid fraction (0.0 = top, 1.0 = bottom), or None if
+        all prompts fail. Expects responses containing a decimal like 'TARGET 0.42'
+        or a plain number; skips responses containing 'no target'.
+        """
         encoded = self._encode(frame)
-
-        for i, prompt in enumerate(_TARGET_PROMPTS):
+        for i, prompt in enumerate(prompts):
             try:
                 response = self._chat(prompt, [encoded])
-                logger.info("LLaVA target locate response (attempt %d): %s", i + 1, response)
+                logger.info("ask_fraction response (attempt %d): %s", i + 1, response)
 
                 if "no target" in response.lower():
                     continue
@@ -96,58 +73,22 @@ class LLaVAClient:
 
                 fraction = float(matches[0])
                 if not (0.05 < fraction < 0.95):
-                    logger.warning("LLaVA target fraction out of range: %s", fraction)
+                    logger.warning("ask_fraction: fraction out of range: %s", fraction)
                     continue
 
-                center_y = int(fraction * h)
-                strip = max(int(h * 0.10), 30)
-                y1 = max(0, center_y - strip)
-                y2 = min(h, center_y + strip)
-                logger.info("LLaVA target crop: y=[%d, %d] (fraction=%.2f, attempt=%d)", y1, y2, fraction, i + 1)
-                return (0, y1, w, y2)
+                return fraction
 
             except Exception as exc:
-                logger.warning("LLaVA target location request failed (attempt %d): %s", i + 1, exc)
+                logger.warning("ask_fraction failed (attempt %d): %s", i + 1, exc)
 
         return None
 
-    def read_clock(self, frame: np.ndarray) -> str | None:
+    def ask_yes_no(self, jpeg_frames: list[bytes], prompt: str) -> tuple[bool, str]:
         """
-        Ask LLaVA to read a competition clock from the frame.
-
-        Returns the time string (e.g. "00:00", "00:01") if a MM:SS clock is
-        visible, or None if no clock is found.
-        """
-        prompt = (
-            "Look at this image carefully, including the floor area. "
-            "There may be a physical competition timer — a black rectangular device on the floor "
-            "displaying time in MM:SS format (e.g. 00:00, 00:01, 01:30). "
-            "If you can see a timer showing MM:SS time anywhere in the image, "
-            "reply with exactly: TIMER MM:SS where MM:SS is the exact time shown. "
-            "If no MM:SS timer is visible, reply with exactly: NO TIMER"
-        )
-        try:
-            response = self._chat(prompt, [self._encode(frame)])
-            logger.info("LLaVA clock read response: %s", response)
-
-            if "no timer" in response.lower():
-                return None
-
-            match = re.search(r'\b(\d{2}:\d{2})\b', response)
-            if match:
-                return match.group(1)
-
-            return None
-        except Exception as exc:
-            logger.warning("LLaVA clock read failed: %s", exc)
-            return None
-
-    def check_equipment(self, jpeg_frames: list[bytes], prompt: str) -> tuple[bool, str]:
-        """
-        Check equipment presence using pre-encoded JPEG frames.
+        Ask a YES/NO question across pre-encoded JPEG frames.
 
         Sends all frames in a single multi-image call.
-        Returns (dropped, raw_response). dropped=True if the model answers YES.
+        Returns (answer_is_yes, raw_response).
         """
         n = len(jpeg_frames)
         indices = sorted({0, n // 2, n - 1}) if n >= 3 else list(range(n))
@@ -159,8 +100,8 @@ class LLaVAClient:
         )
         try:
             response = self._chat(full_prompt, encoded)
-            logger.info("LLaVA equipment check response: %s", response)
+            logger.info("ask_yes_no response: %s", response)
             return response.strip().upper().startswith("YES"), response
         except Exception as exc:
-            logger.warning("LLaVA equipment check failed: %s", exc)
+            logger.warning("ask_yes_no failed: %s", exc)
             return False, ""
