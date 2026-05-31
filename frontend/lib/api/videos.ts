@@ -1,8 +1,8 @@
-import { API_BASE_URL, getHeaders, handleResponse } from "@/lib/api";
+import { API_BASE_URL, apiFetch, getHeaders, handleResponse } from "@/lib/api";
 
 // API functions
 export const getVideos = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/workout/videos`, {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos`, {
     headers: getHeaders(),
   });
   console.log(response)
@@ -10,7 +10,7 @@ export const getVideos = async () => {
 };
 
 export const getVideo = async (id: string) => {
-  const response = await fetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
     headers: getHeaders(),
   });
   console.log(response, "DA RESPONSE")
@@ -18,7 +18,7 @@ export const getVideo = async (id: string) => {
 };
 
 export const submitVideo = async (data) => {
-  const response = await fetch(`${API_BASE_URL}/api/workout/videos/`, {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos/`, {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(data),
@@ -29,7 +29,7 @@ export const submitVideo = async (data) => {
 
 
 export const deleteVideo = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos/${id}/`, {
     method: 'DELETE',
     headers: getHeaders(),
   });
