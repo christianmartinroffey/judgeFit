@@ -55,6 +55,7 @@ def analyse_video(self, score_id, video_url):
 
         score.total_reps = result['total_reps']
         score.no_reps = result['no_reps']
+        score.good_reps = result['good_reps']
         score.is_valid = result['is_valid']
         score.is_scaled = result['is_scaled']
         score.movement_breakdown = result.get('breakdown', [])

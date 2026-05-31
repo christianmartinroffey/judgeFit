@@ -7,6 +7,7 @@ is a drop-in replacement for the Celery task.
 """
 import logging
 import os
+from collections import deque
 
 import cv2
 
@@ -78,6 +79,9 @@ class WallBallAnalyser:
 
         self._frame_idx: int = 0
         self._use_clock_detection = use_clock_detection
+        self._frame_deque: deque[bytes] = deque(maxlen=3)
+        self._buffered_squat_frames: dict[int, list[bytes]] = {}
+        self._last_squat_bottom_seen: int | None = None
 
         # Pass video FPS to the counter so it can convert frame numbers to seconds.
         fps = self.video.get(cv2.CAP_PROP_FPS)
@@ -213,9 +217,9 @@ class WallBallAnalyser:
 
     def _run_equipment_checks(self, stats: dict) -> dict:
         """
-        Post-processing pass: for each rep in rep_log, check equipment presence
-        at squat bottom using LLaVA. Overrides good reps to no-rep if equipment
-        not detected.
+        Post-processing pass: for each good rep in rep_log, check equipment
+        presence at squat bottom using pre-buffered frames. Overrides good reps
+        to no-rep if equipment not detected.
         """
         if not self._equipment_criteria:
             return stats
@@ -225,32 +229,23 @@ class WallBallAnalyser:
         if not rep_log:
             return stats
 
-        video = cv2.VideoCapture(self.video_path)
-
         for entry in rep_log:
+            if not entry['is_good_rep']:
+                continue
+
             squat_frame = entry.get('squat_bottom_frame')
             if squat_frame is None:
                 continue
 
-            # Grab frames around squat bottom — wider window to catch ball in motion.
-            frames = []
-            for offset in range(-5, 6):
-                fn = max(0, squat_frame + offset)
-                video.set(cv2.CAP_PROP_POS_FRAMES, fn)
-                ret, frame = video.read()
-                if ret and frame is not None:
-                    frames.append(frame)
-
-            if not frames:
+            jpeg_frames = self._buffered_squat_frames.get(squat_frame)
+            if not jpeg_frames:
                 continue
 
-            # Prompt asks "has the ball been dropped?" — YES means absent.
-            ball_dropped, raw_response = self.llava_client.check_equipment(frames, prompt)
-            present = not ball_dropped
+            ball_dropped, raw_response = self.llava_client.check_equipment(jpeg_frames, prompt)
             entry['llava_equipment_response'] = raw_response
-            entry['llava_equipment_present'] = present
+            entry['llava_equipment_present'] = not ball_dropped
 
-            if not present and entry['is_good_rep']:
+            if ball_dropped:
                 entry['is_good_rep'] = False
                 entry['no_rep_reason'] = 'Q'
                 stats['count'] = max(0, stats['count'] - 1)
@@ -263,7 +258,6 @@ class WallBallAnalyser:
                     raw_response,
                 )
 
-        video.release()
         return stats
 
     # ------------------------------------------------------------------
@@ -348,6 +342,8 @@ class WallBallAnalyser:
 
         total_reps = stats['count']
         total_no_reps = stats['no_rep']
+        rep_log = stats.get('rep_log', [])
+        good_reps = sum(1 for r in rep_log if r['is_good_rep'])
 
         is_valid = has_frames
         if self.expected_reps is not None:
@@ -359,6 +355,7 @@ class WallBallAnalyser:
             'movement': 'wall_ball',
             'reps': total_reps,
             'no_reps': total_no_reps,
+            'good_reps': good_reps,
             'expected_reps': self.expected_reps,
             'advance_reason': 'video_end',
         }]
@@ -366,12 +363,13 @@ class WallBallAnalyser:
         return {
             'total_reps': total_reps,
             'no_reps': total_no_reps,
+            'good_reps': good_reps,
             'is_valid': is_valid,
             'is_scaled': False,
             'breakdown': breakdown,
             'rounds_completed': 1 if (is_valid and total_reps > 0) else 0,
             'target_y_px': self.target_detector.target_y_px,
-            'rep_log': stats.get('rep_log', []),
+            'rep_log': rep_log,
         }
 
     # ------------------------------------------------------------------
@@ -449,6 +447,9 @@ class WallBallAnalyser:
 
     def _process_frame(self, img) -> dict:
         """Process one frame. Returns a small diagnostic dict for the analyse() summary."""
+        _, buf = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 85])
+        self._frame_deque.append(bytes(buf))
+
         # 1. Pose detection
         img = self.pose_detector.getPose(img, draw=False)
         lmList = self.pose_detector.getPosition(img, draw=False)
@@ -493,6 +494,12 @@ class WallBallAnalyser:
         )
 
         self.counter.process(angle, lmList, self.pose_detector, direction)
+
+        # Buffer frames at squat bottom for equipment check post-processing.
+        new_squat_bottom = self.counter._squat_bottom_frame
+        if new_squat_bottom is not None and self._last_squat_bottom_seen != new_squat_bottom:
+            self._buffered_squat_frames[new_squat_bottom] = list(self._frame_deque)
+        self._last_squat_bottom_seen = new_squat_bottom
 
         # 5. Dynamic target recalibration from observed ball peaks.
         self._maybe_recalibrate_target()

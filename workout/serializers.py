@@ -36,6 +36,7 @@ class ScoreSerializer(serializers.ModelSerializer):
             'score',
             'is_scaled',
             'no_reps',
+            'good_reps',
             'total_reps',
             'status',
             'movement_breakdown'

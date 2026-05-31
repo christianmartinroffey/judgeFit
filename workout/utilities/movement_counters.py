@@ -28,6 +28,7 @@ class BaseCounter(ABC):
         return {
             'count': self.count,
             'no_rep': self.no_rep,
+            'good_rep': self.count - self.no_rep,
             'outcome': self.outcome,
             'is_started': self.is_started
         }

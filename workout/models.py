@@ -114,6 +114,7 @@ class Score(models.Model):
 
     is_valid = models.BooleanField(default=False)
     total_reps = models.IntegerField(blank=True, null=True)
+    good_reps = models.IntegerField(blank=True, null=True)
     no_reps = models.IntegerField(blank=True, null=True)
     score = models.CharField(max_length=100)  # Flexible field to store different types of scores
     created_at = models.DateTimeField(auto_now_add=True)

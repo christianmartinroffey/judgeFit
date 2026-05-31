@@ -10,7 +10,7 @@ import requests
 logger = logging.getLogger(__name__)
 
 _DEFAULT_HOST = "192.168.1.47:11434"
-_MODEL = "llava"
+_MODEL = "minicpm-v"
 _TIMEOUT = 30
 
 
@@ -122,15 +122,15 @@ class LLaVAClient:
             "Look at this image carefully, including the floor area. "
             "There may be a physical competition timer — a black rectangular device on the floor "
             "displaying time in MM:SS format (e.g. 00:00, 00:01, 01:30). "
-            "If you can see a timer or clock showing MM:SS time anywhere in the image, "
-            "reply with exactly: CLOCK MM:SS where MM:SS is the exact time shown. "
-            "If no MM:SS clock is visible, reply with exactly: NO CLOCK"
+            "If you can see a timer showing MM:SS time anywhere in the image, "
+            "reply with exactly: TIMER MM:SS where MM:SS is the exact time shown. "
+            "If no MM:SS timer is visible, reply with exactly: NO TIMER"
         )
         try:
             response = self._chat(prompt, [self._encode(frame)])
             logger.info("LLaVA clock read response: %s", response)
 
-            if "no clock" in response.lower():
+            if "no timer" in response.lower():
                 return None
 
             match = re.search(r'\b(\d{2}:\d{2})\b', response)
@@ -142,28 +142,25 @@ class LLaVAClient:
             logger.warning("LLaVA clock read failed: %s", exc)
             return None
 
-    def check_equipment(self, frames: list[np.ndarray], prompt: str) -> tuple[bool, str]:
+    def check_equipment(self, jpeg_frames: list[bytes], prompt: str) -> tuple[bool, str]:
         """
-        Check whether equipment is present across sampled frames.
+        Check equipment presence using pre-encoded JPEG frames.
 
-        Samples up to 3 evenly-spaced frames and uses majority vote.
-        Returns (present, last_raw_response). Present if >50% of checks say YES.
+        Sends all frames in a single multi-image call.
+        Returns (dropped, raw_response). dropped=True if the model answers YES.
         """
-        full_prompt = f"{prompt} Answer YES or NO at the very start of your response."
-        n = len(frames)
+        n = len(jpeg_frames)
         indices = sorted({0, n // 2, n - 1}) if n >= 3 else list(range(n))
+        encoded = [base64.b64encode(jpeg_frames[i]).decode("utf-8") for i in indices]
 
-        votes = []
-        last_response = ""
-        for i in indices:
-            try:
-                response = self._chat(full_prompt, [self._encode(frames[i])])
-                logger.info("LLaVA equipment check response: %s", response)
-                votes.append(response.strip().upper().startswith("YES"))
-                last_response = response
-            except Exception as exc:
-                logger.warning("LLaVA equipment check failed: %s", exc)
-                votes.append(False)
-
-        present = all(votes)
-        return present, last_response
+        full_prompt = (
+            f"I am showing you {len(encoded)} frames from the same video clip. "
+            f"{prompt} Answer YES or NO at the very start of your response."
+        )
+        try:
+            response = self._chat(full_prompt, encoded)
+            logger.info("LLaVA equipment check response: %s", response)
+            return response.strip().upper().startswith("YES"), response
+        except Exception as exc:
+            logger.warning("LLaVA equipment check failed: %s", exc)
+            return False, ""

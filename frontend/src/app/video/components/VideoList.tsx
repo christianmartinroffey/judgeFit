@@ -10,6 +10,7 @@ export interface BreakdownSet {
   movement: string;
   reps: number;
   no_reps: number;
+  good_reps: number;
   expected_reps: number | null;
   advance_reason: string;
 }
@@ -27,6 +28,7 @@ export interface ScoreBreakdown {
 export interface Score {
   is_valid: boolean;
   total_reps: number | null;
+  good_reps: number | null;
   no_reps: number | null;
   is_scaled: boolean;
   score: string;
@@ -175,7 +177,10 @@ export default function VideoList() {
               </p>
               <div className="flex items-center gap-4 mt-2">
                 <span className="text-xs text-gray-500">
-                  Reps: <strong className="text-gray-800">{video.score?.total_reps ?? '—'}</strong>
+                  Total reps: <strong className="text-gray-800">{video.score?.total_reps ?? '—'}</strong>
+                </span>
+                <span className="text-xs text-gray-500">
+                  Good: <strong className="text-green-600">{video.score?.good_reps ?? '—'}</strong>
                 </span>
                 <span className="text-xs text-gray-500">
                   No-reps: <strong className="text-red-500">{video.score?.no_reps ?? '—'}</strong>

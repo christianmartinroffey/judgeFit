@@ -39,6 +39,10 @@ function SummaryCard({ video }: { video: Video }) {
         : '—',
     },
     {
+      label: 'Good Reps',
+      value: <span className="text-green-600">{score?.good_reps ?? '—'}</span>,
+    },
+    {
       label: 'No-Reps',
       value: <span className="text-red-500">{score?.no_reps ?? '—'}</span>,
     },
@@ -55,7 +59,7 @@ function SummaryCard({ video }: { video: Video }) {
   return (
     <div className="border border-gray-100 rounded-xl p-6 mb-6">
       <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Summary</p>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
         {stats.map((stat) => (
           <div key={stat.label}>
             <p className="text-xs text-gray-400 mb-1">{stat.label}</p>
@@ -79,6 +83,7 @@ function RoundCard({ round, sets }: { round: number; sets: BreakdownSet[] }) {
             <th className="px-5 py-3 text-xs font-medium text-gray-400">Movement</th>
             <th className="px-5 py-3 text-xs font-medium text-gray-400 text-center">Expected</th>
             <th className="px-5 py-3 text-xs font-medium text-gray-400 text-center">Reps</th>
+            <th className="px-5 py-3 text-xs font-medium text-gray-400 text-center">Good</th>
             <th className="px-5 py-3 text-xs font-medium text-gray-400 text-center">No-Reps</th>
             <th className="px-5 py-3 text-xs font-medium text-gray-400">Notes</th>
           </tr>
@@ -98,6 +103,9 @@ function RoundCard({ round, sets }: { round: number; sets: BreakdownSet[] }) {
                   <span className={`font-semibold text-sm ${repsMet ? 'text-green-600' : 'text-amber-600'}`}>
                     {set.reps}{repsMet ? ' ✓' : ` / ${set.expected_reps}`}
                   </span>
+                </td>
+                <td className="px-5 py-3.5 text-center">
+                  <span className="font-semibold text-green-600 text-sm">{set.good_reps}</span>
                 </td>
                 <td className="px-5 py-3.5 text-center">
                   {hasNoReps

@@ -173,6 +173,7 @@ class WorkoutAnalyser:
             'movement': self.current_movement,
             'reps': stats['count'],
             'no_reps': stats['no_rep'],
+            'good_reps': stats['good_rep'],
             'expected_reps': spec['expected_reps'] if spec else None,
             'advance_reason': reason,
         }
@@ -332,6 +333,7 @@ class WorkoutAnalyser:
 
         total_reps = sum(s['reps'] for s in self.completed_sets)
         total_no_reps = sum(s['no_reps'] for s in self.completed_sets)
+        total_good_reps = sum(s['good_reps'] for s in self.completed_sets)
 
         # For Time: valid if athlete completed all required reps
         is_valid = has_frames
@@ -351,6 +353,7 @@ class WorkoutAnalyser:
         return {
             'total_reps': total_reps,
             'no_reps': total_no_reps,
+            'good_reps': total_good_reps,
             'is_valid': is_valid,
             'is_scaled': False,
             'breakdown': self.completed_sets,
