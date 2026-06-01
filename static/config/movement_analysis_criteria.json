@@ -59,7 +59,8 @@
         "equipment": {
             "name": "medicine ball",
             "check_phase": "squat_bottom",
-            "prompt": "Has the medicine ball been dropped? Answer YES only if you can clearly see the ball sitting on the floor away from the athlete. Answer NO if the ball is being held, in motion, partially hidden behind the body, or if you are unsure."
+            "prompt": "Has the medicine ball been dropped? Answer YES only if you can clearly see the ball sitting on the floor away from the athlete. Answer NO if the ball is being held, in motion, partially hidden behind the body, or if you are unsure.",
+            "cv_confidence_threshold": 0.5
         }
     },
     "bar_muscle_up": {

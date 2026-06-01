@@ -82,6 +82,7 @@ class WallBallAnalyser:
         self._use_clock_detection = use_clock_detection
         self._frame_deque: deque[bytes] = deque(maxlen=3)
         self._buffered_squat_frames: dict[int, list[bytes]] = {}
+        self._squat_ball_confidence: dict[int, dict] = {}
         self._last_squat_bottom_seen: int | None = None
 
         # Pass video FPS to the counter so it can convert frame numbers to seconds.
@@ -231,6 +232,7 @@ class WallBallAnalyser:
             return stats
 
         prompt = self._equipment_criteria['prompt']
+        cv_threshold = self._equipment_criteria.get('cv_confidence_threshold', 0.5)
         rep_log = stats.get('rep_log', [])
         if not rep_log:
             return stats
@@ -241,6 +243,17 @@ class WallBallAnalyser:
 
             squat_frame = entry.get('squat_bottom_frame')
             if squat_frame is None:
+                continue
+
+            # Skip LLaVA when CV is confident the ball was held at squat depth.
+            ball_state = self._squat_ball_confidence.get(squat_frame, {})
+            yolo_conf = ball_state.get('yolo_confidence')
+            loss_frames = ball_state.get('loss_frames', 1)
+            if yolo_conf is not None and yolo_conf >= cv_threshold and loss_frames == 0:
+                logger.debug(
+                    "Rep #%d: skipping LLaVA — CV confident (yolo_conf=%.2f, loss_frames=0)",
+                    entry['rep_number'], yolo_conf,
+                )
                 continue
 
             jpeg_frames = self._buffered_squat_frames.get(squat_frame)
@@ -346,14 +359,14 @@ class WallBallAnalyser:
                 _min_angle,
             )
 
-        total_reps = stats['count']
-        total_no_reps = stats['no_rep']
         rep_log = stats.get('rep_log', [])
         good_reps = sum(1 for r in rep_log if r['is_good_rep'])
+        total_no_reps = stats['no_rep']
+        total_reps = good_reps + total_no_reps
 
         is_valid = has_frames
         if self.expected_reps is not None:
-            is_valid = has_frames and total_reps >= self.expected_reps
+            is_valid = has_frames and good_reps >= self.expected_reps
 
         breakdown = [{
             'round': 1,
@@ -501,10 +514,15 @@ class WallBallAnalyser:
 
         self.counter.process(angle, lmList, self.pose_detector, direction)
 
-        # Buffer frames at squat bottom for equipment check post-processing.
+        # Buffer frames and ball confidence at squat bottom for equipment check post-processing.
         new_squat_bottom = self.counter._squat_bottom_frame
         if new_squat_bottom is not None and self._last_squat_bottom_seen != new_squat_bottom:
             self._buffered_squat_frames[new_squat_bottom] = list(self._frame_deque)
+            ball = self.counter._current_ball
+            self._squat_ball_confidence[new_squat_bottom] = {
+                'yolo_confidence': ball.get('confidence') if ball else None,
+                'loss_frames': self.counter._ball_loss_frames,
+            }
         self._last_squat_bottom_seen = new_squat_bottom
 
         # 5. Dynamic target recalibration from observed ball peaks.

@@ -171,7 +171,7 @@ class WorkoutAnalyser:
             'round': self.round,
             'sequence': spec['sequence'] if spec else self.plan_index + 1,
             'movement': self.current_movement,
-            'reps': stats['count'],
+            'reps': stats['count'] + stats['no_rep'],
             'no_reps': stats['no_rep'],
             'good_reps': stats['good_rep'],
             'expected_reps': spec['expected_reps'] if spec else None,
@@ -342,7 +342,7 @@ class WorkoutAnalyser:
                 c['expected_reps'] for c in self.plan.components
                 if c.get('expected_reps')
             )
-            is_valid = has_frames and (total_reps >= expected_total)
+            is_valid = has_frames and (total_good_reps >= expected_total)
 
         rounds_completed = (
             self.round - 1
