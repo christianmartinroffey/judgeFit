@@ -62,7 +62,7 @@ export async function handleResponse(response) {
   if (!response.ok) {
     console.log('response not ok:', response);
     const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || 'Something went wrong');
+    throw new Error(error.detail || error.message || 'Something went wrong');
   }
   return response.json();
 }

@@ -1,0 +1,590 @@
+{
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgefit-backup-clean.sql": {
+    "mtime": 1780863373.175861,
+    "hash": "65f7e615ab0026226559b42f08fe0e41"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgefit-backup.sql": {
+    "mtime": 1780861665.7515507,
+    "hash": "cc4876a84fec27861e483fe38b002f3f"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/agentic_judge_prototype.py": {
+    "mtime": 1776862172.0187883,
+    "hash": "1bc0103aa46b1f6b9555bf632b0a1313"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/test_wall_ball.py": {
+    "mtime": 1775892148.9612725,
+    "hash": "674be7482224b5cbe4ae92c373d2e0e7"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/manage.py": {
+    "mtime": 1743169914.0844932,
+    "hash": "b89f4f726e178c7a3f821709529f4923"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgefit-data-only.sql": {
+    "mtime": 1780863555.1298096,
+    "hash": "c68c522dfe666bc43d3f4372963956cd"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/models.py": {
+    "mtime": 1743169914.0850642,
+    "hash": "8c4eb991c6dca757bdd77f539092e29b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/__init__.py": {
+    "mtime": 1743169914.0848243,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/apps.py": {
+    "mtime": 1743169914.084946,
+    "hash": "b5569af33e8135979877d983b4195d44"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/admin.py": {
+    "mtime": 1743169914.0848963,
+    "hash": "e3dc717de887db03a015667a5fec59d8"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/utils.py": {
+    "mtime": 1743169914.0851445,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/tests.py": {
+    "mtime": 1743169914.0851157,
+    "hash": "465b7e9f69bfd158c850cdfbc7306818"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/views.py": {
+    "mtime": 1743169914.0852194,
+    "hash": "f467fa232324ad139aaecd0df7698f3f"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/poses/migrations/__init__.py": {
+    "mtime": 1743169914.0850043,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/postcss.config.mjs": {
+    "mtime": 1761746112.5184205,
+    "hash": "239f3ebf717465dc636818a1a619398d"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/next-env.d.ts": {
+    "mtime": 1761748325.486441,
+    "hash": "d0f8375ae1199dc7acd3977fc33b78b8"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/eslint.config.mjs": {
+    "mtime": 1761746112.5185745,
+    "hash": "dfa1f5f6a7037bf39dc510f30b180002"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/next.config.ts": {
+    "mtime": 1761746112.5184312,
+    "hash": "9b77af189a21a7a64e4bd7a426f64176"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/api.js": {
+    "mtime": 1781287032.0624406,
+    "hash": "6cf276262d75c9f91e88bcced3aa4363"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/auth.ts": {
+    "mtime": 1775410406.082118,
+    "hash": "f93a23c15ebc5b29001ab2b77dd1a792"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/api/competitions.ts": {
+    "mtime": 1780246750.0141244,
+    "hash": "111664bfad83421f9898ec6b25cc07b0"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/api/videos.ts": {
+    "mtime": 1780246726.762339,
+    "hash": "0a9eb2913024b497a36511f4bb1b88d2"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/api/workouts.ts": {
+    "mtime": 1780246750.6035004,
+    "hash": "2d258ee2d0f1a9fd236cdff830835a55"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/api/athletes.ts": {
+    "mtime": 1780246739.1401243,
+    "hash": "97608eb32e750163d760c25fd990a53b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/lib/api/auth.ts": {
+    "mtime": 1774814901.879324,
+    "hash": "c4bfb0c0c96df965065fac759b493c27"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/layout.tsx": {
+    "mtime": 1772008974.3318877,
+    "hash": "dbc20fdd5bfcae057132b129ac658246"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/page.tsx": {
+    "mtime": 1775391021.0551035,
+    "hash": "47dcae481f8099ecdeb95202f7f73789"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/video/page.tsx": {
+    "mtime": 1774814990.0943286,
+    "hash": "ff1b5a15e3bd60767614ceee60b8a386"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/video/submit/page.tsx": {
+    "mtime": 1774814997.2399428,
+    "hash": "cec57de43a4321c325c31dcd2b679238"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/video/components/SubmitVideo.tsx": {
+    "mtime": 1774815392.3411143,
+    "hash": "83f248a1136da6e5adf2842b51ffa617"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/video/components/VideoList.tsx": {
+    "mtime": 1780237418.7530189,
+    "hash": "0d2daafbf9eb1dada79aa019c9e5801b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/video/[id]/page.tsx": {
+    "mtime": 1780237363.588103,
+    "hash": "df91fdd44547cfbac3d962dc789b0533"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/page.tsx": {
+    "mtime": 1774814975.420963,
+    "hash": "3dd5a849b456ffff06619ed5ec2501bf"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/components/Login.tsx": {
+    "mtime": 1775391143.1700292,
+    "hash": "0ff748fab7095b02d2f8fea825c2abb5"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/components/CreateAthlete.tsx": {
+    "mtime": 1774797611.0742025,
+    "hash": "e61790e661873093638036a383a26d7e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/components/AthleteList.tsx": {
+    "mtime": 1774797601.2114527,
+    "hash": "6b2942800285f3168da1f21fda598958"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/components/Register.tsx": {
+    "mtime": 1775391147.2969036,
+    "hash": "6543a3e4ac1468ff2e84d955823b17fd"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/components/AthleteProfile.tsx": {
+    "mtime": 1774798940.5273638,
+    "hash": "a2713994e87cdc26a5b5030dfe7cbb16"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/[id]/page.tsx": {
+    "mtime": 1763221418.8900576,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/athletes/create/page.tsx": {
+    "mtime": 1763221897.8148503,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/competitions/page.tsx": {
+    "mtime": 1775410539.3158443,
+    "hash": "8c6d3a1266c09dc637fda6f62c5b969b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/competitions/components/CompetitionCreate.tsx": {
+    "mtime": 1775408740.807782,
+    "hash": "5b9aa3005ab55d41160cdf47441e3b93"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/competitions/components/CompetitionList.tsx": {
+    "mtime": 1775410543.2745223,
+    "hash": "6821d56d8d6a9694bf4595ba0e8ddc7a"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/competitions/[id]/page.tsx": {
+    "mtime": 1763221418.8900576,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/competitions/create/page.tsx": {
+    "mtime": 1775408735.7499297,
+    "hash": "1751ecad081b44b24ee0cf9d70b78709"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/components/Navbar.tsx": {
+    "mtime": 1775391154.908603,
+    "hash": "20ef0bb4dbf0e8c0329a490937db60c3"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/components/ProtectedPage.tsx": {
+    "mtime": 1780246719.8876352,
+    "hash": "cb0695a4f537daab9e035939d2100acb"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/src/app/components/AdminProtectedPage.tsx": {
+    "mtime": 1775408713.4146733,
+    "hash": "7ff0764496296e5a3d66e4cef38458d0"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/models.py": {
+    "mtime": 1775410250.6008234,
+    "hash": "52402ca7a5b353888fbfc2b8592565a9"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/serializers.py": {
+    "mtime": 1775410375.8480284,
+    "hash": "375865bd4e0e26b1dad7a0d36e046c28"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/__init__.py": {
+    "mtime": 1762532185.644492,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/apps.py": {
+    "mtime": 1762532185.645819,
+    "hash": "bfba67290248d44fcf801d65fb1fcff3"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/admin.py": {
+    "mtime": 1775410415.9026628,
+    "hash": "6352db70cbb6a06d61cda5ef02c84a59"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/tests.py": {
+    "mtime": 1762532185.6461105,
+    "hash": "465b7e9f69bfd158c850cdfbc7306818"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/views.py": {
+    "mtime": 1779896293.514911,
+    "hash": "b30e4b18e2d9271c10ca339648cdf3bd"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/migrations/__init__.py": {
+    "mtime": 1762532185.6462674,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/migrations/0003_user_is_competition_admin.py": {
+    "mtime": 1775410372.150872,
+    "hash": "723be566c9ffc702f455b9620276f995"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/migrations/0002_user_is_athlete.py": {
+    "mtime": 1762534928.8192756,
+    "hash": "15c501d6be2c5984b68ac25b171d4c7d"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/users/migrations/0001_initial.py": {
+    "mtime": 1762532510.524696,
+    "hash": "f7cd484a838e16fa8771aabaf725fb61"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/models.py": {
+    "mtime": 1762446990.4604251,
+    "hash": "a7b95a0bc22a90fb95a56d24a0135846"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/serializers.py": {
+    "mtime": 1775408696.5286553,
+    "hash": "1e72054a7630cbc5fd96f25f3cd3ec5b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/__init__.py": {
+    "mtime": 1743169914.0827177,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/apps.py": {
+    "mtime": 1743169914.0828674,
+    "hash": "b63ca76b900d4c35ece29e1b60f6c12b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/admin.py": {
+    "mtime": 1775409014.8446708,
+    "hash": "08cfcd6381d44cbd637dbdf6201ca9e8"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/utils.py": {
+    "mtime": 1743169914.0839462,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/tests.py": {
+    "mtime": 1743169914.0838485,
+    "hash": "465b7e9f69bfd158c850cdfbc7306818"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/urls.py": {
+    "mtime": 1771760605.7740378,
+    "hash": "5f59c4333155bda7aa4adf7403e9f11f"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/views.py": {
+    "mtime": 1775410396.4432623,
+    "hash": "04dcad4ae5bb9b71b4f33ea0f36cfc8f"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/migrations/__init__.py": {
+    "mtime": 1743169914.0836434,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/migrations/0001_initial.py": {
+    "mtime": 1762532510.5235333,
+    "hash": "e72b5cc6e4b0fe0c4a841efd7188c32d"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/management/__init__.py": {
+    "mtime": 1743169914.0829296,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/management/commands/__init__.py": {
+    "mtime": 1743169914.0830095,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/management/commands/addcountrydata.py": {
+    "mtime": 1743169914.0831788,
+    "hash": "a61d81f4edf54e372a65accbddfdcb74"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/athlete/management/commands/addaffiliatedata.py": {
+    "mtime": 1743169914.083112,
+    "hash": "0cf57be51a3dc96d1a9be8e92baaffc7"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/modules/PoseModule.py": {
+    "mtime": 1772292214.0024178,
+    "hash": "efa423b0589e28188d5993a1d5ae73b2"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/modules/squatChecker.py": {
+    "mtime": 1772292214.002777,
+    "hash": "bec2955d260d6480dee01389822d1dd3"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/tasks.py": {
+    "mtime": 1780237119.9449759,
+    "hash": "f408c84bb54a0d685cefabc0a87a252d"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/models.py": {
+    "mtime": 1780236226.915341,
+    "hash": "5b29176bd58b71784f9cb49827e7ea18"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/serializers.py": {
+    "mtime": 1780236743.2054791,
+    "hash": "83a6fa9c355cb5be6379bd0ef8d89ca6"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/__init__.py": {
+    "mtime": 1743169914.2385283,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/apps.py": {
+    "mtime": 1743169914.2386243,
+    "hash": "1a7c20f80fd4b4008f0b6be1513b57d8"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/admin.py": {
+    "mtime": 1771762578.947992,
+    "hash": "20dc34497bd3463d9bef9fa12dae7d0b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/tests.py": {
+    "mtime": 1743169914.2393756,
+    "hash": "465b7e9f69bfd158c850cdfbc7306818"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/urls.py": {
+    "mtime": 1772009592.3881292,
+    "hash": "d13db2db700d39e72eed941d2af12454"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/views.py": {
+    "mtime": 1775921533.6257133,
+    "hash": "7a3b29ae2fdf573ea8f18ca864808c6c"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0010_score_good_reps.py": {
+    "mtime": 1780236244.3418136,
+    "hash": "a9136525a5832719b9f477ee9b37849b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0002_remove_score_athlete_remove_score_competition_and_more.py": {
+    "mtime": 1771762580.2919667,
+    "hash": "5f9c0b765f3a05ec046f7eba4d1709dc"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0006_add_round_to_workout_component.py": {
+    "mtime": 1774793158.3536372,
+    "hash": "aac1d50ae86df4d79693db9f692656ac"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0005_add_score_status_and_movement_breakdown.py": {
+    "mtime": 1774611618.948506,
+    "hash": "ac330aef11282ed54f3d5572d3c6c2c4"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/__init__.py": {
+    "mtime": 1743169914.2391672,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0004_video_urlpath.py": {
+    "mtime": 1772226041.6102753,
+    "hash": "728dbd344267b2ebf8afc0362dac04e6"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0007_alter_score_is_valid.py": {
+    "mtime": 1775394647.5257444,
+    "hash": "6627db899952236ca6cbc696b0ee64e2"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0001_initial.py": {
+    "mtime": 1762532510.5242224,
+    "hash": "2d4410e8a26bd6d173ec4b67b3ee9942"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0009_add_equipment_no_rep_reason.py": {
+    "mtime": 1779720944.1597905,
+    "hash": "8a9d56f35b53eec1b05ecf43b9967b44"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0008_scorebreakdown.py": {
+    "mtime": 1775919994.1697996,
+    "hash": "9f7a48fc74981b00680d497a2cb1eb2b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/migrations/0003_alter_video_id.py": {
+    "mtime": 1771969638.2071958,
+    "hash": "231ffe54870789517cae3c212e4bc830"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/management/__init__.py": {
+    "mtime": 1743169914.2386754,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/management/commands/seed_workouts.py": {
+    "mtime": 1774793951.2602928,
+    "hash": "55a028d016a4830c59a03376830399d8"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/management/commands/__init__.py": {
+    "mtime": 1743169914.2387285,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/management/commands/addnewmovements.py": {
+    "mtime": 1743169914.2387748,
+    "hash": "a2072a618b1137c9b485ef06daad8ae2"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/pushupChecker.py": {
+    "mtime": 1772291880.6509297,
+    "hash": "17080642506153bbc9e94b1722996fff"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/movement_counters.py": {
+    "mtime": 1780296394.6351867,
+    "hash": "eecda7edaaa3c6008a07ba685951ba00"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/object_detector.py": {
+    "mtime": 1779719415.781721,
+    "hash": "020ef1dc4917c6d275eff55a069de74b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/test_judge.py": {
+    "mtime": 1772291880.6436427,
+    "hash": "08213567f4236b36d064c1ee01e851ab"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/PoseModule.py": {
+    "mtime": 1743169914.2365432,
+    "hash": "8f01fbaa41535e610505d909635c1104"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/template_code.py": {
+    "mtime": 1761232294.7218764,
+    "hash": "813843ad36b51c0f7d0abf6d747a68ed"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/llava_client.py": {
+    "mtime": 1780247971.5228305,
+    "hash": "b225044b2018996fdabbdecb9983c1ec"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/__init__.py": {
+    "mtime": 1772291866.915141,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/calibrate_angles.py": {
+    "mtime": 1764268830.3028073,
+    "hash": "6abcbdcd02e5b16c7943fdde8663acb3"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/movement_classifier.py": {
+    "mtime": 1763758158.3734903,
+    "hash": "905bdb7e8a4f27f0ab145984af281647"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/pullupChecker.py": {
+    "mtime": 1772291880.660908,
+    "hash": "039d12b53db4268e96e07846a2723068"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/toestobarCheckerTHREADING.py": {
+    "mtime": 1743169914.2384062,
+    "hash": "278ed661bffab7cee09d601772261746"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/utils.py": {
+    "mtime": 1779864495.3007047,
+    "hash": "996d6e33d898aa02219ef59c115bf779"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/wall_ball_analyser.py": {
+    "mtime": 1780296429.7504814,
+    "hash": "dae0079eea573e556d1bc3c62b20f99d"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/judge.py": {
+    "mtime": 1772291880.6539629,
+    "hash": "906ea76243e073cf550a3b7bfb193a6b"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/squatChecker.py": {
+    "mtime": 1772906539.109186,
+    "hash": "00def7d16ce4e1947f388a442f227c09"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/vision_utils.py": {
+    "mtime": 1780247981.1127324,
+    "hash": "52678dd993163a2f5b7aa2583091fddf"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/thrusterChecker.py": {
+    "mtime": 1774794454.3939085,
+    "hash": "741aa5df11c97bdbd379c0a5a4f5ce2e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/workout_analyser.py": {
+    "mtime": 1780296418.0555162,
+    "hash": "06c0a06ddf8683ac128632c6440a38af"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/toestobarChecker.py": {
+    "mtime": 1772291880.65697,
+    "hash": "bd9f040bd56967dc6fbcd5b03bcc241a"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/target_detector.py": {
+    "mtime": 1775895051.635371,
+    "hash": "c8a16198f7ae8d51847f8a1df2884df7"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/burpeeChecker.py": {
+    "mtime": 1772294830.5023851,
+    "hash": "6cac0986eb63a8c40226320a89b51891"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgeFit/celery_app.py": {
+    "mtime": 1774801142.4974341,
+    "hash": "58d0b9edaa518eb9a513937b20af8c3c"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgeFit/asgi.py": {
+    "mtime": 1743169914.0841565,
+    "hash": "7d09f4ef7d079e1b55ff5fcbbea49b76"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgeFit/__init__.py": {
+    "mtime": 1774801157.6334755,
+    "hash": "a5f075d7260209e3ce5aa7fd65333088"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgeFit/settings.py": {
+    "mtime": 1780862370.9091396,
+    "hash": "5dedaf7f19ef5a072ca7dc5cd12a73b7"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgeFit/urls.py": {
+    "mtime": 1775408682.1043875,
+    "hash": "961a432b5b35b445ec3a969f8c1a77ff"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/judgeFit/wsgi.py": {
+    "mtime": 1743169914.0844364,
+    "hash": "df57e59b80f68b6d5e24318dbb156ebc"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/requirements.txt": {
+    "mtime": 1779864010.5535254,
+    "hash": "bb0def268ac160452e3899882407c811"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/WALL_BALL_DEBUG.md": {
+    "mtime": 1775916527.6769197,
+    "hash": "4869a8c1fa41b8093b8b0f9c2257a58a"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/docker-compose.yml": {
+    "mtime": 1780862372.8303652,
+    "hash": "a7471645d722874b4c8c01b33ce4fee3"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/CLAUDE.md": {
+    "mtime": 1775632262.4629004,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/README.md": {
+    "mtime": 1761746112.5181057,
+    "hash": "f15aaa42d5d299d091b1171097ea56ad"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/README.md": {
+    "mtime": 1771831446.9603,
+    "hash": "065302837492c1f45982fa75a6f641e5"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/workout/utilities/system_architecture.md": {
+    "mtime": 1763758077.9852405,
+    "hash": "2882297cd6e63aa933c3533259c82d0f"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/public/file.svg": {
+    "mtime": 1761746112.5189433,
+    "hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/public/vercel.svg": {
+    "mtime": 1761746112.5195432,
+    "hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/public/next.svg": {
+    "mtime": 1761746112.5192654,
+    "hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/public/globe.svg": {
+    "mtime": 1761746112.5194001,
+    "hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/frontend/public/window.svg": {
+    "mtime": 1761746112.519492,
+    "hash": "a2760511c65806022ad20adf74370ff3"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/images/full_squat.jpg": {
+    "mtime": 1743169914.0861762,
+    "hash": "130900dc878a702221d7e5a3d24c5da5"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/videos/luisprsquat.mp4": {
+    "mtime": 1743169914.1520662,
+    "hash": "1c3e76a07f03fde6d1bfccf3fa117305"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/videos/wallball.mp4": {
+    "mtime": 1743169914.2353342,
+    "hash": "a71ed056f31db0472c864f85300412f5"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/videos/airsquat.mp4": {
+    "mtime": 1743169914.0877583,
+    "hash": "46905cdc903f159c89b223703f0f5c1f"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/videos/airsquat2.mp4": {
+    "mtime": 1743169914.1070168,
+    "hash": "8ab83e6f1262c42db289d26dc15e6751"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/videos/overhead_squat_person.mp4": {
+    "mtime": 1743169914.178708,
+    "hash": "40ff108bb3efdffba4ddce14576c2dae"
+  },
+  "/Users/christianroffey/PycharmProjects/judgeFit/static/videos/pushup.mp4": {
+    "mtime": 1764269769.9000525,
+    "hash": "66dc84b1e90c59af758ce092bdaa56ea"
+  }
+}

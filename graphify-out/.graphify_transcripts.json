@@ -1,0 +1,8 @@
+Transcribing 6 video files...
+  warning: could not transcribe /Users/christianroffey/PycharmProjects/judgeFit/static/videos/luisprsquat.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+  warning: could not transcribe /Users/christianroffey/PycharmProjects/judgeFit/static/videos/wallball.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+  warning: could not transcribe /Users/christianroffey/PycharmProjects/judgeFit/static/videos/airsquat.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+  warning: could not transcribe /Users/christianroffey/PycharmProjects/judgeFit/static/videos/airsquat2.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+  warning: could not transcribe /Users/christianroffey/PycharmProjects/judgeFit/static/videos/overhead_squat_person.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+  warning: could not transcribe /Users/christianroffey/PycharmProjects/judgeFit/static/videos/pushup.mp4: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
+[]

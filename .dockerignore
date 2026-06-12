@@ -1,0 +1,14 @@
+frontend/
+static/
+!static/config/
+.venv/
+__pycache__/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+.git/
+db.sqlite3
+*.md
+*.log
+.env
+.DS_Store
