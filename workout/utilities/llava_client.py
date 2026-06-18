@@ -9,8 +9,8 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_HOST = "192.168.1.47:11434"
-_MODEL = "minicpm-v"
+_DEFAULT_HOST = "192.168.1.64:11434"
+_DEFAULT_MODEL = "minicpm-v"
 _TIMEOUT = 30
 
 
@@ -23,11 +23,11 @@ class LLaVAClockDetectionError(Exception):
 
 
 class LLaVAClient:
-    def __init__(self, host: str | None = None):
+    def __init__(self, host: str | None = None, model: str | None = None):
         raw = (host or os.environ.get("OLLAMA_HOST", _DEFAULT_HOST)).strip()
         raw = raw.replace("http://", "").replace("https://", "")
         self.base_url = f"http://{raw}"
-        self.model = _MODEL
+        self.model = model or os.environ.get("OLLAMA_MODEL", _DEFAULT_MODEL)
 
     def _encode(self, frame: np.ndarray) -> str:
         _, buf = cv2.imencode(".jpg", frame)
