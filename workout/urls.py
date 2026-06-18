@@ -4,6 +4,7 @@ from workout import views
 
 router = routers.DefaultRouter()
 
+router.register(r'movements', views.MovementViewSet)
 router.register(r'workouts', views.WorkoutsViewSet)
 router.register(r'workout-components', views.WorkoutComponentsViewSet)
 router.register(r'videos', views.VideosViewSet)

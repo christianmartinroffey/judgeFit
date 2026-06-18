@@ -1,7 +1,27 @@
 from rest_framework import serializers
 
 from athlete.models import Athlete, Competition
-from workout.models import Workout, WorkoutComponent, Video, Score, ScoreBreakdown
+from workout.models import Workout, WorkoutComponent, Video, Score, ScoreBreakdown, Movement
+
+
+class MovementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movement
+        fields = ['id', 'name', 'modality', 'type']
+
+
+class WorkoutComponentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkoutComponent
+        fields = '__all__'
+
+
+class WorkoutComponentDetailSerializer(serializers.ModelSerializer):
+    movement_name = serializers.CharField(source='movement.name', read_only=True)
+
+    class Meta:
+        model = WorkoutComponent
+        fields = ['id', 'movement', 'movement_name', 'round', 'sequence', 'reps', 'weight', 'height']
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
@@ -10,9 +30,11 @@ class WorkoutSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class WorkoutComponentSerializer(serializers.ModelSerializer):
+class WorkoutDetailSerializer(serializers.ModelSerializer):
+    components = WorkoutComponentDetailSerializer(many=True, read_only=True)
+
     class Meta:
-        model = WorkoutComponent
+        model = Workout
         fields = '__all__'
 
 

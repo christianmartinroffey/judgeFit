@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { getCompetitions, deleteCompetition } from '@/lib/api/competitions';
 import { checkIsAdmin } from '@/lib/auth';
 import { Trash2 } from 'lucide-react';
@@ -73,15 +74,15 @@ export default function CompetitionList() {
     <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
       {competitions.map((competition) => (
         <div key={competition.id} className="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors">
-          <div>
-            <p className="text-sm font-medium text-gray-900">{competition.name}</p>
+          <Link href={`/competitions/${competition.id}`} className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 hover:underline">{competition.name}</p>
             <p className="text-xs text-gray-400 mt-0.5">
               {competition.location} · {new Date(competition.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} – {new Date(competition.end_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
             {competition.description && (
               <p className="text-xs text-gray-400 mt-0.5">{competition.description}</p>
             )}
-          </div>
+          </Link>
           {isAdmin && (
             <button
               onClick={() => handleDelete(competition.id)}

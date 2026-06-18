@@ -64,7 +64,10 @@ class Workout(models.Model):
     type = models.CharField(max_length=5, choices=WORKOUT_TYPE_CHOICES)
     total_reps = models.IntegerField(blank=True, null=True)
     time_cap = models.IntegerField(blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
+    competition = models.ForeignKey(
+        'athlete.Competition', related_name='workouts', on_delete=models.CASCADE, null=True, blank=True
+    )
 
     def __str__(self):
         return self.name

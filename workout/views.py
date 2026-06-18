@@ -2,36 +2,83 @@ import logging
 
 from django.db.models import Sum
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from workout.models import Workout, WorkoutComponent, Video, Score
-from workout.serializers import WorkoutSerializer, WorkoutComponentSerializer, VideoSerializer, \
-    VideoScore
+from athlete.views import IsCompetitionAdmin
+from workout.models import Workout, WorkoutComponent, Video, Score, Movement
+from workout.serializers import (
+    WorkoutSerializer, WorkoutDetailSerializer,
+    WorkoutComponentSerializer, VideoSerializer, VideoScore,
+    MovementSerializer,
+)
 from workout.tasks import analyse_video
-from rest_framework.decorators import action
+
+
+class MovementViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Movement.objects.all().order_by('name')
+    serializer_class = MovementSerializer
+
+    def get_permissions(self):
+        return [IsAuthenticated()]
 
 
 class WorkoutsViewSet(viewsets.ModelViewSet):
     queryset = Workout.objects.all()
-    serializer_class = WorkoutSerializer
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return WorkoutDetailSerializer
+        return WorkoutSerializer
+
+    def get_permissions(self):
+        if self.action in ('create', 'update', 'partial_update', 'destroy', 'activate'):
+            return [IsCompetitionAdmin()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         queryset = Workout.objects.all()
         name = self.request.query_params.get('name', None)
+        competition = self.request.query_params.get('competition', None)
         if name is not None:
             queryset = queryset.filter(name=name)
+        if competition is not None:
+            queryset = queryset.filter(competition_id=competition)
         return queryset
+
+    def update(self, request, *args, **kwargs):
+        if self.get_object().is_active:
+            return Response({'detail': 'Cannot edit an active workout.'}, status=status.HTTP_400_BAD_REQUEST)
+        return super().update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        if self.get_object().is_active:
+            return Response({'detail': 'Cannot edit an active workout.'}, status=status.HTTP_400_BAD_REQUEST)
+        return super().partial_update(request, *args, **kwargs)
+
+    @action(detail=True, methods=['post'])
+    def activate(self, request, pk=None):
+        workout = self.get_object()
+        workout.is_active = True
+        workout.save()
+        return Response({'id': workout.id, 'is_active': workout.is_active})
 
 
 class WorkoutComponentsViewSet(viewsets.ModelViewSet):
     queryset = WorkoutComponent.objects.all()
     serializer_class = WorkoutComponentSerializer
 
+    def get_permissions(self):
+        if self.action in ('create', 'update', 'partial_update', 'destroy'):
+            return [IsCompetitionAdmin()]
+        return [IsAuthenticated()]
+
     def get_queryset(self):
         queryset = WorkoutComponent.objects.all()
-        name = self.request.query_params.get('name', None)
-        if name is not None:
-            queryset = queryset.filter(name=name)
+        workout = self.request.query_params.get('workout', None)
+        if workout is not None:
+            queryset = queryset.filter(workout_id=workout)
         return queryset
 
 
