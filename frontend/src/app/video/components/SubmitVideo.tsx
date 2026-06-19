@@ -101,24 +101,39 @@ export default function SubmitVideo({ onVideoSubmit }: SubmitVideoProps) {
 
   const [competitions, setCompetitions] = useState<Option[]>([]);
   const [workouts, setWorkouts] = useState<Option[]>([]);
-  const [optionsLoading, setOptionsLoading] = useState(true);
+  const [competitionsLoading, setCompetitionsLoading] = useState(true);
+  const [workoutsLoading, setWorkoutsLoading] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([getCompetitions(), getWorkouts()])
-      .then(([compData, workData]) => {
+    getCompetitions()
+      .then((data) => {
         setCompetitions(
-          (compData.results ?? compData).map((c: { id: number; name: string }) => ({ id: c.id, label: c.name }))
-        );
-        setWorkouts(
-          (workData.results ?? workData).map((w: { id: number; name: string }) => ({ id: w.id, label: w.name }))
+          (data.results ?? data).map((c: { id: number; name: string }) => ({ id: c.id, label: c.name }))
         );
       })
-      .catch(() => setError('Failed to load competitions and workouts.'))
-      .finally(() => setOptionsLoading(false));
+      .catch(() => setError('Failed to load competitions.'))
+      .finally(() => setCompetitionsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!competitionId) {
+      setWorkouts([]);
+      setWorkoutId(null);
+      return;
+    }
+    setWorkoutsLoading(true);
+    setWorkoutId(null);
+    getWorkouts(competitionId)
+      .then((data) => {
+        const active = (data.results ?? data).filter((w: { is_active: boolean }) => w.is_active);
+        setWorkouts(active.map((w: { id: number; name: string }) => ({ id: w.id, label: w.name })));
+      })
+      .catch(() => setError('Failed to load workouts.'))
+      .finally(() => setWorkoutsLoading(false));
+  }, [competitionId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,7 +186,7 @@ export default function SubmitVideo({ onVideoSubmit }: SubmitVideoProps) {
             value={competitionId}
             onChange={setCompetitionId}
             placeholder="Search competitions…"
-            loading={optionsLoading}
+            loading={competitionsLoading}
           />
         </div>
 
@@ -181,15 +196,15 @@ export default function SubmitVideo({ onVideoSubmit }: SubmitVideoProps) {
             options={workouts}
             value={workoutId}
             onChange={setWorkoutId}
-            placeholder="Search workouts…"
-            loading={optionsLoading}
+            placeholder={competitionId ? 'Search workouts…' : 'Select a competition first…'}
+            loading={workoutsLoading}
           />
         </div>
       </div>
 
       <button
         type="submit"
-        disabled={submitting || optionsLoading}
+        disabled={submitting || competitionsLoading}
         className="bg-gray-900 text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {submitting ? 'Submitting…' : 'Submit video'}
