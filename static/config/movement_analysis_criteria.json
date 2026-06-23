@@ -63,6 +63,32 @@
             "cv_confidence_threshold": 0.5
         }
     },
+    "clean_and_jerk": {
+        "overhead_angle_threshold": 160,
+        "hip_extension_threshold": 155,
+        "ground_tolerance_px": 60,
+        "shoulder_tolerance_px": 70,
+        "overhead_threshold_px": 100
+    },
+    "hang_clean_and_jerk": {
+        "overhead_angle_threshold": 160,
+        "hip_extension_threshold": 155,
+        "ground_tolerance_px": 60,
+        "shoulder_tolerance_px": 70,
+        "overhead_threshold_px": 100
+    },
+    "snatch": {
+        "overhead_angle_threshold": 160,
+        "hip_extension_threshold": 155,
+        "ground_tolerance_px": 60,
+        "overhead_threshold_px": 100
+    },
+    "hang_snatch": {
+        "overhead_angle_threshold": 160,
+        "hip_extension_threshold": 155,
+        "ground_tolerance_px": 60,
+        "overhead_threshold_px": 100
+    },
     "bar_muscle_up": {
         "phases": [
             {

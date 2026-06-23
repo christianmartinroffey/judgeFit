@@ -4,7 +4,7 @@ import cv2
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from workout.utilities.squatChecker import process_movement
+from workout.utilities.legacy.squatChecker import process_movement
 
 
 class Movement(models.Model):

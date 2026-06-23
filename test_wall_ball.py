@@ -124,8 +124,8 @@ def main():
 
     import workout.utilities.PoseModule as pm
     from workout.utilities.movement_counters import WallBallCounter
-    from workout.utilities.object_detector import GymObjectDetector
-    from workout.utilities.target_detector import TargetDetector
+    from workout.utilities.wall_ball.object_detector import GymObjectDetector
+    from workout.utilities.wall_ball.target_detector import TargetDetector
     from workout.utilities.utils import load_movement_criteria
 
     criteria = load_movement_criteria()

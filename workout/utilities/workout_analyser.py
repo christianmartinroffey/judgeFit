@@ -58,7 +58,16 @@ _NAME_MAP = {
     'wallball': 'wall_ball',
     'wall ball shot': 'wall_ball',
     'wall ball shots': 'wall_ball',
+    'clean and jerk': 'clean_and_jerk',
+    'clean & jerk': 'clean_and_jerk',
+    'clean-and-jerk': 'clean_and_jerk',
+    'hang clean and jerk': 'hang_clean_and_jerk',
+    'hang clean & jerk': 'hang_clean_and_jerk',
+    'snatch': 'snatch',
+    'hang snatch': 'hang_snatch',
 }
+
+_BARBELL_MOVEMENTS = {'clean_and_jerk', 'hang_clean_and_jerk', 'snatch', 'hang_snatch'}
 
 
 def normalise_movement_name(name: str) -> str:
@@ -148,8 +157,8 @@ class WorkoutAnalyser:
         self._wall_ball_frame_idx: int = 0
         self._wall_ball_calibration_frames: int = 30
         if any(c['movement'] == 'wall_ball' for c in workout_plan.components):
-            from workout.utilities.object_detector import GymObjectDetector  # noqa: PLC0415
-            from workout.utilities.target_detector import TargetDetector  # noqa: PLC0415
+            from workout.utilities.wall_ball.object_detector import GymObjectDetector  # noqa: PLC0415
+            from workout.utilities.wall_ball.target_detector import TargetDetector  # noqa: PLC0415
             self.counters['wall_ball'] = WallBallCounter(criteria.get('wall_ball', {}))
             self._object_detector = GymObjectDetector()
             self._target_detector = TargetDetector(
@@ -246,7 +255,7 @@ class WorkoutAnalyser:
 
         # When entering a wall ball set, reset detectors so target calibration starts fresh.
         if new_movement == 'wall_ball' and self._object_detector is not None:
-            from workout.utilities.target_detector import TargetDetector  # noqa: PLC0415
+            from workout.utilities.wall_ball.target_detector import TargetDetector  # noqa: PLC0415
             self._target_detector = TargetDetector(
                 calibration_frames=self._wall_ball_calibration_frames,
             )
@@ -457,7 +466,7 @@ def analyse_workout_video(
 
     # Dispatch to the dedicated wall ball analyser when all components are wall ball.
     if normalised and all(c['movement'] == 'wall_ball' for c in normalised):
-        from workout.utilities.wall_ball_analyser import WallBallAnalyser  # noqa: PLC0415
+        from workout.utilities.wall_ball.wall_ball_analyser import WallBallAnalyser  # noqa: PLC0415
         total_expected = sum(c['expected_reps'] for c in normalised if c.get('expected_reps'))
         is_local = os.path.exists(video_url)
         video_path = video_url if is_local else download_youtube_video(video_url)
@@ -472,6 +481,26 @@ def analyse_workout_video(
         finally:
             if not is_local and os.path.exists(video_path):
                 os.unlink(video_path)
+
+    # Dispatch to barbell analyser when all components are the same barbell movement.
+    if normalised and all(c['movement'] in _BARBELL_MOVEMENTS for c in normalised):
+        movement_type = normalised[0]['movement']
+        if all(c['movement'] == movement_type for c in normalised):
+            from workout.utilities.barbell.barbell_analyser import BarbellAnalyser  # noqa: PLC0415
+            total_expected = sum(c['expected_reps'] for c in normalised if c.get('expected_reps'))
+            is_local = os.path.exists(video_url)
+            video_path = video_url if is_local else download_youtube_video(video_url)
+            try:
+                analyser = BarbellAnalyser(
+                    video_path,
+                    movement_type=movement_type,
+                    expected_reps=total_expected or None,
+                    criteria=criteria,
+                )
+                return analyser.analyse()
+            finally:
+                if not is_local and os.path.exists(video_path):
+                    os.unlink(video_path)
 
     plan = WorkoutPlan(normalised, workout_type=workout_type)
 

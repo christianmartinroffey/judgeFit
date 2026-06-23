@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def analyse_video(self, score_id, video_url):
     from workout.models import Score
     from workout.utilities.workout_analyser import analyse_workout_video
-    from workout.utilities.squatChecker import process_movement
+    from workout.utilities.legacy.squatChecker import process_movement
 
     score = Score.objects.get(id=score_id)
     score.status = Score.PROCESSING

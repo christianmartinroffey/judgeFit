@@ -15,8 +15,8 @@ import workout.utilities.PoseModule as pm
 from vision.llava_client import LLaVAClockDetectionError, LLaVATargetDetectionError
 from vision.vision_client import VisionClient
 from workout.utilities.movement_counters import WallBallCounter
-from workout.utilities.object_detector import GymObjectDetector
-from workout.utilities.target_detector import TargetDetector
+from workout.utilities.wall_ball.object_detector import GymObjectDetector
+from workout.utilities.wall_ball.target_detector import TargetDetector
 from workout.utilities.utils import download_youtube_video, load_movement_criteria
 from vision.vision_utils import read_clock
 
