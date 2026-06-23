@@ -12,12 +12,13 @@ from collections import deque
 import cv2
 
 import workout.utilities.PoseModule as pm
-from workout.utilities.llava_client import LLaVAClient, LLaVAClockDetectionError, LLaVATargetDetectionError
+from vision.llava_client import LLaVAClockDetectionError, LLaVATargetDetectionError
+from vision.vision_client import VisionClient
 from workout.utilities.movement_counters import WallBallCounter
 from workout.utilities.object_detector import GymObjectDetector
 from workout.utilities.target_detector import TargetDetector
 from workout.utilities.utils import download_youtube_video, load_movement_criteria
-from workout.utilities.vision_utils import read_clock
+from vision.vision_utils import read_clock
 
 logger = logging.getLogger(__name__)
 
@@ -89,11 +90,11 @@ class WallBallAnalyser:
         fps = self.video.get(cv2.CAP_PROP_FPS)
         self.counter.set_fps(fps if fps > 0 else 30.0)
 
-        self.llava_client: LLaVAClient | None = None
+        self.llava_client: VisionClient | None = None
 
         if target_y_px is None:
             if use_llava:
-                self.llava_client = LLaVAClient()
+                self.llava_client = VisionClient()
                 target_y = self._detect_target_with_llava()
                 self.target_detector.target_y_px = target_y
                 self.target_detector.is_calibrated = True

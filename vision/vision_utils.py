@@ -3,8 +3,6 @@ import re
 
 import numpy as np
 
-from workout.utilities.llava_client import LLaVAClient
-
 logger = logging.getLogger(__name__)
 
 _CLOCK_PROMPT = (
@@ -17,7 +15,7 @@ _CLOCK_PROMPT = (
 )
 
 
-def read_clock(frame: np.ndarray, client: LLaVAClient) -> str | None:
+def read_clock(frame: np.ndarray, client) -> str | None:
     """
     Read a competition clock from a video frame.
 

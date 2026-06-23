@@ -99,7 +99,7 @@ def analyse_video(self, score_id, video_url):
                 )
 
     except Exception as e:
-        from workout.utilities.llava_client import LLaVAClockDetectionError, LLaVATargetDetectionError
+        from vision.llava_client import LLaVAClockDetectionError, LLaVATargetDetectionError
         if isinstance(e, (LLaVAClockDetectionError, LLaVATargetDetectionError)):
             logger.error("Task failed for score %s: %s", score_id, e)
         else:

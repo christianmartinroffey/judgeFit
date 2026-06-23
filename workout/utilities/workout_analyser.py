@@ -15,10 +15,23 @@ import workout.utilities.PoseModule as pm
 from workout.utilities.movement_classifier import MovementClassifier
 from workout.utilities.movement_counters import (
     PullUpCounter, PushUpCounter, SquatCounter, ThrusterCounter, ToesToBarCounter,
+    WallBallCounter,
 )
 from workout.utilities.utils import download_youtube_video, load_movement_criteria
 
 logger = logging.getLogger(__name__)
+
+
+def _torso_bbox(lmList: list) -> tuple | None:
+    """Rough torso bounding box from pose landmarks for ball-detection false-positive filtering."""
+    try:
+        xs = [lmList[i][1] for i in (11, 12, 23, 24)]
+        ys = [lmList[i][2] for i in (11, 12, 23, 24)]
+        padding = 30
+        return (min(xs) - padding, min(ys) - padding, max(xs) + padding, max(ys) + padding)
+    except (IndexError, TypeError):
+        return None
+
 
 # Maps human-readable movement names (from the DB) to the internal classifier keys.
 _NAME_MAP = {
@@ -129,6 +142,20 @@ class WorkoutAnalyser:
             'toes_to_bar': ToesToBarCounter(criteria.get('toes_to_bar', {})),
         }
 
+        # Wall ball needs YOLO + target detection; only load if the plan contains wall balls.
+        self._object_detector = None
+        self._target_detector = None
+        self._wall_ball_frame_idx: int = 0
+        self._wall_ball_calibration_frames: int = 30
+        if any(c['movement'] == 'wall_ball' for c in workout_plan.components):
+            from workout.utilities.object_detector import GymObjectDetector  # noqa: PLC0415
+            from workout.utilities.target_detector import TargetDetector  # noqa: PLC0415
+            self.counters['wall_ball'] = WallBallCounter(criteria.get('wall_ball', {}))
+            self._object_detector = GymObjectDetector()
+            self._target_detector = TargetDetector(
+                calibration_frames=self._wall_ball_calibration_frames,
+            )
+
         # State
         self.plan_index: int = 0
         self.round: int = 1
@@ -156,6 +183,10 @@ class WorkoutAnalyser:
 
         if movement == 'toes_to_bar':
             return self.detector.getAngle(None, 24, 26, 28)  # hip-knee-ankle
+
+        if movement == 'wall_ball':
+            hip, knee, ankle = self.detector.getLandmarkIndices(lmList, is_squat=True)
+            return self.detector.getAngle(None, hip, knee, ankle)
 
         return None
 
@@ -212,6 +243,15 @@ class WorkoutAnalyser:
         self.current_counter = self.counters.get(new_movement)
         if self.current_counter:
             self.current_counter.reset()
+
+        # When entering a wall ball set, reset detectors so target calibration starts fresh.
+        if new_movement == 'wall_ball' and self._object_detector is not None:
+            from workout.utilities.target_detector import TargetDetector  # noqa: PLC0415
+            self._target_detector = TargetDetector(
+                calibration_frames=self._wall_ball_calibration_frames,
+            )
+            self._object_detector.reset_tracker()
+            self._wall_ball_frame_idx = 0
 
         logger.info("Switched to movement: %s (plan index %d)", new_movement, self.plan_index)
 
@@ -272,6 +312,25 @@ class WorkoutAnalyser:
         stats['movement'] = self.current_movement
 
         if self.current_movement and self.current_counter:
+            # Wall ball: run ball detection and target calibration before counting.
+            if self.current_movement == 'wall_ball' and self._object_detector is not None:
+                athlete_torso_bbox = _torso_bbox(lmList) if lmList else None
+                detection = self._object_detector.detect(img, self._wall_ball_frame_idx, athlete_torso_bbox)
+                self.current_counter.update_ball_position(detection.get('ball'))
+
+                if not self._target_detector.is_calibrated:
+                    wrist_y = lmList[15][2] if lmList and len(lmList) > 16 else None
+                    self._target_detector.update(img, self._wall_ball_frame_idx, wrist_y)
+                    if self._target_detector.is_calibrated and self._target_detector.target_y_px:
+                        self.current_counter.set_target_y(self._target_detector.target_y_px)
+                        logger.info(
+                            "Wall ball target set at y=%d px after %d frames",
+                            self._target_detector.target_y_px,
+                            self._wall_ball_frame_idx,
+                        )
+
+                self._wall_ball_frame_idx += 1
+
             angle = self._get_angle(self.current_movement, lmList)
             if angle is not None:
                 movement_criteria = self.criteria.get(self.current_movement, {})
@@ -280,7 +339,7 @@ class WorkoutAnalyser:
                     movement_criteria.get('descending_threshold', 110),
                     movement_criteria.get('ascending_threshold', 110),
                     self.current_counter.previous_angle,
-                    downward_movement=(self.current_movement in ['squat', 'push_up', 'thruster']),
+                    downward_movement=(self.current_movement in ['squat', 'push_up', 'thruster', 'wall_ball']),
                 )
 
                 counter_stats = self.current_counter.process(
