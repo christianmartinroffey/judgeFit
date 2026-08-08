@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { jwtDecode } from 'jwt-decode';
 import Login from './athletes/components/Login';
 import Register from './athletes/components/Register';
+import ForgotPassword from './athletes/components/ForgotPassword';
+import ResetPassword from './athletes/components/ResetPassword';
 
-type View = 'landing' | 'login' | 'register';
+type View = 'landing' | 'login' | 'register' | 'forgot-password' | 'reset-password';
 
 function isTokenValid(token: string): boolean {
   try {
@@ -20,8 +22,19 @@ export default function HomePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [view, setView] = useState<View>('landing');
+  const [resetParams, setResetParams] = useState<{ uid: string; token: string } | null>(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const uid = params.get('uid');
+    const resetToken = params.get('token');
+    if (params.get('view') === 'reset-password' && uid && resetToken) {
+      setResetParams({ uid, token: resetToken });
+      setView('reset-password');
+      setIsLoading(false);
+      return;
+    }
+
     const token = localStorage.getItem('access_token');
     if (token && isTokenValid(token)) {
       setIsAuthenticated(true);
@@ -29,7 +42,6 @@ export default function HomePage() {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       setIsAuthenticated(false);
-      const params = new URLSearchParams(window.location.search);
       if (params.get('view') === 'login') setView('login');
     }
     setIsLoading(false);
@@ -43,9 +55,31 @@ export default function HomePage() {
     </div>
   );
 
+  if (view === 'reset-password' && resetParams) {
+    return (
+      <ResetPassword
+        uid={resetParams.uid}
+        token={resetParams.token}
+        onSuccess={() => {
+          setResetParams(null);
+          setView('login');
+        }}
+      />
+    );
+  }
+
   if (!isAuthenticated) {
     if (view === 'login') {
-      return <Login onLoginSuccess={handleAuthSuccess} onBack={() => setView('landing')} />;
+      return (
+        <Login
+          onLoginSuccess={handleAuthSuccess}
+          onBack={() => setView('landing')}
+          onForgotPassword={() => setView('forgot-password')}
+        />
+      );
+    }
+    if (view === 'forgot-password') {
+      return <ForgotPassword onBack={() => setView('login')} />;
     }
     if (view === 'register') {
       return <Register onRegisterSuccess={handleAuthSuccess} onBack={() => setView('landing')} />;

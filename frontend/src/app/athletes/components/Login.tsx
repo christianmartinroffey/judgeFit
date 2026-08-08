@@ -6,9 +6,10 @@ import {Athlete} from "@/src/app/athletes/components/AthleteList";
 interface LoginProps {
   onLoginSuccess: () => void;
   onBack?: () => void;
+  onForgotPassword?: () => void;
 }
 
-export default function Login({ onLoginSuccess, onBack }: LoginProps) {
+export default function Login({ onLoginSuccess, onBack, onForgotPassword }: LoginProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +67,18 @@ export default function Login({ onLoginSuccess, onBack }: LoginProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              {onForgotPassword && (
+                <button
+                  type="button"
+                  onClick={onForgotPassword}
+                  className="text-xs text-gray-400 hover:text-gray-700 transition-colors"
+                >
+                  Forgot password?
+                </button>
+              )}
+            </div>
             <input
               type="password"
               value={password}

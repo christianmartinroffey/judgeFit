@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
-from users.views import RegisterView, MeView
+from users.views import RegisterView, MeView, PasswordResetRequestView, PasswordResetConfirmView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
@@ -45,6 +45,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/users/me/', MeView.as_view(), name='users-me'),
+    path('api/password-reset/', PasswordResetRequestView.as_view(), name='password-reset'),
+    path('api/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 
 ]
 

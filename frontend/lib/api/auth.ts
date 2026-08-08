@@ -27,3 +27,21 @@ export const refreshToken = async (refresh) => {
   });
   return handleResponse(response);
 };
+
+export const requestPasswordReset = async (email: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/password-reset/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  return handleResponse(response);
+};
+
+export const confirmPasswordReset = async (data: { uid: string; token: string; password: string }) => {
+  const response = await fetch(`${API_BASE_URL}/api/password-reset/confirm/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+};

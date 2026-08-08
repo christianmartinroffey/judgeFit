@@ -79,6 +79,18 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'judgeFit.urls'
 
 
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3000')
+
+# Email (used for password reset links). Defaults to printing to stdout so
+# dev/local runs don't need SMTP creds - check `docker logs judgefit-web-1`.
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@judgefit.local')
+
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
