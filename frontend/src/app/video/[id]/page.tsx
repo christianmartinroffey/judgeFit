@@ -204,6 +204,8 @@ function RepBreakdownSection({ reps }: { reps: ScoreBreakdown[] }) {
   );
 }
 
+const LIVE_STATUSES = new Set([null, 'processing']);
+
 function VideoDetailContent() {
   const { id } = useParams<{ id: string }>();
   const [video, setVideo] = useState<Video | null>(null);
@@ -213,13 +215,18 @@ function VideoDetailContent() {
   useEffect(() => {
     if (!id) return;
     getVideo(id)
-      .then((data) => (
-          console.log("data", data),
-setVideo(data))
-      )
+      .then(setVideo)
       .catch(() => setError('Failed to load video results.'))
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (!id || !video || !LIVE_STATUSES.has(video.score?.status ?? null)) return;
+    const interval = setInterval(() => {
+      getVideo(id).then(setVideo).catch(() => {});
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [id, video]);
 
   if (loading) return (
     <div className="min-h-screen bg-white flex items-center justify-center">

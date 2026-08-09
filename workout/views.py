@@ -10,7 +10,7 @@ from athlete.views import IsCompetitionAdmin
 from workout.models import Workout, WorkoutComponent, Video, Score, Movement
 from workout.serializers import (
     WorkoutSerializer, WorkoutDetailSerializer,
-    WorkoutComponentSerializer, VideoSerializer, VideoScore,
+    WorkoutComponentSerializer, VideoSerializer, VideoScore, VideoReviewSerializer,
     MovementSerializer,
 )
 from workout.tasks import analyse_video
@@ -64,6 +64,44 @@ class WorkoutsViewSet(viewsets.ModelViewSet):
         workout.save()
         return Response({'id': workout.id, 'is_active': workout.is_active})
 
+    @action(detail=True, methods=['get'])
+    def leaderboard(self, request, pk=None):
+        """
+        Ranked leaderboard for this workout: each athlete's best (highest
+        good_reps, then total_reps, then earliest) completed+valid submission.
+        """
+        videos = Video.objects.filter(
+            workout_id=pk, is_deleted=False, score__status=Score.COMPLETE,
+        ).select_related('athlete', 'score').order_by(
+            '-score__good_reps', '-score__total_reps', 'score__created_at'
+        )
+
+        best_by_athlete = {}
+        for video in videos:
+            if video.athlete_id not in best_by_athlete:
+                best_by_athlete[video.athlete_id] = video
+
+        ranked = sorted(
+            best_by_athlete.values(),
+            key=lambda v: (-(v.score.good_reps or 0), -(v.score.total_reps or 0), v.score.created_at),
+        )
+
+        data = [
+            {
+                'rank': i + 1,
+                'athlete_id': v.athlete_id,
+                'athlete_name': f'{v.athlete.name} {v.athlete.surname}'.strip(),
+                'good_reps': v.score.good_reps,
+                'total_reps': v.score.total_reps,
+                'no_reps': v.score.no_reps,
+                'is_valid': v.score.is_valid,
+                'is_scaled': v.score.is_scaled,
+                'video_id': str(v.id),
+            }
+            for i, v in enumerate(ranked)
+        ]
+        return Response(data)
+
 
 class WorkoutComponentsViewSet(viewsets.ModelViewSet):
     queryset = WorkoutComponent.objects.all()
@@ -91,10 +129,21 @@ class VideosViewSet(viewsets.ModelViewSet):
             return VideoScore  # use this for reads
         return VideoSerializer  # use this for writes
 
+    def get_permissions(self):
+        if self.action in ('review_queue', 'approve', 'reject'):
+            return [IsCompetitionAdmin()]
+        return [IsAuthenticated()]
+
     def get_queryset(self):
-        return Video.objects.filter(
-            athlete__email=self.request.user.email
-        ).order_by('-created_at').select_related('competition', 'workout', 'score').prefetch_related('score__scorebreakdown_set')
+        base = Video.objects.order_by('-created_at').select_related(
+            'athlete', 'competition', 'workout', 'score'
+        ).prefetch_related('score__scorebreakdown_set')
+
+        # Admins can retrieve any single video (e.g. from the review queue);
+        # `list` stays self-scoped even for admins so "My videos" still means mine.
+        if self.action == 'retrieve' and getattr(self.request.user, 'is_competition_admin', False):
+            return base
+        return base.filter(athlete__email=self.request.user.email)
 
     def create(self, request, *args, **kwargs):
         from athlete.models import Athlete
@@ -135,3 +184,42 @@ class VideosViewSet(viewsets.ModelViewSet):
     #         'no_reps': score.no_reps,
     #         'movement_breakdown': score.movement_breakdown,
     #     })
+
+    @action(detail=False, methods=['get'])
+    def review_queue(self, request):
+        """All non-deleted submissions, for competition-admin review. Not
+        scoped to the requesting user, unlike the default list action."""
+        queryset = Video.objects.filter(is_deleted=False).order_by('-created_at').select_related(
+            'athlete', 'competition', 'workout', 'score'
+        ).prefetch_related('score__scorebreakdown_set')
+
+        status_param = request.query_params.get('status')
+        if status_param:
+            queryset = queryset.filter(status=status_param)
+        competition_param = request.query_params.get('competition')
+        if competition_param:
+            queryset = queryset.filter(competition_id=competition_param)
+
+        page = self.paginate_queryset(queryset)
+        serializer = VideoReviewSerializer(page if page is not None else queryset, many=True)
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def approve(self, request, pk=None):
+        video = Video.objects.filter(pk=pk).first()
+        if video is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        video.status = Video.APPROVED
+        video.save()
+        return Response({'id': str(video.id), 'status': video.status})
+
+    @action(detail=True, methods=['post'])
+    def reject(self, request, pk=None):
+        video = Video.objects.filter(pk=pk).first()
+        if video is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        video.status = Video.REJECTED
+        video.save()
+        return Response({'id': str(video.id), 'status': video.status})

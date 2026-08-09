@@ -1,18 +1,21 @@
 'use client'
 import React, { useState } from 'react';
 import { Competition } from './CompetitionList';
-import { createCompetition } from '@/lib/api/competitions';
+import { createCompetition, updateCompetition } from '@/lib/api/competitions';
 
 interface CreateCompetitionProps {
+  competition?: Competition;
   onCompetitionCreated: (competition: Competition) => void;
+  onCancel?: () => void;
 }
 
-export default function CreateCompetition({ onCompetitionCreated }: CreateCompetitionProps) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [location, setLocation] = useState('');
+export default function CreateCompetition({ competition, onCompetitionCreated, onCancel }: CreateCompetitionProps) {
+  const isEdit = !!competition;
+  const [name, setName] = useState(competition?.name ?? '');
+  const [description, setDescription] = useState(competition?.description ?? '');
+  const [startDate, setStartDate] = useState(competition?.start_date ?? '');
+  const [endDate, setEndDate] = useState(competition?.end_date ?? '');
+  const [location, setLocation] = useState(competition?.location ?? '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,6 +25,13 @@ export default function CreateCompetition({ onCompetitionCreated }: CreateCompet
     setError(null);
 
     try {
+      if (isEdit) {
+        const updated = await updateCompetition(competition!.id, {
+          name, description, location, start_date: startDate, end_date: endDate,
+        });
+        onCompetitionCreated(updated);
+        return;
+      }
       const newCompetition = await createCompetition({ name, description, startDate, endDate, location });
       setName('');
       setDescription('');
@@ -30,7 +40,7 @@ export default function CreateCompetition({ onCompetitionCreated }: CreateCompet
       setLocation('');
       if (onCompetitionCreated) onCompetitionCreated(newCompetition);
     } catch (err) {
-      setError('Failed to create competition.');
+      setError(isEdit ? 'Failed to save changes.' : 'Failed to create competition.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -103,13 +113,24 @@ export default function CreateCompetition({ onCompetitionCreated }: CreateCompet
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-gray-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? 'Adding…' : 'Add competition'}
-      </button>
+      <div className="flex items-center gap-3">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-gray-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (isEdit ? 'Saving…' : 'Adding…') : (isEdit ? 'Save changes' : 'Add competition')}
+        </button>
+        {isEdit && onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }

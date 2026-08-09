@@ -39,3 +39,31 @@ export const deleteVideo = async (id) => {
   return;
 };
 
+export const getReviewQueue = async (params: { status?: string; competition?: number } = {}) => {
+  const query = new URLSearchParams();
+  if (params.status) query.set('status', params.status);
+  if (params.competition) query.set('competition', String(params.competition));
+  query.set('limit', '100');
+  const qs = query.toString();
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos/review_queue/${qs ? `?${qs}` : ''}`, {
+    headers: getHeaders(),
+  });
+  return handleResponse(response);
+};
+
+export const approveVideo = async (id: string) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos/${id}/approve/`, {
+    method: 'POST',
+    headers: getHeaders(),
+  });
+  return handleResponse(response);
+};
+
+export const rejectVideo = async (id: string) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/videos/${id}/reject/`, {
+    method: 'POST',
+    headers: getHeaders(),
+  });
+  return handleResponse(response);
+};
+

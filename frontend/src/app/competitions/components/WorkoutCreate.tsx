@@ -1,7 +1,9 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
-import { createWorkout, createWorkoutComponent, getMovements } from '@/lib/api/workouts';
+import {
+  createWorkout, createWorkoutComponent, getMovements, updateWorkout, deleteWorkoutComponent,
+} from '@/lib/api/workouts';
 
 interface Movement {
   id: number;
@@ -15,17 +17,31 @@ interface WorkoutMovementRow {
   height: string;
 }
 
+interface ExistingComponent {
+  id: number;
+  movement: number;
+  round: number;
+  sequence: number;
+  reps: number;
+  weight: number | null;
+  height: number | null;
+}
+
 interface Workout {
   id: number;
   name: string;
   type: string;
+  time_cap?: number | null;
   is_active: boolean;
   competition: number;
+  components?: ExistingComponent[];
 }
 
 interface WorkoutCreateProps {
   competitionId: number;
+  workout?: Workout;
   onWorkoutCreated: (workout: Workout) => void;
+  onCancel?: () => void;
 }
 
 const WORKOUT_TYPES = [
@@ -36,12 +52,31 @@ const WORKOUT_TYPES = [
 
 const emptyRow = (): WorkoutMovementRow => ({ movementId: '', reps: '', weight: '', height: '' });
 
-export default function WorkoutCreate({ competitionId, onWorkoutCreated }: WorkoutCreateProps) {
-  const [name, setName] = useState('');
-  const [type, setType] = useState('AMRAP');
-  const [timeCap, setTimeCap] = useState('');
-  const [rounds, setRounds] = useState('1');
-  const [movements, setMovements] = useState<WorkoutMovementRow[]>([emptyRow()]);
+const rowsFromWorkout = (workout: Workout): WorkoutMovementRow[] => {
+  const components = workout.components ?? [];
+  const round1 = components.filter((c) => c.round === 1).sort((a, b) => a.sequence - b.sequence);
+  if (round1.length === 0) return [emptyRow()];
+  return round1.map((c) => ({
+    movementId: String(c.movement),
+    reps: String(c.reps ?? ''),
+    weight: c.weight != null ? String(c.weight) : '',
+    height: c.height != null ? String(c.height) : '',
+  }));
+};
+
+const roundsFromWorkout = (workout: Workout): string => {
+  const components = workout.components ?? [];
+  if (components.length === 0) return '1';
+  return String(Math.max(...components.map((c) => c.round)));
+};
+
+export default function WorkoutCreate({ competitionId, workout, onWorkoutCreated, onCancel }: WorkoutCreateProps) {
+  const isEdit = !!workout;
+  const [name, setName] = useState(workout?.name ?? '');
+  const [type, setType] = useState(workout?.type ?? 'AMRAP');
+  const [timeCap, setTimeCap] = useState(workout?.time_cap != null ? String(workout.time_cap) : '');
+  const [rounds, setRounds] = useState(workout ? roundsFromWorkout(workout) : '1');
+  const [movements, setMovements] = useState<WorkoutMovementRow[]>(workout ? rowsFromWorkout(workout) : [emptyRow()]);
   const [availableMovements, setAvailableMovements] = useState<Movement[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,13 +109,25 @@ export default function WorkoutCreate({ competitionId, onWorkoutCreated }: Worko
     setError(null);
 
     try {
-      const workout = await createWorkout({
-        name,
-        type,
-        time_cap: timeCap ? parseInt(timeCap) : null,
-        competition: competitionId,
-        is_active: false,
-      });
+      let savedWorkout: Workout;
+      if (isEdit && workout) {
+        savedWorkout = await updateWorkout(workout.id, {
+          name,
+          type,
+          time_cap: timeCap ? parseInt(timeCap) : null,
+        });
+        // Simplest correct edit: drop the old component set and rebuild it.
+        // Safe because Score/ScoreBreakdown reference Movement, not WorkoutComponent.
+        await Promise.all((workout.components ?? []).map((c) => deleteWorkoutComponent(c.id)));
+      } else {
+        savedWorkout = await createWorkout({
+          name,
+          type,
+          time_cap: timeCap ? parseInt(timeCap) : null,
+          competition: competitionId,
+          is_active: false,
+        });
+      }
 
       const numRounds = Math.max(1, parseInt(rounds) || 1);
       const componentPromises: Promise<unknown>[] = [];
@@ -88,7 +135,7 @@ export default function WorkoutCreate({ competitionId, onWorkoutCreated }: Worko
         movements.forEach((row, seq) => {
           componentPromises.push(
             createWorkoutComponent({
-              workout: workout.id,
+              workout: savedWorkout.id,
               movement: parseInt(row.movementId),
               round,
               sequence: seq + 1,
@@ -101,14 +148,20 @@ export default function WorkoutCreate({ competitionId, onWorkoutCreated }: Worko
       }
       await Promise.all(componentPromises);
 
+      if (isEdit) {
+        onWorkoutCreated(savedWorkout);
+        setLoading(false);
+        return;
+      }
+
       setName('');
       setType('AMRAP');
       setTimeCap('');
       setRounds('1');
       setMovements([emptyRow()]);
-      onWorkoutCreated(workout);
+      onWorkoutCreated(savedWorkout);
     } catch (err) {
-      setError('Failed to create workout.');
+      setError(isEdit ? 'Failed to save workout.' : 'Failed to create workout.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -250,13 +303,24 @@ export default function WorkoutCreate({ competitionId, onWorkoutCreated }: Worko
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-gray-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? 'Creating…' : 'Add workout'}
-      </button>
+      <div className="flex items-center gap-3">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-gray-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (isEdit ? 'Saving…' : 'Creating…') : (isEdit ? 'Save changes' : 'Add workout')}
+        </button>
+        {isEdit && onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }

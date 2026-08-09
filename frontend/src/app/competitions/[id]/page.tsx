@@ -2,10 +2,11 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Plus, X } from 'lucide-react';
+import { ArrowLeft, Pencil, Plus, X } from 'lucide-react';
 import ProtectedPage from '../../components/ProtectedPage';
 import WorkoutList from '../components/WorkoutList';
 import WorkoutCreate from '../components/WorkoutCreate';
+import CompetitionCreate from '../components/CompetitionCreate';
 import { getCompetition } from '@/lib/api/competitions';
 import { checkIsAdmin } from '@/lib/auth';
 import { Competition } from '../components/CompetitionList';
@@ -17,6 +18,7 @@ export default function CompetitionDetailPage() {
   const [competition, setCompetition] = useState<Competition | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,15 +75,36 @@ export default function CompetitionDetailPage() {
           </Link>
 
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{competition.name}</h1>
-            <p className="text-sm text-gray-500 mt-1">
-              {competition.location} ·{' '}
-              {new Date(competition.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-              {' – '}
-              {new Date(competition.end_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-            </p>
-            {competition.description && (
-              <p className="text-sm text-gray-400 mt-1">{competition.description}</p>
+            {showEdit ? (
+              <CompetitionCreate
+                competition={competition}
+                onCompetitionCreated={(updated) => { setCompetition(updated); setShowEdit(false); }}
+                onCancel={() => setShowEdit(false)}
+              />
+            ) : (
+              <div className="flex items-start justify-between">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{competition.name}</h1>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {competition.location} ·{' '}
+                    {new Date(competition.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    {' – '}
+                    {new Date(competition.end_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </p>
+                  {competition.description && (
+                    <p className="text-sm text-gray-400 mt-1">{competition.description}</p>
+                  )}
+                </div>
+                {isAdmin && (
+                  <button
+                    onClick={() => setShowEdit(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:border-gray-900 hover:text-gray-900 transition-colors"
+                  >
+                    <Pencil size={14} />
+                    Edit
+                  </button>
+                )}
+              </div>
             )}
           </div>
 

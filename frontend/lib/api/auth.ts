@@ -1,4 +1,4 @@
-import { API_BASE_URL, handleResponse } from "@/lib/api";
+import { API_BASE_URL, apiFetch, getHeaders, handleResponse } from "@/lib/api";
 
 // Authentication
 export const login = async (credentials) => {
@@ -44,4 +44,25 @@ export const confirmPasswordReset = async (data: { uid: string; token: string; p
     body: JSON.stringify(data),
   });
   return handleResponse(response);
+};
+
+export const changePassword = async (data: { old_password: string; new_password: string }) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/users/change-password/`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+};
+
+export const deleteAccount = async (password: string) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/users/me/`, {
+    method: 'DELETE',
+    headers: getHeaders(),
+    body: JSON.stringify({ password }),
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.detail || 'Failed to delete account.');
+  }
 };

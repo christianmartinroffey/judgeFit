@@ -4,17 +4,20 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { checkIsAdmin } from '@/lib/auth';
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
       const token = localStorage.getItem('access_token');
       setIsAuthenticated(!!token);
+      setIsAdmin(checkIsAdmin());
     };
     checkAuth();
     window.addEventListener('auth-change', checkAuth);
@@ -32,6 +35,11 @@ export default function Navbar() {
     { href: '/athletes', label: 'Profile' },
     { href: '/competitions', label: 'Competitions' },
     { href: '/video', label: 'Videos' },
+    ...(isAdmin ? [
+      { href: '/review', label: 'Review' },
+      { href: '/athletes/roster', label: 'Roster' },
+      { href: '/dashboard', label: 'Dashboard' },
+    ] : []),
   ];
 
   const isActive = (href: string) => {

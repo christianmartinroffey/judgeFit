@@ -14,9 +14,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path, include
-from users.views import RegisterView, MeView, PasswordResetRequestView, PasswordResetConfirmView
+from users.views import (
+    RegisterView, MeView, PasswordResetRequestView, PasswordResetConfirmView, ChangePasswordView,
+)
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
@@ -45,8 +49,12 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/users/me/', MeView.as_view(), name='users-me'),
+    path('api/users/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('api/password-reset/', PasswordResetRequestView.as_view(), name='password-reset'),
     path('api/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

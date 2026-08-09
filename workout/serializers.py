@@ -106,3 +106,19 @@ class VideoScore(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = '__all__'
+
+
+class VideoReviewSerializer(VideoScore):
+    """VideoScore plus athlete identity - used by the competition-admin review queue."""
+    athlete_name = serializers.SerializerMethodField()
+    athlete_email = serializers.SerializerMethodField()
+
+    def get_athlete_name(self, obj):
+        return f'{obj.athlete.name} {obj.athlete.surname}'.strip()
+
+    def get_athlete_email(self, obj):
+        return obj.athlete.email
+
+    class Meta:
+        model = Video
+        fields = '__all__'

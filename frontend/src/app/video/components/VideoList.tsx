@@ -89,6 +89,9 @@ function DeleteModal({ onConfirm, onCancel, deleting }: { onConfirm: () => void;
   );
 }
 
+const LIVE_STATUSES = new Set([null, 'processing']);
+const isLive = (video: Video) => LIVE_STATUSES.has(video.score?.status ?? null);
+
 export default function VideoList() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,17 +103,25 @@ export default function VideoList() {
     fetchVideos();
   }, []);
 
-  const fetchVideos = async () => {
+  useEffect(() => {
+    if (!videos.some(isLive)) return;
+    const interval = setInterval(() => {
+      fetchVideos({ silent: true });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [videos]);
+
+  const fetchVideos = async ({ silent = false }: { silent?: boolean } = {}) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const data = await getVideos();
       setVideos(data.results);
       setError(null);
     } catch (err) {
-      setError('Failed to load videos.');
+      if (!silent) setError('Failed to load videos.');
       console.error(err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 

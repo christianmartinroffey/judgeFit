@@ -1,7 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { Trash2, Zap } from 'lucide-react';
+import Link from 'next/link';
+import { Trash2, Zap, Trophy, Pencil } from 'lucide-react';
 import { getWorkouts, activateWorkout, deleteWorkout } from '@/lib/api/workouts';
+import WorkoutCreate from './WorkoutCreate';
 
 interface WorkoutComponent {
   id: number;
@@ -40,6 +42,7 @@ export default function WorkoutList({ competitionId, isAdmin, refreshKey }: Work
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchWorkouts();
@@ -106,6 +109,21 @@ export default function WorkoutList({ competitionId, isAdmin, refreshKey }: Work
         const numRounds = rounds(workout.components);
         const round1Movements = movementsForRound(workout.components, 1);
 
+        if (editingId === workout.id) {
+          return (
+            <WorkoutCreate
+              key={workout.id}
+              competitionId={competitionId}
+              workout={workout}
+              onWorkoutCreated={() => {
+                setEditingId(null);
+                fetchWorkouts();
+              }}
+              onCancel={() => setEditingId(null)}
+            />
+          );
+        }
+
         return (
           <div key={workout.id} className="border border-gray-100 rounded-xl p-5">
             <div className="flex items-start justify-between mb-3">
@@ -129,27 +147,41 @@ export default function WorkoutList({ competitionId, isAdmin, refreshKey }: Work
                   <p className="text-xs text-gray-400 mt-0.5">{workout.time_cap} min cap</p>
                 )}
               </div>
-              {isAdmin && (
-                <div className="flex items-center gap-1">
-                  {!workout.is_active && (
-                    <>
-                      <button
-                        onClick={() => handleActivate(workout.id)}
-                        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-colors border border-green-100"
-                      >
-                        <Zap size={12} />
-                        Activate
-                      </button>
-                      <button
-                        onClick={() => handleDelete(workout.id)}
-                        className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </>
-                  )}
-                </div>
-              )}
+              <div className="flex items-center gap-1">
+                {workout.is_active && (
+                  <Link
+                    href={`/workouts/${workout.id}/leaderboard`}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-yellow-700 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-colors border border-yellow-100"
+                  >
+                    <Trophy size={12} />
+                    Leaderboard
+                  </Link>
+                )}
+                {isAdmin && !workout.is_active && (
+                  <>
+                    <button
+                      onClick={() => setEditingId(workout.id)}
+                      className="p-2 text-gray-400 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
+                      aria-label="Edit workout"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={() => handleActivate(workout.id)}
+                      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-colors border border-green-100"
+                    >
+                      <Zap size={12} />
+                      Activate
+                    </button>
+                    <button
+                      onClick={() => handleDelete(workout.id)}
+                      className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
             {round1Movements.length > 0 && (

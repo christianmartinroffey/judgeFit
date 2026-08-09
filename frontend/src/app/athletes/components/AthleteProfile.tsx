@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { getMyProfile, createMyProfile, updateMyProfile } from '@/lib/api/athletes';
+import { getMyProfile, createMyProfile, updateMyProfile, uploadMyProfilePhoto } from '@/lib/api/athletes';
 
 interface AthleteData {
   id: number;
@@ -13,6 +13,7 @@ interface AthleteData {
   email: string;
   emergency_contact_name: string | null;
   emergency_contact_phone: string | null;
+  profile_photo: string | null;
   created_at: string;
 }
 
@@ -70,6 +71,8 @@ export default function AthleteProfile() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   useEffect(() => {
     getMyProfile()
@@ -89,6 +92,22 @@ export default function AthleteProfile() {
   const set = (field: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
+
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPhotoError(null);
+    setPhotoUploading(true);
+    try {
+      const updated = await uploadMyProfilePhoto(file);
+      setProfile(updated);
+    } catch {
+      setPhotoError('Failed to upload photo.');
+    } finally {
+      setPhotoUploading(false);
+      e.target.value = '';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,6 +159,40 @@ export default function AthleteProfile() {
           <p className="text-xs text-blue-600">
             Fill in your details below to create your athlete profile.
           </p>
+        </div>
+      )}
+
+      {/* Avatar - photo uploads attach to an existing profile, so only shown once created */}
+      {mode === 'edit' && (
+        <div className="border border-gray-100 rounded-xl p-6">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Profile photo</p>
+          <div className="flex items-center gap-5">
+            {profile?.profile_photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.profile_photo}
+                alt="Profile"
+                className="w-16 h-16 rounded-full object-cover border border-gray-200"
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xl font-semibold">
+                {form.name ? form.name.charAt(0).toUpperCase() : '?'}
+              </div>
+            )}
+            <div>
+              <label className="inline-block cursor-pointer text-sm font-medium text-gray-700 border border-gray-200 rounded-lg px-4 py-2 hover:border-gray-900 hover:text-gray-900 transition-colors">
+                {photoUploading ? 'Uploading…' : 'Upload photo'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={photoUploading}
+                  onChange={handlePhotoChange}
+                />
+              </label>
+              {photoError && <p className="text-xs text-red-500 mt-2">{photoError}</p>}
+            </div>
+          </div>
         </div>
       )}
 

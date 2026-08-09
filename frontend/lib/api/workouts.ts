@@ -8,9 +8,32 @@ export const getWorkouts = async (competitionId?: number) => {
   return handleResponse(response);
 };
 
+export const getWorkout = async (id: number) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/workouts/${id}/`, {
+    headers: getHeaders(),
+  });
+  return handleResponse(response);
+};
+
 export const createWorkout = async (data: object) => {
   const response = await apiFetch(`${API_BASE_URL}/api/workout/workouts/`, {
     method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+};
+
+export const getWorkoutLeaderboard = async (id: number) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/workouts/${id}/leaderboard/`, {
+    headers: getHeaders(),
+  });
+  return handleResponse(response);
+};
+
+export const updateWorkout = async (id: number, data: object) => {
+  const response = await apiFetch(`${API_BASE_URL}/api/workout/workouts/${id}/`, {
+    method: 'PATCH',
     headers: getHeaders(),
     body: JSON.stringify(data),
   });

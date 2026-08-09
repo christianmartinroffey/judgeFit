@@ -1,12 +1,15 @@
 'use client'
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { getAthletes, deleteAthlete } from '@/lib/api/athletes';
 import { Trash2 } from 'lucide-react';
 
 export interface Athlete {
   key: number;
   id: number;
+  name: string;
   surname: string;
+  email: string;
   created_at: string;
 }
 
@@ -64,10 +67,14 @@ export default function AthleteList() {
     <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
       {athletes.map((athlete) => (
         <div key={athlete.id} className="flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors">
-          <div>
-            <p className="text-sm font-medium text-gray-900">{athlete.surname}</p>
-            <p className="text-xs text-gray-400 mt-0.5">ID {athlete.id} · Added {new Date(athlete.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-          </div>
+          <Link href={`/athletes/${athlete.id}`} className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 hover:underline">
+              {athlete.name || athlete.surname ? `${athlete.name} ${athlete.surname}`.trim() : `Athlete #${athlete.id}`}
+            </p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {athlete.email} · Added {new Date(athlete.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+            </p>
+          </Link>
           <button
             onClick={() => handleDelete(athlete.id)}
             className="p-2 text-gray-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"

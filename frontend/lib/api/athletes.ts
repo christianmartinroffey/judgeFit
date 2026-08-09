@@ -30,6 +30,22 @@ export const updateMyProfile = async (data: Record<string, unknown>) => {
   return handleResponse(response);
 };
 
+export const uploadMyProfilePhoto = async (file: File) => {
+  const formData = new FormData();
+  formData.append('profile_photo', file);
+  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+  const headers: Record<string, string> = {};
+  if (token) headers.Authorization = `Bearer ${token}`;
+  // No Content-Type here — the browser sets multipart/form-data with the
+  // correct boundary itself; setting it manually breaks the upload.
+  const response = await apiFetch(`${API_BASE_URL}/api/athlete/athletes/me/`, {
+    method: 'PATCH',
+    headers,
+    body: formData,
+  });
+  return handleResponse(response);
+};
+
 // API functions
 export const getAthletes = async () => {
   const response = await apiFetch(`${API_BASE_URL}/api/athlete/athletes`, {

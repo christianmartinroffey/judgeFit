@@ -1,5 +1,6 @@
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
@@ -15,6 +16,15 @@ class IsCompetitionAdmin(BasePermission):
 class AthleteViewSet(viewsets.ModelViewSet):
     queryset = Athlete.objects.all()
     serializer_class = AthleteSerializer
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def get_permissions(self):
+        # The `me` action is self-service and open to any authenticated user;
+        # everything else (direct /athletes/{id}/ mutation) is roster
+        # management and restricted to competition admins.
+        if self.action in ('create', 'update', 'partial_update', 'destroy'):
+            return [IsCompetitionAdmin()]
+        return [IsAuthenticated()]
 
     def get_queryset(self):
         queryset = Athlete.objects.all()

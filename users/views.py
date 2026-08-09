@@ -110,6 +110,26 @@ class PasswordResetConfirmView(APIView):
         return Response({'detail': 'Password has been reset.'})
 
 
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        old_password = request.data.get('old_password', '')
+        new_password = request.data.get('new_password', '')
+
+        if not request.user.check_password(old_password):
+            return Response({'detail': 'Current password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            validate_password(new_password, user=request.user)
+        except ValidationError as e:
+            return Response({'detail': e.messages}, status=status.HTTP_400_BAD_REQUEST)
+
+        request.user.set_password(new_password)
+        request.user.save()
+        return Response({'detail': 'Password changed.'})
+
+
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -119,3 +139,13 @@ class MeView(APIView):
             'username': request.user.username,
             'email': request.user.email,
         })
+
+    def delete(self, request):
+        if not request.user.check_password(request.data.get('password', '')):
+            return Response({'detail': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        from athlete.models import Athlete
+
+        Athlete.objects.filter(email=request.user.email).delete()
+        request.user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
